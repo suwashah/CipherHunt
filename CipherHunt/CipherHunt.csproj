@@ -184,6 +184,7 @@
     <Compile Include="Areas\Cpanel\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Cpanel\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Cpanel\Controllers\EmailTemplateController.cs" />
+    <Compile Include="Areas\Cpanel\Controllers\ChallengeController.cs" />
     <Compile Include="Areas\Cpanel\Controllers\ProductController.cs" />
     <Compile Include="Areas\Cpanel\Controllers\UtilitiesController.cs" />
     <Compile Include="Areas\Cpanel\CpanelAreaRegistration.cs" />
@@ -407,6 +408,11 @@
     <Content Include="Content\bootstrap-icons\fonts\bootstrap-icons.woff" />
     <Content Include="Content\bootstrap-icons\fonts\bootstrap-icons.woff2" />
     <Content Include="Content\swiper\swiper-bundle.min.js.map" />
+    <Content Include="Areas\Cpanel\Views\Challenge\Categories.cshtml" />
+    <Content Include="Areas\Cpanel\Views\Challenge\Index.cshtml" />
+    <Content Include="Areas\Cpanel\Views\Challenge\PendingChallenges.cshtml" />
+    <Content Include="Areas\Cpanel\Views\Challenge\SaveCategory.cshtml" />
+    <Content Include="Areas\Cpanel\Views\Challenge\SaveChallenge.cshtml" />
     <None Include="Scripts\jquery-3.5.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.0.js" />
     <Content Include="Scripts\jquery-3.5.0.min.js" />

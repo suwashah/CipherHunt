@@ -68,6 +68,7 @@
     <Compile Include="HelperFunction\RemotePost.cs" />
     <Compile Include="HelperFunction\SMTPService.cs" />
     <Compile Include="HelperFunction\UtilityHelper.cs" />
+    <Compile Include="Challenge\ChallengeRepository.cs" />
     <Compile Include="Product\ProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

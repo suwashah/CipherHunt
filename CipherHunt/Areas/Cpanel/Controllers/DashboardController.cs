@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using CipherHunt.Areas.Cpanel.Models;
 using CipherHunt.Filters;
 using CipherHunt.Library;
+using Repository.Challenge;
 
 namespace CipherHunt.Areas.Cpanel.Controllers
 {
@@ -16,12 +17,14 @@ namespace CipherHunt.Areas.Cpanel.Controllers
     {
         // GET: Cpanel/Dashboard
         private IProductRepository _ipr;
+        private IChallengeRepository _ich;
         private ICommonRepository _icr;
         private ICustomerRepository _icust;
         private ICpanelUserRepository _iusr;
-        public DashboardController(IProductRepository ipr, ICommonRepository icr, ICustomerRepository icust, ICpanelUserRepository iusr)
+        public DashboardController(IProductRepository ipr,IChallengeRepository ich, ICommonRepository icr, ICustomerRepository icust, ICpanelUserRepository iusr)
         {
             _ipr = ipr;
+            _ich = ich;
             _icr = icr;
             _icust = icust;
             _iusr = iusr;
@@ -29,8 +32,8 @@ namespace CipherHunt.Areas.Cpanel.Controllers
         public ActionResult Index()
         {
             ApplicationViewModel model = new ApplicationViewModel();
-            model.TotalProducts = _ipr.GetAllProducts("a").Count.ToString();
-            model.TotalUnverifiedProducts = _ipr.GetAllProducts("uv").Count.ToString();
+            model.TotalChallenges = _ich.GetAllChallenges("a").Count.ToString();
+            model.TotalUnverifiedChallenges = _ich.GetAllChallenges("uv").Count.ToString();
             model.TotalCustomers = _icust.AllCustomerList().Count.ToString();
             model.TotalCategories = _ipr.GetAllCategories().Count.ToString();
             model.CpanelUsers = _iusr.GetALLCpanelUsers(CurrentUser.ID);

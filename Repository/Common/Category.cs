@@ -49,4 +49,34 @@ namespace Repository.Common
         public String CALORIES { get; set; }
 
     }
+
+    public class TblChallenge
+    {
+        public String CHALLENGE_ID { get; set; }
+        public String CAT_ID { get; set; }
+        public String CATEGORY_NAME { get; set; }
+        public String CATEGORY_TAB { get; set; }
+        public String NAME { get; set; }
+        public String DESCRIPTION { get; set; }
+        public String DIFFICULTY_LEVEL { get; set; }
+        public String POINTS { get; set; }
+        public byte[] IMAGE { get; set; }
+        public String IMAGENAME { get; set; }
+        public String CHALLENGE_URL { get; set; }
+        public String FILE_PATH { get; set; }
+        public String CTF_FLAG { get; set; }
+
+        public String FLAG { get; set; }
+        public String DATEAVAILABLE { get; set; }
+        public String CHANGEDATE { get; set; }
+        public String STATUS { get; set; }
+        public Boolean IS_ENABLE { get; set; }
+        public String CREATE_TS { get; set; }
+        public String CREATE_BY { get; set; }
+        public String UPDATE_TS { get; set; }
+        public String UPDATE_BY { get; set; }
+        public Boolean IS_VERIFIED { get; set; }
+        public String VERIFIED_BY { get; set; }
+
+    }
 }

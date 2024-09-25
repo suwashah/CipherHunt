@@ -1,3 +1,4 @@
+using Repository.Challenge;
 using Repository.Common;
 using Repository.CPanel;
 using Repository.Customer;
@@ -26,6 +27,7 @@ namespace CipherHunt
             container.RegisterType<IApplicationConfig, ApplicationConfig>();
             container.RegisterType<ICustomerRepository, CustomerRepository>();
             container.RegisterType<ICpanelUserRepository, CpanelUserRepository>();
+            container.RegisterType<IChallengeRepository, ChallengeRepository>();
             container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IEmailRepository, EmailRepository>();
             container.RegisterType<ISMTPService, SMTPService>();
