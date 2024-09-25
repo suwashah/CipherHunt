@@ -1,0 +1,35 @@
+﻿@model CipherHunt.Models.SuccessModel
+@{
+    ViewBag.Title = "Authenticaton";
+    Layout = "~/Areas/Cpanel/Views/Shared/_PlainLayout.cshtml";
+}
+<style>
+    .box-card {
+        padding: 50px 10px;
+    }
+</style>
+<div class="container">
+    <div class="box-card">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group center-text">
+                    <br />
+                    <img height="70" src="@Url.Content("~/images/Icons/GoogleAuthenticator.png")" />
+                    <br />
+                    <span style="font-size:20px">Google Authenticator</span>
+                    <br /><br />
+                    <span class="text-success" style="font-size:30px !important;">@Model.Title</span>
+                    <br/>
+                    Your 2 Factor Authentication request is successfully requested for approval.<br/>
+                    You will get an email after your request is approved.
+                    <br />
+                    <br />
+                    Thank you!
+                    <br /><br />
+                    @Html.ActionLink("Go to Login", "Login", "Acc", null, new { @class = "btn btn-success btn-round" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

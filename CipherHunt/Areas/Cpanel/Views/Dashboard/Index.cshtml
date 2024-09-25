@@ -1,0 +1,316 @@
+﻿@model CipherHunt.Areas.Cpanel.Models.ApplicationViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    .numbers .card-title {
+        font-size: 40px !important;
+        color: #50b7b9;
+    }
+</style>
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-chart wow fadeInDown" data-wow-delay="0.6s">
+            <div class="card-header">
+            </div>
+            <div class="card-body center-text" style="height:350px">
+                <canvas id="myChart1" aria-label="Test" role="img"></canvas>
+                <div id="chartDiv"></div>
+                <div ng-init="DrawWeeklyGraph('chartDiv')">
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input id="line" class="custom-control-input" type="radio" name="GraphType" ng-model="GraphType" ng-click="DrawWeeklyGraph('chartDiv')" value="line" />
+                    <label class="custom-control-label" for="line">Line</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                    <input id="bar" class="custom-control-input" type="radio" name="GraphType" ng-model="GraphType" ng-click="DrawWeeklyGraph('chartDiv')" value="bar" />
+                    <label class="custom-control-label" for="bar">Bar</label>
+                </div>
+                @*<script type="text/javascript">var color = Chart.helpers.color; var bg1 = "rgba(196, 37, 15, 0.66)"; var bg2 = "rgba(0, 53, 169, 0.36)"; var ctx = document.getElementById('myChart1'); var myChart = null; if (myChart !== null) { removeData(myChart); } myChart = new Chart(ctx, { type: 'chartDiv', data: { labels: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"], datasets: [{ "label": "Weekly customer report:Previous", "data": [0, 0, 0, 0, 0, 0, 1], "fill": "false", "borderColor": null, "backgroundColor": null, "borderWidth": 1 }, { "label": "Weekly customer report:This", "data": [0, 2, 0, 0, 0, 0, 0], "fill": "false", "borderColor": null, "backgroundColor": null, "borderWidth": 1 }], onAnimationComplete: function () { ctx.fillText("Hello", 100 - 20, 100, 200); } }, options: { responsive: true, legend: { position: 'top', fontColor: 'white', }, title: { display: true, text: 'Weekly customer report', }, scales: { yAxes: [{ ticks: { beginAtZero: true }, scaleLabel: { display: true, labelString: 'Count' } }], XAxes: [{ ticks: { beginAtZero: true }, scaleLabel: { display: true, labelString: 'Email' } }], }, tooltips: { mode: 'point', axis: 'y', } } });</script>*@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card card-chart wow fadeInDown" data-wow-delay="0.6s">
+            <div class="card-header">
+            </div>
+            <div class="card-body center-text" style="height:350px">
+                <center>
+                    <a href="@Url.Action("SaveProduct","Product")">
+                        <img src="@Url.Content("~/Images/Icons/cart_animation1.gif")" class="img-flip-Horizontal" height="250" />
+                    </a>
+                </center>
+                <a href="@Url.Action("SaveProduct","Product")" style="font-size:30px;">
+                    <i class="nc-icon nc-simple-add"></i> Add Products
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-7 col-md-8">
+                        <div class="numbers">
+                            <p class="card-category">Customers</p>
+                            <p class="card-title">
+                                <span class="dash-count">@Model.TotalCustomers</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-5 col-md-4">
+                        <div class="icon-big text-center icon-warning">
+                            <img class="" src="@Url.Content("~/Images/Icons/customers.png")" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer ">
+                <hr>
+                <div class="stats primary-text">
+                    <a href="@Url.Action("Index","Customer")">View All <span class="fa fa-chevron-right"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-7 col-md-8">
+                        <div class="numbers">
+                            <p class="card-category">Categories</p>
+                            <p class="card-title">
+                                <span class="dash-count">@Model.TotalCategories</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-5 col-md-4">
+                        <div class="icon-big text-center icon-warning">
+                            <img class="" src="@Url.Content("~/Images/Icons/category.png")" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer ">
+                <hr>
+                <div class="stats primary-text">
+                    <a href="@Url.Action("Categories","Product")">View All <span class="fa fa-chevron-right"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-7 col-md-8">
+                        <div class="numbers">
+                            <p class="card-category">Products</p>
+                            <p class="card-title">
+                                <span class="dash-count">@Model.TotalProducts</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-5 col-md-4">
+                        <div class="icon-big text-center icon-warning">
+                            <img class="img-gray" src="@Url.Content("~/Images/Icons/products.png")" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer ">
+                <hr>
+                <div class="stats primary-text">
+                    <a href="@Url.Action("Index","Product")">View All <span class="fa fa-chevron-right"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-body ">
+                <div class="row">
+                    <div class="col-7 col-md-8">
+                        <div class="numbers">
+                            <p class="card-title">
+                                <span class="dash-count">@Model.TotalUnverifiedProducts</span>
+                            </p>
+                            <p class="card-category">Unverified Products</p>
+                        </div>
+                    </div>
+                    <div class="col-5 col-md-4">
+                        <div class="icon-big text-center icon-warning">
+                            <img class="img-gray" src="@Url.Content("~/Images/Icons/pending.png")" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer ">
+                <hr>
+                <div class="stats primary-text">
+                    <a href="@Url.Action("PendingProducts","Product")">Verify now <span class="fa fa-chevron-right"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">CPanel Users</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled team-members">
+                    @foreach (var item in Model.CpanelUsers)
+                    {
+                        <li>
+                            <div class="row">
+                                <div class="col-md-2 col-2">
+                                    <div class="avatar">
+                                        <center>
+                                            <img src="@Url.Content("~/images/Icons/user_placeholder_sm.png")" alt="Circle Image" class="img-circle img-no-padding img-responsive" />
+                                        </center>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 col-7">
+                                    @item.StaffName
+                                    <br />
+                                    <span class="text-danger">
+                                        <small>Offline</small>
+                                    </span>
+                                </div>
+                                <div class="col-md-3 col-3 text-right">
+                                    <btn class="btn btn-sm btn-outline-success btn-round btn-icon"><i class="fa fa-envelope"></i></btn>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group scrollbar table-responsive-md table-responsive-sm">
+                    <table class="table table-striped" id="tblList">                       
+                        <tbody>
+                            @{
+                                var i = 1;
+                            }
+                            @foreach (var item in Model.TopThreeNotification)
+                            {
+                                <tr id="td_@Html.Raw(item.LOGID)">                                   
+                                    <td>
+                                        @if (item.TABLE_NAME.ToUpper() == "CPANEL_USERS")
+                                        {
+                                            <img src="@Url.Content("~/images/Icons/cpanel.png")" />
+                                        }
+                                        else if (item.TABLE_NAME.ToUpper() == "TBL_CUSTOMER")
+                                        {
+                                            <img src="@Url.Content("~/images/Icons/customer.png")" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.MESSAGE
+                                        <br /><i class="text-description">"@item.CREATE_TS"</i>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        </tbody>
+                    </table>
+                    <a href="@Url.Action("AllNotifications","Utilities")">View All <span class="fa fa-chevron-right"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $('.dash-count').each(function () {
+            $(this).prop('Counter', 0).animate({
+                Counter: $(this).text()
+            }, {
+                    duration: 4000,
+                    easing: 'swing',
+                    step: function (now) {
+                        $(this).text(Math.ceil(now));
+                    }
+                });
+        });
+    </script>
+    @*<script>
+            var color = Chart.helpers.color;
+            var bg1 = "rgba(196, 37, 15, 0.66)";
+            var bg2 = "rgba(0, 53, 169, 0.36)";
+            var ctx = document.getElementById('myChart1');
+            var myChart = null;
+            if (myChart !== null) {
+                removeData(myChart);
+            }
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
+                    datasets: [{
+                        "label": "Weekly customer report:Previous",
+                        "data": [0, 0, 0, 0, 0, 0, 1],
+                        "fill": "false",
+                        "borderColor": null,
+                        "backgroundColor": null,
+                        "borderWidth": 1
+                    }, {
+                        "label": "Weekly customer report:This",
+                        "data": [0, 2, 0, 0, 0, 0, 0],
+                        "fill": "false",
+                        "borderColor": null,
+                        "backgroundColor": null,
+                        "borderWidth": 1
+                    }],
+                    onAnimationComplete: function () {
+                        ctx.fillText("Hello", 100 - 20, 100, 200);
+                    }
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'top',
+                        fontColor: 'white',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Weekly customer report',
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Count'
+                            }
+                        }],
+                        XAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Email'
+                            }
+                        }],
+                    },
+                    tooltips: {
+                        mode: 'point',
+                        axis: 'y',
+                    }
+                }
+            });
+        </script>*@
+}

@@ -1,0 +1,229 @@
+﻿@model CipherHunt.Areas.Cpanel.Models.CPanelUserModel
+
+@{
+    ViewBag.Title = "Save User";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-user card-radius-none">
+                <div class="card-header card-header-primary">
+                    <div class="card company"></div>
+                    <h5 class="card-title">User Information</h5>
+                    @Html.HiddenFor(m => m.ID)
+                    @Html.HiddenFor(m => m.UserName)
+                </div>
+                <div class="card-body pd-lr-30">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @if (ViewBag.Message != null)
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        <i class="fa fa-danger"></i><span>@ViewBag.Message;</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <div class="details">
+                                    <table>
+                                        <tr>
+                                            <td><b>Auth required :</b> <i>@Model.Auth_Required</i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Auth requested on :</b> <i>@Model.Auth_DateTime</i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Auth approve by :</b> <i>@Model.Auth_Approved_By</i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Auth approve ts :</b> <i>@Model.Auth_Approved_Ts</i></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="details">
+                                    <table>
+                                        <tr>
+                                            <td><b>Created by :</b> <i>@Model.CreateBy</i></td>
+                                            <td><b>Created on :</b> <i>@Model.Create_TS</i></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Updated by :</b> <i>@Model.Update_By</i></td>
+                                            <td><b>Updated on :</b> <i>@Model.Updte_TS</i></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Lock Status :</b>
+                                                @if (Model.Lock_Status == false)
+                                                {
+                                                    <i class="fa fa-unlock text-success"></i> <span class="text-success">unlocked</span>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-lock text-danger"></i> <span class="text-danger">locked</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <b>Lock By :</b>
+                                                <i>@Model.Lock_By</i>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <b>Lock Reason :</b>
+                                                <i>@Model.Lock_Reason</i>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Password Change on Login?:</b> <i>@Model.Enable_Pwd_Change</i>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>Status :</b> <i>@Model.isEnable</i></td>
+                                            <td><b>Last logged on :</b> <i>@Model.LastLoginDate</i></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.UserName, "Username", new { @class = "" })
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", autocomplete = "off", disabled = "disabled" })
+                                @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.StaffName, "Full Name", new { @class = "" })
+                                @Html.TextBoxFor(m => m.StaffName, new { @class = "form-control", autocomplete = "off" })
+                                @Html.ValidationMessageFor(m => m.StaffName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.EmailAddress, "Email address", new { @class = "" })
+                                @Html.TextBoxFor(m => m.EmailAddress, new { @class = "form-control", autocomplete = "off" })
+                                @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.CheckBoxFor(m => m.isEnable) Enable?
+                                @*@Html.CheckBoxFor(m => m.Lock_Status) Lock?*@
+                                @*@Html.CheckBoxFor(m => m.Auth_Required) Auth required?*@
+                            </div>
+                            <div class="form-group">
+                                <div class="btn-group" role="group">
+                                    <input type="submit" class="btn btn-success btn-round" value="Save" /> &nbsp;
+                                    @Html.ActionLink("Back to List", "Index", "CPanelUser", "", new { @class = "btn btn-warning btn-round" })
+
+                                    @if (Model.Auth_Required == true)
+                                    {
+                                        if (!String.IsNullOrEmpty(Model.Auth_DateTime) && String.IsNullOrEmpty(Model.Auth_Approved_By))
+                                        {
+                                            <button class="btn btn-primary btn-round" type="button" onclick="ApproveAuth('@Model.ID');">Approve Authentication</button>
+                                        }
+                                        else if (!String.IsNullOrEmpty(Model.Auth_DateTime) && !String.IsNullOrEmpty(Model.Auth_Approved_By))
+                                        {
+                                            <button class="btn btn-danger btn-round" type="button" onclick="ClearAuth('@Model.ID');">Clear Authentication</button>
+                                        }
+                                    }
+                                </div>
+                                <br /><br />
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group details">
+                                <span class="form-title">Remarks</span>
+                                <table class="table" id="tblList">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                S.No.
+                                            </th>
+                                            <th>
+                                                Remark type
+                                            </th>
+                                            <th>
+                                                Remarks
+                                            </th>
+                                            <th>
+                                                Remark Ts
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            var style = "";
+                                            var i = 1;
+                                        }
+                                        @foreach (var item in Model.UserRemarks)
+                                        {
+                                            <tr class="@style">
+                                                <td>
+                                                    @i
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.REMARK_TYPE)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.REMARK)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.UPDATE_TS)
+                                                </td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script>
+        function ClearAuth(sno) {
+            var jsonObject = {"id": sno};
+            var url = "@Url.Action("ClearAuthentication")";
+            var req = ConfirmModal("want to clear authentication of this user?",
+                "warning",
+                "Confirm",
+                jsonObject,
+                url,
+                SwalMessage);
+        }
+        function ApproveAuth(sno) {
+            var jsonObject = {"id": sno};
+            var url = "@Url.Action("ApproveAuthentication")";
+            var req = ConfirmModal("want to approve authentication of this user?",
+                "warning",
+                "Confirm",
+                jsonObject,
+                url,
+                SwalMessage);
+        }
+        function SwalMessage(response) {
+            if (response.CODE == 0) {
+                swalStatic("Success!", response.MESSAGE + ". Please wait...", "success", "success");
+                PageReload();
+            }
+            else {
+                swal("Failed!", response.MESSAGE, "error");
+            }
+        }
+    </script>
+}

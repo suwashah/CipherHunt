@@ -1,0 +1,28 @@
+﻿@if (System.Web.Configuration.WebConfigurationManager.AppSettings["EnableAccessAlert"] == "y")
+{
+    <script>
+        $(document).ready(function () {
+            swal({
+                title: "Security Alert!",
+                text: "Enter your access code:",
+                type: "input",
+                showCancelButton: false,
+                closeOnConfirm: false,
+                confirmButtonText: "Continue!",
+                inputPlaceholder: "Enter your access code",
+                imageUrl: '/images/Settings/kyc.svg'
+            }, function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("You need to enter access code!");
+                    return false
+                }
+                if (inputValue !== "123") {
+                    swal.showInputError("Invalid access code!");
+                    return false
+                }
+                swal("Nice!", "Access code verified", "success");
+            });
+        });
+    </script>
+}

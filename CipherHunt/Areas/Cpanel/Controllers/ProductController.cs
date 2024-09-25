@@ -1,0 +1,254 @@
+﻿using Repository.Common;
+using Repository.HelperFunction;
+using Repository.Product;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web.Mvc;
+using CipherHunt.Library;
+using CipherHunt.Models;
+
+namespace CipherHunt.Areas.Cpanel.Controllers
+{
+    [Authorize(Roles = "Admin")]
+    public class ProductController : CAppController
+    {
+        // GET: Cpanel/Product
+        private IProductRepository _ipr;
+        private IUtilityHelper _func;
+        private ICommonRepository _icr;
+        public ProductController(IProductRepository ipr, IUtilityHelper func, ICommonRepository icr)
+        {
+            _ipr = ipr;
+            _func = func;
+            _icr = icr;
+        }
+        public ActionResult Index()
+        {
+            var lst = _ipr.GetAllProducts("a");
+            return View(lst);
+        }
+        public ActionResult PendingProducts()
+        {
+            var lst = _ipr.GetAllProducts("uv");
+            return View(lst);
+        }
+        public ActionResult Categories()
+        {
+            var lst = _ipr.GetAllCategories();
+            return View(lst);
+        }
+        [HttpGet]
+        public ActionResult SaveCategory(string route)
+        {
+            CategoryModel model = new CategoryModel();
+            if (!String.IsNullOrEmpty(route))
+            {
+                var qry = StaticData.GetQueryParameters(route);
+                string ID = qry["id"];
+                var cat = _ipr.GetCategoryDetail(ID);
+                model.CAT_ID = cat.CAT_ID;
+                model.CATEGORY_NAME = cat.CATEGORY_NAME;
+                model.CATEGORY_DESCRIPTION = cat.CATEGORY_DESCRIPTION;
+                model.IS_ENABLE = cat.IS_ENABLE;
+                model.FLAG = "u";
+            }
+            else
+            {
+                model.FLAG = "i";
+            }
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveCategory(CategoryModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var post = new Category()
+                {
+                    FLAG = model.FLAG,
+                    CAT_ID = model.CAT_ID,
+                    CATEGORY_NAME = model.CATEGORY_NAME,
+                    CATEGORY_DESCRIPTION = model.CATEGORY_DESCRIPTION,
+                    CREATE_BY = CurrentUser.Name,
+                    CATEGORY_IMAGE = null,
+                    IS_ENABLE = model.IS_ENABLE
+                };
+                var ret = _ipr.SaveCategory(post);
+                if (ret.CODE == "0")
+                {
+                    return RedirectToAction("Categories");
+                }
+                else
+                {
+                    ret.MESSAGE = _func.isNull(ret.MESSAGE, "Something went wrong");
+                    ViewBag.Message = ret.MESSAGE;
+                }
+            }
+            return View(model);
+        }
+
+        public JsonResult DeleteCategory(string id)
+        {
+            if (!String.IsNullOrEmpty(id))
+            {
+                var del = _ipr.DeleteCategory(id);
+                return Json(del);
+            }
+            else
+            {
+                return Json(new { CODE = "4001", MESSAGE = "No data found to delete" });
+            }
+        }
+
+        [HttpGet]
+        public ActionResult SaveProduct(string route)
+        {
+            ProductModel model = new ProductModel();
+            if (!String.IsNullOrEmpty(route))
+            {
+                var qry = StaticData.GetQueryParameters(route);
+                string ID = qry["id"];
+                var pro = _ipr.GetProductDetail(ID);
+                model.PRODUCTID = pro.PRODUCTID;
+                model.CAT_ID = pro.CAT_ID;
+                model.NAME = pro.NAME;
+                model.DESCRIPTION = pro.DESCRIPTION;
+                model.CREATE_TS = pro.CREATE_TS;
+                model.CREATE_BY = pro.CREATE_BY;
+                model.UPDATE_BY = pro.UPDATE_BY;
+                model.UPDATE_TS = pro.UPDATE_TS;
+                model.IS_ENABLE = pro.IS_ENABLE;
+                model.PRICE = pro.PRICE;
+                model.ImageSrc = pro.PRODUCTURL;
+                model.STATUS = pro.STATUS;
+                model.IS_ENABLE = pro.IS_ENABLE;
+                model.IS_VERIFIED = pro.IS_VERIFIED;
+                model.VERIFIED_BY = pro.VERIFIED_BY;
+                model.FLAG = "u";
+                model.IMAGENAME = pro.IMAGENAME;
+                model.CALORIES = pro.CALORIES;
+            }
+            else
+            {
+                model.FLAG = "i";
+            }
+            BindDropDown(model);
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveProduct(ProductModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                byte[] bytes = null;
+                string ImageName = "";
+                if (model.ImageFile != null && model.ImageFile.ContentLength > 0)
+                {
+                    if (_func.GetAppsettingValue("SaveImageBytes") == "n")
+                    {
+                        string folderPath = Server.MapPath(_func.GetAppsettingValue("ProductPath"));
+                        if (!Directory.Exists(folderPath))
+                        {
+                            Directory.CreateDirectory(folderPath);
+                        }
+                        Guid gid = Guid.NewGuid();
+                        string fileName = "Prod_" + _func.changeFilename(gid.ToString()) + "_" + model.CAT_ID + "_" + _func.changeFilename(DateTime.Now.ToBinary().ToString()) + Path.GetExtension(model.ImageFile.FileName);
+                        string path = Path.Combine(Server.MapPath(_func.GetAppsettingValue("ProductPath")), Path.GetFileName(fileName));
+                        model.ImageFile.SaveAs(path);
+                        ImageName = fileName;
+                        //DocModel.DOCIMG = fileName;
+                    }
+                    else
+                    {
+                        byte[] fileInBytes = new byte[model.ImageFile.ContentLength];
+                        using (BinaryReader theReader = new BinaryReader(model.ImageFile.InputStream))
+                        {
+                            fileInBytes = theReader.ReadBytes(model.ImageFile.ContentLength);
+                        }
+                        string fileAsString = Convert.ToBase64String(fileInBytes);
+                        bytes = System.Convert.FromBase64String(fileAsString);
+                    }
+                    //int bytestoread = (int)model.ImageFile.ContentLength;
+                    //int numBytesRead = 0;
+                    //bytes = new byte[model.ImageFile.ContentLength];
+                    //while (bytestoread > 0)
+                    //{
+                    //    int n = model.ImageFile.InputStream.Read(bytes, numBytesRead, bytestoread);
+                    //    if (n == 0) break;
+                    //    numBytesRead += n;
+                    //    bytestoread -= n;
+                    //}
+                    if (!String.IsNullOrEmpty(model.IMAGENAME) && model.FLAG == "u")
+                    {
+                        DeleteFile(model.IMAGENAME);
+                    }
+                }
+                var post = new TblProduct()
+                {
+                    FLAG = model.FLAG,
+                    PRODUCTID = model.PRODUCTID,
+                    CAT_ID = model.CAT_ID,
+                    NAME = model.NAME,
+                    DESCRIPTION = model.DESCRIPTION,
+                    PRICE = model.PRICE,
+                    CREATE_BY = CurrentUser.Name,
+                    UPDATE_BY = CurrentUser.Name,
+                    IMAGE = bytes,
+                    IMAGENAME = ImageName,
+                    IS_ENABLE = model.IS_ENABLE,
+                    CALORIES = model.CALORIES
+                };
+                var ret = _ipr.SaveProduct(post);
+                if (ret.CODE == "0")
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ret.MESSAGE = _func.isNull(ret.MESSAGE, "Something went wrong");
+                    ViewBag.Message = ret.MESSAGE;
+                }
+            }
+            BindDropDown(model);
+            return View(model);
+        }
+        public JsonResult VerifyProduct(string Id, string UserName)
+        {
+            if (!String.IsNullOrEmpty(Id))
+            {
+                var verify = _ipr.VerifyProduct(Id, UserName);
+                return Json(verify);
+            }
+            else
+            {
+                return Json(new { CODE = "4001", MESSAGE = "No data found to delete" });
+            }
+        }
+        private void BindDropDown(ProductModel model)
+        {
+            Dictionary<string, string> Cat_List = _icr.GetCategoryList();
+            ViewData["CAT_ID"] = StaticData.SetDDLValue(Cat_List, model.CAT_ID, "Select Category");
+        }
+        public void DeleteFile(string FileNmae)
+        {
+            if (!string.IsNullOrEmpty(FileNmae))
+            {
+                string folderPath = Server.MapPath(_func.GetAppsettingValue("ProductPath") + "/" + FileNmae);
+                try
+                {
+                    if (System.IO.File.Exists(folderPath))
+                    {
+                        System.IO.File.Delete(folderPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+    }
+}

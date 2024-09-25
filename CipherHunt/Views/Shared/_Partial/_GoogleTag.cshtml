@@ -1,0 +1,11 @@
+﻿@if (System.Web.Configuration.WebConfigurationManager.AppSettings["GoogleAnalyticsID"] != "")
+{
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@System.Web.Configuration.WebConfigurationManager.AppSettings["GoogleAnalyticsID"]"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', '@System.Web.Configuration.WebConfigurationManager.AppSettings["GoogleAnalyticsID"]');
+    </script>
+}

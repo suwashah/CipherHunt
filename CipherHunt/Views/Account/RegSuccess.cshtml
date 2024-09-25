@@ -1,0 +1,33 @@
+﻿@model CipherHunt.Models.SuccessModel
+@{
+    ViewBag.Title = "Registration Success";
+    Layout = "~/Views/Shared/_PlainLayout.cshtml";
+}
+
+<div class="row pt-5 mt-3">    
+    <div class="col-md-12 center-text text-md-left mb-3">
+        <div>
+            <center>
+                @Html.Partial("_Partial/_Logo")
+            </center>
+            <br /><br />
+            <center>
+                <img src="~/Images/Icons/icon-success.png" height="60" width="60" class="wow slideInDown" data-wow-delay="0.3s" />
+            </center><br />
+            <h2 class="h1-responsive text-success text-darken-4 font-weight-bold wow fadeInDown" data-wow-delay="0.3s">@Html.DisplayFor(model => model.Title) </h2>
+            <br/>
+            <h4 class="wow fadeInDown" data-wow-delay="0.3s">
+                @Html.DisplayFor(model => model.Message)
+            </h4>
+            <h5 class="wow fadeInDown" data-wow-delay="0.3s">
+                Now you can login using your email address
+            </h5>
+            <b style="font-size:20px;" class="text-success">
+                @Html.DisplayFor(model => model.EmailAddress)
+            </b>
+            <br><br/>
+            @Html.ActionLink("Login now", "Login", null, new { @class = "btn btn-danger" })
+            @*<a class="btn btn-outline-white btn-rounded wow fadeInLeft" data-wow-delay="0.3s" href="">Login now</a>*@
+        </div>
+    </div>
+</div>

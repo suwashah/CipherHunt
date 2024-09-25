@@ -1,0 +1,205 @@
+﻿@model CipherHunt.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+@section head{
+    @Html.Partial("_Partial/_GoogleAnalytics")
+    <script>
+        ga('send', 'event', 'SignUp', 'Load', 'Step1');
+    </script>
+}
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            @using (Ajax.BeginForm("SignUp", "Account",
+                    new AjaxOptions
+                    {
+                        OnSuccess = "OnSuccess",
+                        OnFailure = "OnFailure",
+                        LoadingElementId = "progress"
+                    }, new { @class = "login100-form validate-form" }))
+            {
+                @Html.AntiForgeryToken()
+                if (ViewBag.Message != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <span>@ViewBag.Message</span>
+                    </div>
+                }
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m => m.TeleCode)
+                @Html.HiddenFor(m => m.ISO2)
+                <span class="login100-form-title p-b-43 wow fadeIn" data-wow-delay="0.3s">
+                    Register your account
+                </span>
+                <span>Already a member?</span> @Html.ActionLink("Log in", "Login")
+                <br /><br />
+                <div style="font-size:12px;" class="title">
+                    <b><i class="fa fa-info-circle text-warning"></i> Type-in your full name as shown on your valid ID.</b>
+                </div>
+                <br />
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                    <div class="wrap-input100 validate-input" data-validate="First name is required">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">First Name</span>
+                    </div>
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.Middlename, "", new { @class = "text-danger" })
+                    <div class="wrap-input100">
+                        @Html.TextBoxFor(m => m.Middlename, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Middle Name</span>
+                    </div>
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                    <div class="wrap-input100 validate-input" data-validate="Last name is required">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Last Name</span>
+                    </div>
+                </div>
+                <div class="">
+                    @Html.LabelFor(m => m.Gender, "Select your gender*", new { @class = "" })
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input id="Male" class="custom-control-input" type="radio" name="Gender" checked value="M" />
+                        <label class="custom-control-label" for="Male">Male</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input id="Female" class="custom-control-input" type="radio" name="Gender" value="F" />
+                        <label class="custom-control-label" for="Female">Female</label>
+                    </div>
+                    <br />
+                    <br />
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
+                    <div class="wrap-input100 validate-input" data-validate="Mobile number is required">
+                        @Html.TextBoxFor(m => m.Mobile, new { @class = "input100", autocomplete = "off", minLength = "10", maxLength = "10", onkeypress = "return isNumberKey(event)" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">
+                            <img src="@Url.Content("~/images/Flags/"+Model.ISO2+".png")" height="15" />
+                            @Model.TeleCode Mobile number
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <br />
+                    <h6 class="title"><i class="fa fa-user-circle text-danger"></i> Your Login Details</h6>
+                    <br />
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.EmailAddress, "", new { @class = "text-danger" })
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        @Html.TextBoxFor(m => m.EmailAddress, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Email address</span>
+                    </div>
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        @Html.PasswordFor(m => m.Password, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Password</span>
+                    </div>
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                    <div class="wrap-input100 validate-input" data-validate="Re-Type Password">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Re-type Password</span>
+                    </div>
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.InviteCode, "", new { @class = "text-danger" })
+                    <div class="wrap-input100">
+                        @Html.TextBoxFor(m => m.InviteCode, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Invite Code</span>
+                    </div>
+                </div>
+                <div class="contact100-form-checkbox">
+                    <input class="input-checkbox100" id="AcceptTerms" value="true" type="checkbox" name="AcceptTerms">
+                    <label class="label-checkbox100" for="AcceptTerms">
+                        I agree to {{appdata.COMPANY_NAME}} <a target="_blank" href="#" id="lnkTrms">Terms & Conditions</a>
+                    </label>
+                    @Html.ValidationMessageFor(m => m.AcceptTerms, "", new { @class = "text-danger" })
+                    @*@Html.CheckBoxFor(m => m.AcceptTerms, new { @class = "" })*@
+                    <br /><br />
+                </div>
+                <div>
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-exclamation-circle text-danger" style="font-size:18px;"></i> <span>@ViewBag.Message</span>
+                        </div>
+                    }
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" id="btnSubmit" type="submit">
+                        Register now
+                    </button>
+                </div>
+            }
+            <div class="login100-more" style="background-image: url('../../images/Background/Register_bg.jpg');background-attachment:fixed;">
+                <div style="position:fixed;top:50%;left:20%;">
+                    <a class="logo" href="@Url.Action("Index","Home")">
+                        <img height="100" ng-src="~/images/Logo/{{appdata.LOGO}}" alt="Logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="progress" class="modal_loader">
+    <div class="center">
+        <center>
+            @Html.Partial("_Partial/_Loader")
+        </center>
+        <br />Registration in proccess. Please wait...
+    </div>
+</div>
+@section scripts{
+    <script>
+        AgreeTerms()
+        $(document).ready(function () {
+            $('#AcceptTerms').click(function () {
+                AgreeTerms();
+            });
+            $('.carousel').carousel({
+                interval: 2000
+            })
+        });
+        function AgreeTerms() {
+            if ($('#AcceptTerms').is(':checked')) {
+                $('#btnSubmit').removeAttr('disabled');
+            }
+            else {
+                $('#btnSubmit').attr('disabled', 'disabled');
+            }
+        }
+        function OnSuccess(response) {
+            console.log(response);
+            if (response.CODE == "0") {
+                Alert("success", "Registration success. Please wait..");
+                $('#btnSubmit').attr('disabled', 'disabled');
+                window.location.href = "/Account/RegSuccess";
+            }
+            else {
+                Alert("error", response.MESSAGE);
+                $('#btnSubmit').removeAttr('disabled');
+            }
+        }
+        function OnFailure(response) {
+            $('#btnSubmit').removeAttr('disabled');
+            Alert("error", "Error occured.");
+        }
+    </script>
+}

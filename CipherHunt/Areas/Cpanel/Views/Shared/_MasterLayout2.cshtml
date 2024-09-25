@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @Html.Partial("_Partial/_HeadV2")    
+    <style>
+        .sidebar[data-color="iremit"]:after,
+        .off-canvas-sidebar[data-color="iremit"]:after {
+            background: #545454; /*Transfer wise*/
+        }
+        .main-panel {
+            width: 100% !important;
+            background: #ffffff !important;
+        }
+    </style>
+    <script src="~/Scripts/webcam.min.js"></script>
+</head>
+<body ng-app="Homeapp" ng-controller="ApplicationController" ng-init="AppConfig();ApplicationConfig();">
+    <div id="loader">
+        <div class="spinner">
+            <div id="loading">
+                @Html.Partial("_Partial/_Loader")
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="main-panel">
+            <!-- Navbar -->
+            @Html.Partial("_Partial/_NavBar2")
+            <!-- End Navbar -->
+            <div class="content">
+                @RenderBody()
+            </div>
+            <div class="footer">
+                @Html.Partial("_Partial/_DashBoardFooter")
+            </div>
+        </div>
+    </div>
+    <!--/.Footer-->
+    <!--   Core JS Files   -->
+    @Html.Partial("_Partial/_ImportPaperJs")
+    @Html.Partial("_Partial/_ImportAngular")
+    <script src="~/Scripts/Custom/Loader.js"></script>
+    <script>
+        $(document).ready(function () {
+            new WOW().init();
+            var url = window.location;
+            $('.sidebar-wrapper .nav').find('.active').removeClass('active');
+            $('.sidebar-wrapper .nav li a').each(function () {
+                if (this.href == url) {
+                    $(this).parent().addClass('active');
+                }
+            });
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        function SweetAlertMsg(title, message, type) {
+            swal(title, message, type);
+        }
+        function LoadChart(type, resColumn, resdata) {
+            var bg1 = "rgba(196, 37, 15, 0.66)";
+            var bg2 = "rgba(0, 53, 169, 0.36)";
+            var ctx = document.getElementById("myChart");
+            var myChart = null;
+            if (myChart !== null) {
+                removeData(myChart);
+            }
+            console.log(resdata[2]);
+            myChart = new Chart(ctx, {
+                type: 'doughnut',//line,bar,radar,doughnut,polarArea,bubble,Scatter,Area,Mixed
+                data: {
+                    labels: resColumn,
+                    datasets: [{
+                        "label": 'Memory Usage in MB',
+                        "data": resdata,
+                        "borderColor": "#4e4e4e",
+                        "backgroundColor": bg2,
+                        "borderWidth": 0
+                    }],
+                    onAnimationComplete: function () {
+                        ctx.fillText("Hello", 100 - 20, 100, 200);
+                    }
+                },
+                options: {
+                    cutoutPercentage: 75,
+                    responsive: true,
+                    legend: {
+                        position: 'right',
+                        fontColor: 'white'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Memory usage in MB'
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: ''
+                            }
+                        }],
+                        xAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+    </script>
+
+    @if (ViewBag.JavaScriptFunction != null)
+    {
+        <script type="text/javascript">
+        @Html.Raw(ViewBag.JavaScriptFunction)
+        </script>
+    }
+    @RenderSection("scripts", required: false)
+</body>
+</html>

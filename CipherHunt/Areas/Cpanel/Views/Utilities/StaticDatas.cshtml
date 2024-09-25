@@ -1,0 +1,96 @@
+﻿@model CipherHunt.Areas.Cpanel.Models.SDViewModel
+@{
+    ViewBag.Title = Model.TYPE_Name;
+}
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <span class="form-title">@Model.TYPE_Name</span>
+            <a href="@Url.Action("SaveStaticData",new {route=CipherHunt.Library.StaticData.Encrypt("TypeId="+Model.TYPE_ID)})" class="btn btn-success btn-round pull-right"><i class="nc-icon nc-simple-add"></i> Add New</a>
+            <a href="@Url.Action("StaticDataList")" class="btn btn-warning btn-round pull-right"><i class="nc-icon nc-minimal-left"></i> Back to List</a>
+            @Html.HiddenFor(m => m.TYPE_ID)
+            <br /><br />
+        </div>
+    </div>
+</div>
+<div class="box-card">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Static Value
+                        </th>
+                        <th>
+                            Static Data
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.StaticDatas)
+                    {
+                        <tr id="td_@Html.Raw(item.ID)">
+                            <td>
+                                @item.STATIC_VALUE
+                            </td>
+                            <td>
+                                @item.STATIC_DATA
+                            </td>
+                            <td>
+                                @item.DESCRIPTION
+                            </td>
+                            <td class="right-text">
+                                @Html.ActionLink("View", "SaveStaticData", "Utilities", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.ID + "&TypeId=" + item.TYPE_ID)) }, new { @class = "btn btn-sm btn-primary btn-round" })
+                                <a href="#" class="btn btn-sm btn-danger btn-round" onclick="deleteData(@Html.Raw(item.ID))">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+  function deleteData(sno) {
+            swal({
+                title: "Are you sure?",
+                text: "This will Delete the Data Permanently!!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete!",
+                closeOnConfirm: false
+            }, function () {
+                    var jsonObject = {
+                        "id": sno
+                    };
+                    $.ajax({
+                        url: "@Url.Action("DeleteStaticData")",
+                        type: "POST",
+                        data: JSON.stringify(jsonObject),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        error: function () {
+                            swal("Cancelled", "Something Went Wrong :)", "error");
+                    },
+                        success: function (response) {
+                            if (response.CODE == 0) {
+                                $("#td_" + sno).remove();
+                                swal({ title: "Deleted!", text: response.MESSAGE, type: "success" });
+                            }
+                            else {
+                                swal("Failed!", response.MESSAGE, "error");
+                            }
+                        }
+                    });
+            });
+    }
+    </script>
+}

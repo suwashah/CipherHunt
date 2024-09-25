@@ -1,0 +1,80 @@
+﻿#loader {
+    transition: all .3s ease-in-out;
+    opacity: 1;
+    visibility: visible;
+    position: fixed;
+    background-attachment: fixed;
+    bottom: 0px;
+    height: 100vh;
+    width: 100%;
+    /*background: #f8f9fab3;*/
+    background: #ffffff;
+    z-index: 90000;
+}
+    #loader.fadeOut {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+.spinner {
+    position: fixed;
+    top: calc(30%);
+    left: calc(50% - 90px);
+    border-radius: 100%;
+    -webkit-animation: sk-scaleout 1s infinite ease-in-out;
+    animation: sk-scaleout 1s infinite ease-in-out;
+}
+
+.loader {
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+.loader-md {
+    width: 40px;
+    height: 40px;
+}
+
+.loader-lg {
+    width: 60px;
+    height: 60px;
+}
+
+.loader-gray {
+    border: 3px solid #fbf9f9;
+    border-top: 3px solid #808080;
+}
+
+.loader-blue {
+    border: 3px solid #fbf9f9;
+    border-top: 3px solid #0c1b70;
+}
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#myBar {
+    width: 0%;
+    height: 3px;
+    background-color: #4CAF50;
+}

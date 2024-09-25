@@ -1,0 +1,210 @@
+﻿@model CipherHunt.Models.ProductModel
+
+@{
+    ViewBag.Title = "Save Product";
+}
+<link href="~/Content/Custom/image_mask.css" rel="stylesheet" />
+@using (Html.BeginForm("", "", FormMethod.Post, new { @role = "form", @id = "f1", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-user card-radius-none">
+                <div class="card-header card-header-primary">
+                    <div class="card company"></div>
+                    <h5 class="card-title">PRODUCT INFORMATION</h5>
+                    @*@Html.HiddenFor(m => m.CAT_ID)*@
+                    @Html.HiddenFor(m => m.FLAG)
+                    @Html.HiddenFor(m => m.CREATE_BY)
+                    @Html.HiddenFor(m => m.CREATE_TS)
+                    @Html.HiddenFor(m => m.UPDATE_BY)
+                    @Html.HiddenFor(m => m.UPDATE_TS)
+                    @Html.HiddenFor(m => m.IS_VERIFIED)
+                    @Html.HiddenFor(m => m.VERIFIED_BY)
+                    @Html.HiddenFor(m => m.STATUS)
+                    @Html.HiddenFor(m => m.PRODUCTID)
+                    @Html.HiddenFor(m => m.IMAGENAME)
+                </div>
+                <div class="card-body pd-lr-30">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @if (ViewBag.Message != null)
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        <i class="fa fa-danger"></i><span>@ViewBag.Message;</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-5 col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <center>
+                                    <div class="img-container">
+                                        <center>
+                                            @if (String.IsNullOrEmpty(Model.ImageSrc))
+                                            {
+                                                <img id="imagePreview" src="@Url.Content("~/Images/Icons/placeholder.png")" class="overlay-img" />
+                                            }
+                                            else
+                                            {
+                                                <img id="imagePreview" src="@Model.ImageSrc" class="overlay-img" />
+                                            }
+                                        </center>
+                                        @*<p class="overlay-title">Profile Picture</p>*@
+                                        <div class="overlay"></div>
+                                        <div class="overlay-button">
+                                            <a onclick="uploadFile();"><i class="fa fa-camera"></i> Upload</a>
+                                        </div>
+                                    </div>
+                                </center>
+                                @*<center>
+                                        @if (String.IsNullOrEmpty(Model.ImageSrc))
+                                        {
+                                            <img id="imagePreview" class="product-image" src="@Url.Content("~/Images/Icons/placeholder.png")" />
+                                        }
+                                        else
+                                        {
+                                            <img id="imagePreview" class="product-image" src="@Model.ImageSrc" />
+                                        }
+                                    </center>*@
+                                <br />
+                                <i class="fa fa-exclamation-circle text-danger"></i> <b class="text-danger">Recommended size:</b> 600 x 600 pixel
+                                <br />
+                                You can follow this link to crop your image.
+                                <a target="_blank" href="https://imageresizer.com/">https://imageresizer.com</a>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="file" id="ImageFile" name="ImageFile" class="form-control" style="display:none;" />
+                            </div>
+
+                        </div>
+                        <div class="col-lg-7 col-md-12 col-sm-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CAT_ID, "Select Category", new { @class = "" })
+                                        @Html.DropDownListFor(m => m.CAT_ID, ViewData["0"] as IEnumerable<SelectListItem>, new { @id = "ddlCountry", @class = "form-control", autocomplete = "off" })
+                                        @Html.ValidationMessageFor(m => m.CAT_ID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.NAME, "Product Name", new { @class = "" })
+                                        @Html.TextBoxFor(m => m.NAME, new { @class = "form-control", autocomplete = "off" })
+                                        @Html.ValidationMessageFor(m => m.NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.PRICE, "Product Price", new { @class = "" })
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">{{application.CURRENCY}}</span>
+                                            </div>
+                                            @Html.TextBoxFor(m => m.PRICE, new { @class = "form-control", autocomplete = "off", onkeypress = "return isDecimalKey(event)", maxlength = 7 })
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.PRICE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CALORIES, "Calories", new { @class = "" })
+                                        @Html.TextBoxFor(m => m.CALORIES, new { @class = "form-control", autocomplete = "off", onkeypress = "return isNumberKey(event)", maxlength = 5 })
+                                        @Html.ValidationMessageFor(m => m.CALORIES, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.DESCRIPTION, "Product Description", new { @class = "" })
+                                        @Html.TextAreaFor(m => m.DESCRIPTION, new { @class = "form-control", autocomplete = "off", rows = "3" })
+                                        @Html.ValidationMessageFor(m => m.DESCRIPTION, "", new { @class = "text-danger" })
+                                    </div>
+                                    @if (Model.FLAG == "u")
+                                    {
+                                        <div class="form-group">
+                                            @Html.CheckBoxFor(m => m.IS_ENABLE) Enabled?
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="btn-group" role="group">
+                                            @Html.ActionLink("Back to List", "Index", "Product", "", new { @class = "btn btn-warning btn-round" })
+                                            <input type="submit" class="btn btn-success btn-round" value="Save" />
+                                        </div>
+                                        <br /><br />
+                                    </div>
+                                    @if (Model.FLAG == "u")
+                                    {
+                                        <div class="form-group">
+                                            <div class="details">
+                                                <table>
+                                                    <tr>
+                                                        <td width="150"><b>Created by :</b> <i>@Model.CREATE_BY</i></td>
+                                                        <td><b>Created on :</b> <i>@Model.CREATE_TS</i></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><b>Updated by :</b> <i>@Model.UPDATE_BY</i></td>
+                                                        <td><b>Updated on :</b> <i>@Model.UPDATE_TS</i></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Verified :</b>
+                                                            @if (Model.IS_VERIFIED == true)
+                                                            {
+                                                                <i class="fa fa-check-circle text-success"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-minus-circle text-danger"></i>
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <b>Verified By :</b>
+                                                            <i>@Model.VERIFIED_BY</i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <b>Enabled :</b>
+                                                            @if (Model.IS_ENABLE == true)
+                                                            {
+                                                                <i class="fa fa-check-circle text-success"></i>
+                                                            }
+                                                            else
+                                                            {
+                                                                <i class="fa fa-minus-circle text-danger"></i>
+                                                            }
+                                                        </td>
+                                                        <td><b>Status :</b> <i>@Model.STATUS</i></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts{
+    <script>
+        var fileupload = $("#ImageFile");
+        fileupload.change(function () {
+            readURL(this, '#imagePreview');
+        });
+        function uploadFile() {
+            fileupload.click();
+        }
+    </script>
+}

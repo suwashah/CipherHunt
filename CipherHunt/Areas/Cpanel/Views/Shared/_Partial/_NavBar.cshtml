@@ -1,0 +1,75 @@
+﻿<nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent sticky-heading" style="background:#ffffff !important;">
+    <div class="container-fluid">
+        <div class="navbar-wrapper">
+            <div class="navbar-toggle">
+                <button type="button" class="navbar-toggler">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                </button>
+            </div>
+            <i class="nc-icon nc-watch-time"></i>&nbsp;&nbsp; <span class="" id="currentTime"></span>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+            <span class="navbar-toggler-bar navbar-kebab"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+            @using (Html.BeginForm("SearchData", "Utilities", FormMethod.Post, new { @role = "form", @id = "searchform"}))
+            {
+                <div class="input-group no-border nav-search-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text input-group-dropdown">
+                            <select name="SearchType" id="SearchType" class="nav-search-dropdown">
+                                <option value="">Select</option>
+                                <option value="MEMBERID">Customer ID</option>
+                                <option value="USERNAME">Username</option>
+                            </select>
+                        </div>
+                    </div>
+                    <input type="text" name="SearchValue" id="SearchValue" value="" class="form-control nav-search-text" placeholder="Search...">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <i class="nc-icon nc-zoom-split"></i>
+                        </div>
+                    </div>
+                </div>
+            }
+            <ul class="navbar-nav">
+                <li class="nav-item btn-rotate" data-toggle="tooltip" title="Refresh page">
+                    <a class="nav-link" href="#" onclick="PageReload();">
+                        <i class="nc-icon nc-refresh-69 navbar-i rotate"></i>
+                    </a>
+                </li>
+                <li class="nav-item btn-rotate dropdown" data-toggle="tooltip" title="Notifications!" id="divNotification">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="NotificationList();">
+                        <i class="nc-icon nc-bell-55 navbar-i"></i>
+                        <p class="center-text" ng-init="NotificationCount();">
+                            <span class="d-lg-none d-md-block">Notifications</span><span class="count blink_text" style="display:none;">{{NotiCount}}</span>
+                        </p>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" data-badge="4" aria-labelledby="navbarDropdownMenuLink" style="padding:10px 0px;">
+                        <div class="news-title">
+                            <span>Notification</span>
+                        </div>
+                        <a class="dropdown-item not-item" id="notiMsg">
+                            <p>You dont have any new notification</p>
+                        </a>
+                        <a class="dropdown-item not-item" href="@Url.Action("AllNotifications","Utilities")" ng-repeat="x in Notifications">
+                            <span class="btn btn-sm {{x.BTNCLASS}} btn-round btn-icon"><i class="{{x.ICON}}"></i></span>
+                            {{x.MSG}} <span class="text-right noti-label" style="font-size:9px;"><i class="fa fa-clock-o"></i> {{x.POSTED_ON}}</span>
+                        </a>
+                        <div class="center-text" style="padding:0px 10px;">
+                            <a href="@Url.Action("AllNotifications","Utilities")" class="btn btn-default btn-block">All Notifications <i class="nc-icon nc-minimal-right"></i></a>
+                            @*<button class="btn btn-default btn-block">All Notifications <i class="nc-icon nc-minimal-right"></i> </button>*@
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item btn-rotate dropdown">
+                    @Html.Partial("_Partial/_UserLogoutMenu")
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

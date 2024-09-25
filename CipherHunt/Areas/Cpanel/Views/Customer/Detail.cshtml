@@ -1,0 +1,349 @@
+﻿@model CipherHunt.Models.CustomerDetailModel
+
+@{
+    ViewBag.Title = "Customer Detail";
+}
+<link href="~/Content/Account/Profile.css" rel="stylesheet" />
+<div class="box-card emp-profile">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="@Url.Content("~/images/Icons/user_placeholder_sm.png")" alt="" />
+                    <div class="file btn btn-lg btn-primary">
+                        <i class="fa fa-camera"></i> Change Photo
+                        <input type="file" name="file" />
+                    </div>
+                </div>
+                <div class="profile-work">
+                    <p>STATUS</p>
+                    <a href="">
+                        @if (Model.ISENABLE)
+                        {
+                            <i class="fa fa-check-square-o text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o"></i>
+                        }
+                        Enable
+                    </a><br />
+                    <a href="">
+                        @if (Model.ISACTIVE)
+                        {
+                            <i class="fa fa-check-square-o text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o"></i>
+                        } Active
+                    </a><br />
+                    <a href="">
+                        @if (Model.LOCKSTATUS)
+                        {
+                            <i class="fa fa-check-square-o text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o"></i>
+                        } Lock Status
+                    </a><br />
+                    <a href="">
+                        @if (Model.ENABLEPASSWORDCHANGE)
+                        {
+                            <i class="fa fa-check-square-o text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o"></i>
+                        } Force Password Change
+                    </a><br />
+                    <a href="">
+                        @if (Model.EMAILCONFIRMED)
+                        {
+                            <i class="fa fa-check-square-o text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o"></i>
+                        } Email Confirmed
+                    </a><br />
+                    <a href="">
+                        @if (Model.PHONENUMBERCONFIRMED)
+                        {
+                            <i class="fa fa-check-square-o text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-square-o"></i>
+                        } Phone Confirmed
+                    </a><br />                   
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                    <h5>
+                        @Html.DisplayFor(model => model.FULLNAME)
+                    </h5>
+                    <span class="text-description">
+                        @Html.DisplayFor(model => model.EMAIL)
+
+                        @if (Model.EMAILCONFIRMED == true)
+                        {
+                            <i class="fa fa-check text-success"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-times text-danger"></i>
+                        }
+                    </span>
+                    <p class="proile-rating">
+                        MEMBER ID : <span>@Html.DisplayFor(model => model.MEMBERID)</span>
+                        <br />TOKEN : <span>@Html.DisplayFor(model => model.TOKEN)</span>
+                        <br />
+                        REFERED BY :
+                        @if (Model.REFERENCEID != "")
+                        {
+                            <a target="_blank" href="@Url.Action("Detail", "Customer", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + Model.REFERENCEID)) })">
+                                <span>@Html.DisplayFor(model => model.REFEREDBY)</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <span>@Html.DisplayFor(model => model.REFEREDBY)</span>
+                        }
+                    </p>
+                    <p class="proile-rating"></p>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#About" role="tab" aria-controls="About" aria-selected="true">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#Address" role="tab" aria-controls="Address" aria-selected="false">Address</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#Other" role="tab" aria-controls="Other" aria-selected="false">Other Information</a>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="About" role="tabpanel" aria-labelledby="About-tab">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>User name</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>@Html.DisplayFor(model => model.USERNAME)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Full Name</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>@Html.DisplayFor(model => model.FULLNAME)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Email Address</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>@Html.DisplayFor(model => model.EMAIL)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Phone Number</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    +{{application.TELECODE}}-@Html.DisplayFor(model => model.PHONE)
+                                    @if (Model.PHONENUMBERCONFIRMED == true)
+                                    {
+                                        <i class="fa fa-check text-success"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-times text-danger"></i>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Gender</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>
+                                    @if (Model.GENDER.ToUpper() == "M")
+                                    {
+                                        <span>Male</span>
+                                    }
+                                    else if (Model.GENDER.ToUpper() == "F")
+                                    {
+                                        <span>Female</span>
+                                    }
+                                    else
+                                    {
+                                        <span>N/A</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Date of Birth</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>@Html.DisplayFor(model => model.DATEOFBIRTH)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Address" role="tabpanel" aria-labelledby="Address-tab">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>City</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>@Html.DisplayFor(model => model.CITY)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Postal Code</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>@Html.DisplayFor(model => model.POSTALCODE)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Fax</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>@Html.DisplayFor(model => model.FAX)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Address</label>
+                            </div>
+                            <div class="col-md-8">
+                                <p>@Html.DisplayFor(model => model.ADDRESS)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Other" role="tabpanel" aria-labelledby="Other-tab">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Access fail count</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p>@Html.DisplayFor(model => model.ACCESSFAILEDCOUNT)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Last Login PC</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p>@Html.DisplayFor(model => model.LASTLOGINPC)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Last Login Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p>@Html.DisplayFor(model => model.LASTLOGINDATE)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Lock Status</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p>
+                                    @if (Model.LOCKSTATUS)
+                                    {
+                                        <i class="fa fa-lock text-danger"></i> <span class="text-danger">Locked</span>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa fa-unlock text-success"></i> <span class="text-success">Unlocked</span>
+                                    }
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Lock Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p>@Html.DisplayFor(model => model.LOCKDATE)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>KYC Status</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p>@Html.DisplayFor(model => model.KYCSTATUS)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>KYC Approved By</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p>@Html.DisplayFor(model => model.KYCAPPROVEBY)</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>KYC Approved Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                <p>@Html.DisplayFor(model => model.KYCAPPROVEDATE)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <hr />
+                    <p class="profile-rating">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <b>JOINED ON :</b> @Html.DisplayFor(model => model.CREATETS)
+                                <br /><b>JOINED THROUGH :</b> @Html.DisplayFor(model => model.CREATEBY)
+                            </div>
+                            <div class="col-md-6">
+                                <b>UPDATED ON :</b> @Html.DisplayFor(model => model.UPDATETS)
+                                <br /><b>UPDATED BY :</b> @Html.DisplayFor(model => model.UPDATEBY)
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <div class="btn-group" role="group">
+                        <a href="@Url.Action("Index","Customer")" class="btn btn-outline-default"><i class="fa fa-chevron-left"></i> Back to List</a>
+                        <button class="btn btn-outline-default" type="button" onclick="UnlockCustomer('@Model.ID');"><i class="fa fa-unlock"></i> Unlock</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                
+            </div>
+            <div class="col-md-8">
+               
+            </div>
+        </div>
+    </form>
+</div>

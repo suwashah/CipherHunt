@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @Html.Partial("_Partial/_Head")
+    <link href="~/Theme/LoginTheme/fonts/Linearicons-Free-v1.0.0/icon-font.min.css" rel="stylesheet" />
+    <link href="~/Theme/LoginTheme/css/util.css" rel="stylesheet" />
+    <link href="~/Theme/LoginTheme/css/main.css" rel="stylesheet" />
+    @RenderSection("head", required: false)
+    <style>
+       
+    </style>
+</head>
+<body ng-app="Homeapp" ng-controller="ApplicationController" ng-init="AppConfig();ApplicationConfig();">
+    @Html.Partial("_Partial/_FbChatPlugin")
+    @RenderBody()
+
+    @Html.Partial("_Partial/_ImportJs")
+    @Html.Partial("_Partial/_ImportAngular")
+    <script src="~/Theme/LoginTheme/js/main.js"></script>
+    <script>
+        function Alert(type, msg) {
+            toastify(type, msg, "Message", "toast-bottom-left", false);
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

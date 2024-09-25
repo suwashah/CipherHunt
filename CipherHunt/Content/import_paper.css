@@ -1,0 +1,16 @@
+﻿/*@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700,200');*/
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url('font-awesome.min.css');
+@import url('bootstrap.min.css');
+@import url('bootstrap-datepicker3.min.css');
+@import url('radio-image.css');
+@import url('../Theme/paperdashboard/css/paper-dashboard.css?v=2.0.0');
+@import url('Custom/feature-table.css');
+@import url('Common.css');
+@import url('Animations/animate.css');
+@import url('../Scripts/vendor/datatables/css/dataTables.bootstrap4.min.css');
+@import url('../Scripts/light-gallery/dist/css/lightgallery.min.css');
+
+body {
+    font-family: 'Open Sans', sans-serif !important;
+}

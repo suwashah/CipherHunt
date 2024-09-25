@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Repository.Common.TblProduct>
+
+@{
+    ViewBag.Title = "Products";
+}
+<style>
+    .input-group-sm > .input-group-append > select.btn:not([size]):not([multiple]), .input-group-sm > .input-group-append > select.input-group-text:not([size]):not([multiple]), .input-group-sm > .input-group-prepend > select.btn:not([size]):not([multiple]), .input-group-sm > .input-group-prepend > select.input-group-text:not([size]):not([multiple]), .input-group-sm > select.form-control:not([size]):not([multiple]), select.form-control-sm:not([size]):not([multiple]) {
+        height: calc(1.8125rem + 10px);
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <span class="form-title">Pending Approval</span>
+            <br /><br />
+        </div>
+    </div>
+</div>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-3 col-md-6 col-sm-6" id="td_@Html.Raw(item.PRODUCTID)">
+            <div class="card card-stats">
+                <div class="card-body text-center text-description">
+                    <center>
+                        <img width="100%" src="@Url.Content(item.PRODUCTURL)" class="img-responsive" style="border:none;" />
+                    </center>
+                    <span style="padding:5px;background:#222121;display:block;color:#ffffff;">@item.NAME</span>
+                    <span class="text-success" style="font-size:24px;">Rs. @item.PRICE</span>
+                    <br />
+                    <b class="text-inner-shadow text-danger">(@item.CATEGORY_NAME)</b><br />
+                    <b>Calories:</b> <span class="text-description">@item.CALORIES</span><br/>
+                    <b>Created by:</b> <span class="text-inner-shadow">@item.CREATE_BY</span><br />
+                    <b>Created on:</b> <i>(@item.CREATE_TS)</i>
+                    <br /><br />
+                </div>
+                <div class="card-footer text-center">
+                    <div class="stats">
+                        <button type="button" onclick="VerifyProduct(@Html.Raw(item.PRODUCTID),'@CurrentUser.Name')" class="btn btn-unique btn-success btn-round">Approve</button>
+                        <br /><br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+    <script>
+        var divid = "";
+        function VerifyProduct(sno, user) {
+            divid = sno;
+            var jsonObject = {
+                "Id": sno,
+                "UserName": user
+            };
+            var url = "@Url.Action("VerifyProduct")";
+            var req = ConfirmModal("want to verify this product!!",
+                "success",
+                "Yes, verify!",
+                jsonObject,
+                url,
+                SwalMessage);
+        }
+        function SwalMessage(response,sno) {
+            if (response.CODE == 0) {
+                swal({ title: "verified!", text: response.MESSAGE, type: "success" });
+                $("#td_" + divid).remove();
+            }
+            else {
+                swal("Verification Failed!", response.MESSAGE, "error");
+            }
+        }
+    </script>
+}

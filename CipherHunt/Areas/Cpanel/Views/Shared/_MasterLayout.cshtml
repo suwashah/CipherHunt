@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @Html.Partial("_Partial/_HeadV2")   
+    <style>
+        .sidebar[data-color="iremit"]:after,
+        .off-canvas-sidebar[data-color="iremit"]:after {
+            background: #222121; /*Transfer wise*/
+        }
+
+        .sidebar[data-color="white"] .nav li:hover:not(.active) > a, .sidebar[data-color="white"] .nav li:focus:not(.active) > a, .off-canvas-sidebar[data-color="white"] .nav li:hover:not(.active) > a, .off-canvas-sidebar[data-color="white"] .nav li:focus:not(.active) > a {
+            background: #33333338 !important;
+            border-radius: 5px !important;
+        }
+
+        .sidebar[data-active-color="danger"] .nav li.active > a,
+        .sidebar[data-active-color="danger"] .nav li.active > a i,
+        .sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"],
+        .sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] i,
+        .sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] ~ div > ul > li.active .sidebar-mini-icon,
+        .sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] ~ div > ul > li.active > a,
+        .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a,
+        .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a i,
+        .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"],
+        .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] i,
+        .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] ~ div > ul > li.active .sidebar-mini-icon,
+        .off-canvas-sidebar[data-active-color="danger"] .nav li.active > a[data-toggle="collapse"] ~ div > ul > li.active > a {
+            color: #004d91;
+            opacity: 1;
+        }
+
+        .sidebar[data-active-color="danger"] .nav li.active > a {
+            background: #f0bc5e !important;
+            color: #545454 !important;
+            border-radius: 0px !important;
+        }
+
+            .sidebar[data-active-color="danger"] .nav li.active > a i {
+                color: #545454 !important;
+            }
+        .sidebar .nav li > a, .off-canvas-sidebar .nav li > a {
+             margin:10px 2px !important; 
+        }        
+    </style>
+</head>
+<body ng-app="Homeapp" ng-controller="ApplicationController" ng-init="AppConfig();ApplicationConfig();">
+    <div id="loader">
+        <div class="spinner">
+            <div id="loading">
+                @Html.Partial("_Partial/_Loader")
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="sidebar" data-color="iremit" data-active-color="danger">
+            <!--
+            Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
+            -->
+            <div class="logo">
+                <a href="@Url.Action("Index","Dashboard")">
+                    <img width="120" height="40" src="@Url.Content("~/images/Logo/logo.png")" alt="Logo">
+                </a>
+            </div>
+            <div class="sidebar-wrapper">
+                @Html.Partial("_Partial/_DashBoardMenu")
+            </div>
+        </div>
+        <div class="main-panel">
+            <!-- Navbar -->
+            @Html.Partial("_Partial/_NavBar")
+            <!-- End Navbar -->
+            <div class="content">
+                @RenderBody()
+            </div>
+            <div class="footer">
+                @Html.Partial("_Partial/_DashBoardFooter")
+            </div>
+        </div>
+    </div>
+    <!--/.Footer-->
+    <!--   Core JS Files   -->
+    @Html.Partial("_Partial/_ImportPaperJs")
+    @Html.Partial("_Partial/_ImportAngular")
+    <script src="~/Scripts/Custom/Loader.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            new WOW().init();
+            var url = window.location;
+            $('.sidebar-wrapper .nav').find('.active').removeClass('active');
+            $('.sidebar-wrapper .nav li a').each(function () {
+                if (this.href == url) {
+                    $(this).parent().addClass('active');
+                }
+            });
+            var timer = setInterval(function () {
+                var ct = new Date().toLocaleString();
+                $("#currentTime").html(ct);
+            }, 1000)
+            $('#SearchValue').on('keypress', function (e) {
+                if (e.which === 13) {
+                    $(this).attr("disabled", "disabled");
+                    if ($("#SearchType").val() === "") {
+                        alert("select search type");
+                        $(this).removeAttr("disabled");
+                        return;
+                    }
+                    else {
+                        $("#searchform").submit();
+                    }
+                }
+            });
+        });
+        //function LoadChart(type, resColumn, resdata) {
+        //    var bg1 = "rgba(196, 37, 15, 0.66)";
+        //    var bg2 = "rgba(0, 53, 169, 0.36)";
+        //    var ctx = document.getElementById("myChart");
+        //    var myChart = null;
+        //    if (myChart !== null) {
+        //        removeData(myChart);
+        //    }
+        //    console.log(resdata[2]);
+        //    myChart = new Chart(ctx, {
+        //        type: 'doughnut',//line,bar,radar,doughnut,polarArea,bubble,Scatter,Area,Mixed
+        //        data: {
+        //            labels: resColumn,
+        //            datasets: [{
+        //                "label": 'Memory Usage in MB',
+        //                "data": resdata,
+        //                "borderColor": "#4e4e4e",
+        //                "backgroundColor": bg2,
+        //                "borderWidth": 0
+        //            }],
+        //            onAnimationComplete: function () {
+        //                ctx.fillText("Hello", 100 - 20, 100, 200);
+        //            }
+        //        },
+        //        options: {
+        //            cutoutPercentage: 75,
+        //            responsive: true,
+        //            legend: {
+        //                position: 'right',
+        //                fontColor: 'white'
+        //            },
+        //            title: {
+        //                display: true,
+        //                text: 'Memory usage in MB'
+        //            },
+        //            scales: {
+        //                yAxes: [{
+        //                    ticks: {
+        //                        beginAtZero: true
+        //                    },
+        //                    scaleLabel: {
+        //                        display: true,
+        //                        labelString: ''
+        //                    }
+        //                }],
+        //                xAxes: [{
+        //                    ticks: {
+        //                        beginAtZero: true
+        //                    }
+        //                }]
+        //            }
+        //        }
+        //    });
+        //}
+        $('#tblList').DataTable({
+            "pageLength": 50
+        });
+    </script>
+
+    @if (ViewBag.JavaScriptFunction != null)
+    {
+        <script type="text/javascript">
+        @Html.Raw(ViewBag.JavaScriptFunction)
+        </script>
+    }
+   
+    @RenderSection("scripts", required: false)
+</body>
+</html>

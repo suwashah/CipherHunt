@@ -1,0 +1,247 @@
+﻿@model CipherHunt.Models.HomeViewModel
+@{
+    ViewBag.Title = "Welcome";
+}
+@section head{
+    <link href="~/Content/LightSlider/lightslider.min.css" rel="stylesheet" />
+    @Html.Partial("_Partial/_GoogleTag")
+    <script data-ad-client="ca-pub-5974620576637621" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+}
+<style>
+    .bg-slide-2 {
+        background: url(../images/CoverPic/Cover3.jpg) no-repeat center;
+        background-size: cover;
+    }
+    .table td, .table th {
+        border-top: none !important;
+    }
+
+    .txt-strike {
+        font-size: 16px !important;
+    }
+
+    .ribbon-cont {
+        top: 75%;
+        left: 0px;
+        border-bottom: 2px solid #000000;
+    }
+
+    .img-200 {
+        height: auto;
+        transform: scale(1);
+    }
+</style>
+
+@*<section class="bg-1 h-900x main-slider pos-relative">
+    <div class="container h-100">
+        <div class="dplay-tbl">
+            <div class="dplay-tbl-cell center-text color-white">
+                <h5><b>BEST IN TOWN</b></h5>
+                <h1 class="mt-30 mb-15">Healthy meal for you</h1>
+                <h5><a href="#" class="btn-primaryc plr-25"><b>Order Now <span class="glyphicon glyphicon-chevron-right"></span> </b></a></h5>
+            </div><!-- dplay-tbl-cell -->
+        </div><!-- dplay-tbl -->
+    </div><!-- container -->
+</section>*@
+<ul id="content-slider" class="content-slider">
+    <li>
+        <section class="bg-1 h-900x main-slider pos-relative">
+            @*<div class="triangle-up pos-bottom"></div>*@
+            <div class="container h-100">
+                <div class="dplay-tbl">
+                    <div class="dplay-tbl-cell center-text color-white">
+                        <h5><b>BEST IN TOWN</b></h5>
+                        <h1 class="mt-30 mb-15 wow slideInRight" data-wow-delay="0.3s">Healthy meal for you</h1>
+                        <h5><a href="#" class="btn-primaryc plr-25"><b>Order Now <span class="glyphicon glyphicon-chevron-right"></span> </b></a></h5>
+                    </div><!-- dplay-tbl-cell -->
+                </div><!-- dplay-tbl -->
+            </div><!-- container -->
+        </section>
+    </li>
+    <li>
+        <section class="bg-slide-2 h-900x main-slider pos-relative">
+            <div class="container h-100">
+                <div class="dplay-tbl">
+                    <div class="dplay-tbl-cell center-text color-white">
+                        <h5><b>BE A MEMBER</b></h5>
+                        <h1 class="mt-30 mb-15 animated slideInRight" data-wow-delay="0.3s">Get Started</h1>
+                        <h5><a href="@Url.Action("SignUp","Account")" class="btn-primaryc plr-25"><b>SignUp Now <span class="glyphicon glyphicon-chevron-right"></span> </b></a></h5>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </li>    
+</ul>
+<section class="left-text center-sm-text pos-relative">
+    <div class="abs-tbl bg-2 w-20 z--1 dplay-md-none"></div>
+    @*<div class="abs-tbr bg-3 w-20 z--1 dplay-md-none"></div>*@
+    <div class="container">
+        <div class="heading">
+            <img class="heading-img" src="~/images/heading_logo.png" alt="">
+            <h2>How it works</h2>
+        </div>
+        @Html.Partial("_Partial/_HowItWorks")
+        <h6 class="center-text mt-40 mt-sm-30 mb-20">
+            <a href="@Url.Action("HowItWorks")" class="btn-primaryc plr-25 mb-10 mlr-5"><b>Know More</b></a>
+            @*<a href="#" class="btn-primaryc secondary plr-50 mlr-5 mb-10"><b>ORDER NOW</b></a>*@
+        </h6>
+    </div><!-- container -->
+</section>
+<section class="story-area bg-seller color-white pos-relative">
+    <div class="container">
+        <div class="heading">
+            <img class="heading-img" src="~/images/heading_logo.png" alt="">
+            <h2>Combo Menu</h2>
+        </div>
+        <div class="owl-carousel owl-theme">
+            @foreach (var item in Model.ComboMeals)
+            {
+                <div class="center-text mb-30">
+                    <div class="mlr-auto pos-relative image-box">
+                        @*<h6 class="ribbon-cont">
+                                <span class="ribbon primary"></span>
+                                <b>OFFER</b>
+                            </h6>*@
+                        <a href="@Url.Action("ItemDetail","Item",new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.PRODUCTID)) })">
+                            <img class="img-200 lazy" data-src="@item.PRODUCTURL" alt="">
+                        </a>
+                    </div>
+                    <h5 class="mt-20">@item.NAME</h5>
+                    <h4 class="mt-5"><b>@item.CURRENCY @item.PRICE</b></h4>
+                    <h6 class="mt-20"><a href="#" class="btn-brdr-primary plr-25"><b>Order Now</b></a></h6>
+                </div><!--text-center-->
+            }
+        </div><!-- row -->
+        <h6 class="center-text mt-40 mt-sm-20 mb-30"><a href="#" class="btn-primaryc plr-25"><b>SEE TODAYS MENU</b></a></h6>
+    </div><!-- container -->
+</section>
+<section>
+    <div class="container">
+        <div class="heading">
+            <img class="heading-img" src="~/images/heading_logo.png" alt="">
+            <h2>Our Menu</h2>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="selecton brdr-b-primary mb-70">
+                    <li><a class="active" href="#" data-select="all"><b>All</b></a></li>
+                    @foreach (var group in Model.HomeMenu.GroupBy(x => new { x.CAT_ID, x.CATEGORY_NAME }))
+                    {
+                        <li><a href="#" data-select="@group.Key.CAT_ID"><b>@group.Key.CATEGORY_NAME.ToUpper()</b></a></li>
+                    }
+                </ul>
+            </div><!--col-sm-12-->
+        </div><!--row-->
+        <div class="row">
+            <div class="col-md-12 food-menu all">
+                <div class="row">
+                    @foreach (var item in Model.HomeMenu)
+                    {
+                        <div class="col-md-6">
+                            <div class="sided-90x mb-30 ">
+                                <div class="s-left">
+                                    <a href="@Url.Action("ItemDetail","Item",new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.PRODUCTID)) })">
+                                        <img class="br-3 lazy" data-src="@item.PRODUCTURL" alt="Menu Image">
+                                    </a>
+                                </div>
+                                <div class="s-right">
+                                    <h5 class="mb-10"><b>@item.NAME</b><b class="color-primary float-right">@item.CURRENCY @item.PRICE</b></h5>
+                                    <p class="pr-70">@item.DESCRIPTION </p>
+                                </div><!--s-right-->
+                            </div><!-- sided-90x -->
+                        </div>
+                    }
+                </div>
+            </div><!-- food-menu -->
+            @foreach (var group in Model.HomeMenu.GroupBy(x => x.CAT_ID))
+            {
+                <div class="col-md-12 food-menu @group.Key">
+                    <div class="row">
+                        @foreach (var item in group)
+                        {
+                            <div class="col-md-6">
+                                <div class="sided-90x mb-30 ">
+                                    <div class="s-left">
+                                        <a href="@Url.Action("ItemDetail","Item",new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.PRODUCTID)) })">
+                                            <img class="br-3 lazy" data-src="@item.PRODUCTURL" alt="Menu Image">
+                                        </a>
+                                    </div>
+                                    <div class="s-right">
+                                        <h5 class="mb-10"><b>@item.NAME</b><b class="color-primary float-right">@item.CURRENCY @item.PRICE</b></h5>
+                                        <p class="pr-70">@item.DESCRIPTION </p>
+                                    </div><!--s-right-->
+                                </div><!-- sided-90x -->
+                            </div>
+                        }
+                    </div>
+                </div><!-- food-menu -->
+            }
+        </div><!-- row -->
+        <h6 class="center-text mt-40 mt-sm-20 mb-30"><a href="#" class="btn-primaryc plr-25"><b>SEE TODAYS MENU</b></a></h6>
+    </div><!-- container -->
+</section>
+
+@section Scripts{
+    <script src="~/Scripts/LightSlider/lightslider.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //$("#content-slider").lightSlider({
+            //    loop: true,
+            //    keyPress: true
+            //});
+            $('#content-slider').lightSlider({
+                item: 1,
+                easing: 'cubic-bezier(0.25, 0, 0.25, 1)',
+                slideMargin: 0,
+                speed: 500,
+                auto: true,
+                loop: true,
+                onSliderLoad: function () {
+                    $('#content-slider').removeClass('cS-hidden');
+                }
+            });
+            var owl = $('.owl-carousel');
+            owl.owlCarousel({
+                margin: 5,
+                nav: true,
+                navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>', '<i class="fa fa-angle-right" aria-hidden="true"></i>'],
+                loop: false,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    600: {
+                        items: 3
+                    },
+                    1000: {
+                        items: 4
+                    }
+                }
+            });
+            owl.on('mousewheel', '.owl-stage', function (e) {
+                if (e.deltaY > 0) {
+                    owl.trigger('next.owl');
+                } else {
+                    owl.trigger('prev.owl');
+                }
+                e.preventDefault();
+            });
+        })
+        function OnSuccess(response) {
+            $('#btnSubmit').parent("i").addClass("disabled");
+            console.log(response);
+            if (response.CODE == "0") {
+                toastr.success("Redirecting to dashboard. Please wait..");
+                $('#btnSubmit').parent("i").addClass("disabled");
+            }
+            else {
+                toastr.error(response.MESSAGE);
+                $('#btnSubmit').parent("i").removeClass("disabled");
+            }
+        }
+        function OnFailure(response) {
+            $('#btnSubmit').parent("i").removeClass("disabled");
+            toastr.error("Error occured.");
+        }
+    </script>
+}

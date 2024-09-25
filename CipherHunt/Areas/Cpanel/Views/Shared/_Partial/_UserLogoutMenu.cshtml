@@ -1,0 +1,11 @@
+﻿<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="nc-icon nc-circle-10 navbar-i"></i>    
+    <p>@CurrentUser.Name</p>
+</a>
+<span style="position:relative;float:right;">
+</span>
+<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+    <a class="dropdown-item" href="#"><i class="nc-icon nc-touch-id"></i> User ID: @CurrentUser.ID</a>
+    <a class="dropdown-item" href="@Url.Action("ChangePassword","Authentication")"><i class="nc-icon nc-key-25"></i> Change Password</a>
+    <a class="dropdown-item" href="@Url.Action("LogOff","Acc")"><i class="nc-icon nc-button-power"></i> Log Out</a>
+</div>

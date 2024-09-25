@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    @Html.Partial("_Partial/_Head")
+    <link href="~/Content/Account/Register.css" rel="stylesheet" />
+    <style>
+        body{
+            background: url('../../Images/Background/bg_cpanel.jpg')no-repeat center center !important;
+            /*background:#2f2f2f;*/
+            background-size: cover !important;
+            background-attachment: fixed !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+    </style>
+</head>
+<body ng-app="Homeapp" ng-controller="ApplicationController" ng-init="AppConfig();">
+    @Html.Partial("_Partial/_FbChatPlugin")
+    <div class="">
+        @RenderBody()
+    </div>
+    @Html.Partial("_Partial/_ImportJs")
+    @Html.Partial("_Partial/_ImportAngular")
+    <script>
+        function Alert(type, msg) {
+            toastify(type, msg, "Message", "toast-bottom-left", false);
+        }
+        function SweetAlertMsg(title, message, type) {
+            swal(title, message, type);
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

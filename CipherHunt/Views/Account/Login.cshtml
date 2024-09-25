@@ -1,0 +1,100 @@
+﻿@model CipherHunt.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "login100-form validate-form" }))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(m => m.ReturnUrl)
+                <span class="login100-form-title p-b-43">
+                    Sign in
+                </span>
+                <div>
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fa fa-exclamation-circle text-danger" style="font-size:18px;"></i> <span>@ViewBag.Message</span>
+                        </div>
+                    }
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Email</span>
+                    </div>
+                </div>
+                <div class="">
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        @Html.PasswordFor(m => m.Password, new { @class = "input100", autocomplete = "off" })
+                        <span class="focus-input100"></span>
+                        <span class="label-input100">Password</span>
+                    </div>
+                </div>
+                <div class="flex-sb-m w-full p-t-3 p-b-32">
+                    @{
+                        var check = "";
+                        if (Model.RememberMe == true)
+                        {
+                            check = "checked";
+                        }
+                    }
+                    <div class="contact100-form-checkbox">
+                        <input class="input-checkbox100" id="RememberMe" value="true" type="checkbox" name="RememberMe" @check>
+                        <label class="label-checkbox100" for="RememberMe">
+                            Remember me
+                        </label>
+                    </div>
+                    <div>
+                        <a href="#" class="txt1">
+                            Forgot Password?
+                        </a>
+                    </div>
+                </div>
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" id="btnSubmit" type="submit">
+                        Sign in
+                    </button>
+                </div>
+                <div class="text-center p-t-46 p-b-20">
+                    <span class="txt2">
+                        <span>Not a member yet?</span> @Html.ActionLink("Signup now", "SignUp")
+                    </span>
+                </div>
+            }
+            <div class="login100-more" style="background-image: url('../../images/Background/Login_bg.jpg');background-attachment:fixed;">
+                <div style="position:fixed;top:50%;left:20%;">
+                    <a class="logo" href="@Url.Action("Index","Home")">
+                        <img height="100" ng-src="~/images/Logo/{{appdata.LOGO}}" alt="Logo">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        if ($("#UserName").val().trim() !== "") {
+            $("#UserName").addClass('has-val');
+        }
+        else {
+            $("#UserName").removeClass('has-val');
+        }
+    </script>
+    @if (ViewBag.Message != null)
+    {
+        <script>
+            Alert("error", '@ViewBag.Message');
+        </script>
+    }
+}

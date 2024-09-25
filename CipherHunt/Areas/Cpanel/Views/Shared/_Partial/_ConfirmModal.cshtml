@@ -1,0 +1,28 @@
+﻿<script>
+    function ConfirmModal(text, type, confirmText, jsonObj, url, ) {
+        return swal({
+            title: "Are you sure?",
+            text: text,
+            type: type,
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: confirmText,
+            closeOnConfirm: false
+        }, function () {
+            var jsonObject = jsonObj;
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: JSON.stringify(jsonObject),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error: function () {
+                    swal("Cancelled", "Something Went Wrong :)", "error");
+                },
+                success: function (response) {
+                    var a = response;
+                }
+            });
+        });
+    }
+</script>

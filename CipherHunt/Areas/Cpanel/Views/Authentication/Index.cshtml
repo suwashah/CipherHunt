@@ -1,0 +1,155 @@
+﻿@model CipherHunt.Areas.Cpanel.Models.AuthenticatorModel
+@{
+    ViewBag.Title = "Authenticaton";
+    Layout = "~/Areas/Cpanel/Views/Shared/_PlainLayout.cshtml";
+}
+<style>
+    .apple-badge:hover, .apple-badge:active {
+        color: #ffffff !important;
+    }
+
+    .apple-badge i, .android-badge i {
+        float: left;
+        font-size: 40px;
+        margin-right: 15px;
+        margin-top: 2px;
+    }
+
+    .apple-badge, .android-badge {
+        display: inline-block;
+        text-align: left;
+    }
+
+    .apple-badge {
+        background: linear-gradient(90deg, #0a0a0a 0%, #2b2929 100%) !important;
+    }
+
+        .apple-badge span, .android-badge span {
+            display: block;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+    .apple-badge, .android-badge {
+        overflow: hidden;
+        display: block;
+        padding: 5px 13px;
+        border-radius: 10px;
+        float: left;
+        margin-right: 15px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 12px;
+        width: 175px;
+        line-height: 19px;
+        position: relative;
+        border: 2px solid #545252;
+    }
+
+    .box-card {
+        padding: 50px 10px;
+    }
+</style>
+<div class="container">
+    <div class="box-card">
+        @if (!String.IsNullOrEmpty(Model.AuthDateTime) && String.IsNullOrEmpty(Model.AuthApproveBy))
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group center-text">
+                        <span class="text-danger" style="font-size:30px !important;">Authentication Request Pending</span>
+                        <br />
+                        <img height="70" src="@Url.Content("~/images/Icons/GoogleAuthenticator.png")" />
+                        <br />
+                        <span style="font-size:20px">Google Authenticator</span>
+                        <br /><br />
+                        Your 2 Factor Authentication request is still in Pending.
+                        Contact administrator to approve your authentication request.
+                        <br />
+                        You can try again after your request is approved.
+                        <br />
+                        <br />
+                        @Html.ActionLink("Go to Login", "Login", "Acc", null, new { @class = "btn btn-success" })
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.HiddenFor(m => m.UniqueKey)
+                            @Html.HiddenFor(m => m.AuthKey)
+                            @Html.HiddenFor(m => m.UserName)
+                            @Html.HiddenFor(m => m.SetupCode)
+                            @Html.HiddenFor(m => m.BarcodeImageUrl)
+                        </div>
+                        <div class="form-group">
+                            <b>Hi @Model.UserName,</b><br /><br />
+                            You need to cofigure two factor authentication in order to continue further.
+                        </div>
+                        <div class="form-group">
+                            <h4>To use an authenticator app go through the following steps:</h4>
+                            <b class="text-description">
+                                1. Download a two-factor authenticator app
+                                (Google Authenticator)
+                            </b><br />
+                            <table>
+                                <tr>
+                                    <td><img height="70" src="@Url.Content("~/images/Icons/GoogleAuthenticator.png")" /></td>
+                                    <td><a href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="_blank"><img alt='Download on Google Play' height="80" src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' /></a></td>
+                                    <td>
+                                        <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" class="apple-badge" target="_blank">
+                                            <i class="fa fa-apple"></i>
+                                            Download on
+                                            <span>App Store</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <p>
+                                <b class="text-description">
+                                    2. Scan the QR Code or enter this key <kbd style="font-size:20px;">@Model.SetupCode</kbd> into your two factor authenticator app. Spaces and casing do not matter.
+                                </b>
+                            </p>
+                            <br />
+                        </div>
+                        <div class="form-group">
+                            <img src="@Model.BarcodeImageUrl" width="300" height="300" />
+                            <p>
+                                <b>
+                                    3. Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
+                                    with a unique code. Enter the code in the confirmation box below.
+                                </b>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.OTPCode, "Verification Code*", new { @class = "control-label" })
+                            @Html.TextBoxFor(m => m.OTPCode, new { @class = "form-control", autocomplete = "off", minlength = 6, maxlength = 6, placeholder = "Enter 6 digit OTP", onkeypress = "return isNumberKey(event)" })
+                            @Html.ValidationMessageFor(m => m.OTPCode, "", new { @class = "text-danger" })
+                        </div>
+                        <button type="submit" class="btn btn-success btn-round">Verify</button>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+@section scripts{
+    @if (ViewBag.Message != null)
+    {
+        <script>
+            Alert("error",'@ViewBag.Message');
+        </script>
+    }
+}

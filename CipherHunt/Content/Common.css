@@ -1,0 +1,36 @@
+.img-flip-Horizontal {
+    transform: scaleX(-1);
+}
+.img-flip-Vertical {
+    transform: scaleY(-1);
+}
+
+header {
+    height: 100px;
+    position: relative;
+    /*background-image: linear-gradient(#ff9d2f, #ff6126);*/
+    background-image: linear-gradient(#0862b100, #0d253a0d);
+}
+
+header h2 {
+    color: #173348;
+}
+
+svg {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+}
+
+@media (max-width: 699px) {
+    .svg--lg {
+        display: none;
+    }
+}
+
+@media (min-width: 700px) {
+    .svg--sm {
+        display: none;
+    }
+}

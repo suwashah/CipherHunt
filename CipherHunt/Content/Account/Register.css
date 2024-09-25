@@ -1,0 +1,105 @@
+﻿/*.card{
+    border:1px solid #808080;
+    border-radius:10px;
+    padding:20px;
+    background:#c3c3c3;
+}*/
+
+.form-control {
+    border: none !important;
+    border-bottom: 1px solid #ced4da !important;
+    border-radius: 0px !important;
+    padding-left:0 !important;
+}
+.form-control:focus {
+    outline:none !important;
+    box-shadow:none;
+    border-bottom:2px solid #078b2e !important;
+}
+.input-group-text {   
+     background-color:transparent !important; 
+     border:none !important;
+     border-bottom:1px solid #ced4da !important; 
+}
+.title {
+    padding: 5px 10px !important;
+    background: #f1eded;
+    border-radius: 5px;
+}
+.login-panel {
+    background: #ffffff;
+    padding: 50px;
+    float: left;
+    min-height: 100vh;
+    position: relative;
+    width: 100%;
+}
+.login-panel2 {
+    background: #ffffff;
+    padding: 50px;
+    position: relative;
+    width: 400px;
+    margin: 40px auto !important;
+    border-radius: 20px;
+    box-shadow: 0 6px 26px 10px rgba(0, 0, 0, 0.35);
+}
+.md-form {
+    margin-top: 0.5rem !important;
+    margin-bottom: 1.0rem !important;    
+}
+.text-danger {
+    font-size: 14px !important;
+}
+.form-group {
+     margin-bottom: 0px !important; 
+}
+
+@media (max-width: 800px) {
+    .logo-fix {
+        display: none;
+    }
+
+    .logoDiv {
+        margin-top: 0px !important;
+    }
+    .logo-bg{
+        display:none;
+    }
+    .note-pin {
+        display: none;
+    }
+}
+@media (min-width: 800px) {    
+    .logo-fix {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+    }
+    .logoDiv {
+        margin-top: 30%;
+    }
+    .logo-bg {
+        width: 200px;
+        height: 200px;
+        background: #85b5f80d;
+        position: absolute;
+        border-radius: 50%;
+        margin-left: 30%;
+        margin-top: -10px !important;
+    }
+    .note-pin {
+        height: 620px;
+        width: 30px;
+        background: url(../../Images/Icons/notebook_pin.png);
+        float: left;
+    }
+}
+label {
+    margin-bottom: 0px !important;
+}
+.btn-round {
+    border-width: 1px;
+    border-radius: 30px;
+    padding-right: 23px;
+    padding-left: 23px;
+}

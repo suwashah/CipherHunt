@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Repository.Common.EmailTemplate>
+
+@{
+    ViewBag.Title = "Email Templates";
+}
+<style>
+    .ico-size{
+        font-size:16px;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <span class="form-title">Email Templates</span> <a href="@Url.Action("SaveEmail")" class="btn btn-success btn-round pull-right"><i class="nc-icon nc-simple-add"></i> Add New</a>
+            <br /><br />
+        </div>
+    </div>
+</div>
+<div class="box-card">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th width="100">
+                            Template ID
+                        </th>
+                        <th width="200">
+                            Template Name
+                        </th>
+                        <th>
+                            Template Subject
+                        </th>
+                        <th class="center-text">Enabled</th>
+                        <th class="center-text">Response to admin</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                    <tr id="td_@Html.Raw(item.TEMP_ID)">
+                        <td>
+                            @item.TEMP_ID
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TEMP_NAME)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TEMP_EMAIL_SUBJECT)
+                        </td>
+                        <td class="center-text">
+                            @if (item.IS_ENABLE == "Yes")
+                            {
+                                <i class="nc-icon nc-check-2 text-success ico-size"></i>
+                            }
+                            else
+                            {
+                                <i class="nc-icon nc-simple-remove text-danger ico-size"></i>
+                            }
+                        </td>
+                        <td class="center-text">
+                            @if (item.RESPONSE_TO_ADMIN == "Yes")
+                            {
+                                <i class="nc-icon nc-check-2 text-success ico-size"></i>
+                            }
+                            else
+                            {
+                                <i class="nc-icon nc-simple-remove text-danger ico-size"></i>
+                            }
+                        </td>
+                        <td>
+                            @Html.ActionLink("View", "SaveEmail", "EmailTemplate", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.TEMP_ID)) }, new { @class = "btn btn-sm btn-primary btn-round" })
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

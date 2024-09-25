@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    @Html.Partial("_Partial/_Head")
+    <link href="~/Content/Account/Register.css" rel="stylesheet" />
+    @RenderSection("head", required: false)
+</head>
+<body ng-app="Homeapp" ng-controller="ApplicationController" ng-init="AppConfig();">
+    @Html.Partial("_Partial/_FbChatPlugin")
+    <div class="container">
+        @RenderBody()
+    </div>
+    @Html.Partial("_Partial/_ImportJs")
+    @Html.Partial("_Partial/_ImportAngular")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

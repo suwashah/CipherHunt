@@ -1,0 +1,68 @@
+﻿@model CipherHunt.Models.CategoryModel
+
+@{
+    ViewBag.Title = "Save Category";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card card-user card-radius-none">
+                <div class="card-header card-header-primary">
+                    <div class="card company"></div>
+                    <h5 class="card-title">CATEGORY INFORMATION</h5>
+                    @Html.HiddenFor(m => m.CAT_ID)
+                    @Html.HiddenFor(m => m.FLAG)
+                </div>
+                <div class="card-body pd-lr-30">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @if (ViewBag.Message != null)
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        <i class="fa fa-danger"></i><span>@ViewBag.Message;</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8 col-md-12">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CATEGORY_NAME, "Category Name", new { @class = "" })
+                                @Html.TextBoxFor(m => m.CATEGORY_NAME, new { @class = "form-control", autocomplete = "off" })
+                                @Html.ValidationMessageFor(m => m.CATEGORY_NAME, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CATEGORY_DESCRIPTION, "Category Description", new { @class = "" })
+                                @Html.TextAreaFor(m => m.CATEGORY_DESCRIPTION, new { @class = "form-control", autocomplete = "off", rows = "3" })
+                                @Html.ValidationMessageFor(m => m.CATEGORY_DESCRIPTION, "", new { @class = "text-danger" })
+                            </div>
+                            @if (Model.FLAG == "u")
+                            {
+                                <div class="form-group">
+                                    @Html.CheckBoxFor(m => m.IS_ENABLE) Enabled?
+                                </div>
+                            }
+                        </div>
+                        <div class="col-lg-4 col-md-12">
+                           
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success btn-round" value="Save" /> &nbsp;
+                                @Html.ActionLink("Back to List", "Categories", "Product", "", new { @class = "btn btn-warning btn-round"})
+                                <br /><br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

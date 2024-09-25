@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    @Html.Partial("_Partial/_Head")
+    <link href="~/Content/Account/Register.css" rel="stylesheet" />
+    <style>
+        body{
+            background: url('../Images/Background/@System.Web.Configuration.WebConfigurationManager.AppSettings["background_image"]')no-repeat center center !important;
+            background-size: cover !important;
+            background-attachment: fixed !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+        }
+    </style>
+    @RenderSection("head", required: false)
+</head>
+<body ng-app="Homeapp" ng-controller="ApplicationController" ng-init="AppConfig();ApplicationConfig();">
+    @Html.Partial("_Partial/_FbChatPlugin")
+    <div class="">
+        @RenderBody()
+    </div>
+    @Html.Partial("_Partial/_ImportJs")
+    @Html.Partial("_Partial/_ImportAngular")
+    @RenderSection("scripts", required: false)
+    <script>
+        function Alert(type, msg) {
+            toastify(type, msg, "Message", "toast-bottom-left", false);
+        }
+    </script>
+</body>
+</html>

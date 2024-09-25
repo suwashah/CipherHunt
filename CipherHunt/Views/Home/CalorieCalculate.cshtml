@@ -1,0 +1,218 @@
+﻿@model CipherHunt.Models.CalorieModel
+@{
+    ViewBag.Title = "How it works";
+}
+<style>
+    .calculator .table td, .table th {
+        border-top: none !important;
+        padding: 0 10px !important;
+        vertical-align: unset !important;
+    }
+    .calorie{
+        font-size:25px;
+    }
+    .calorie-per{
+        font-size:16px;
+    }
+    .calorie-text{
+        color:#808080;
+    }
+    #note li {
+        list-style: circle !important;
+        display:list-item !important;
+    }
+    .table-panel {
+        background: #eeeeee;
+        border:1px solid #bbbbbb;
+        padding: 20px;
+        border-radius:5px;
+    }
+    .result-table td {
+        padding: 5px 20px;
+        margin: 1px;
+        background: #fdf9e3;
+        border:1px solid #808080;
+        vertical-align:middle;
+    }
+</style>
+<div style="height:120px !important">
+
+</div>
+<section class="story-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mt-sm-30 mb-30 mb-sm-30">
+                    <h4>Calorie Calculator</h4>
+                    <i class="fa fa-info-circle text-danger"></i> 
+                    <span class="calorie-text">Please fill up the form to calculate your daily calorie consumption </span>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-12 col-sm-12 calculator">
+                <div class="form-group table-panel">
+                    <table class="table table-strip table-responsive">
+                        <tr>
+                            <th colspan="3">
+                                <h4> US Units</h4>
+                                <hr />
+                            </th>
+                        </tr>
+                        <tr>
+                            <td width="100"><b>Age*</b></td>
+                            <td colspan="2">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.Age, new { @class = "form-control", autocomplete = "off", pattern = "[0-9]*", maxlength = "2", ng_model = "Age" })
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2">Age</span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Age, "", new { @class = "text-danger" })
+                                <label><i class="fa fa-info-circle text-warning"></i> Ages 15-80</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Gender*</b></td>
+                            <td colspan="2">
+                                @{
+                                    var male_c = "";
+                                    var female_c = "";
+                                    if (Model.Gender == "F")
+                                    {
+                                        female_c = "checked";
+                                        male_c = "";
+                                    }
+                                    else
+                                    {
+                                        female_c = "";
+                                        male_c = "checked";
+                                    }
+                                }
+                                <input id="Male" type="radio" name="Gender" checked @male_c value="M" ng-model="Gender" />
+                                Male
+                                <input id="Female" type="radio" name="Gender" @female_c value="F" ng-model="Gender" />
+                                Female
+                                @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                                <br/><br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Height*</b></td>
+                            <td width="120">
+                                @Html.DropDownListFor(m => m.Height_Feet, ViewData["Height_Feet"] as IEnumerable<SelectListItem>, new { @class = "form-control", autocomplete = "off", ng_model = "Height_Feet" })
+                                @Html.ValidationMessageFor(m => m.Height_Feet, "", new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                @Html.DropDownListFor(m => m.Height_Inch, ViewData["2"] as IEnumerable<SelectListItem>, new { @class = "form-control", autocomplete = "off", ng_model = "Height_Inch" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><b>Weight*</b></td>
+                            <td colspan="2">
+                                <div class="input-group">
+                                    @Html.TextBoxFor(m => m.Weight, new { @class = "form-control", autocomplete = "off", pattern = "[0-9]*", ng_model = "Weight" })
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="basic-addon2">Kg</span>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(m => m.Weight, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><b>Activity Factor*</b></td>
+                            <td colspan="2">
+                                @Html.DropDownListFor(m => m.ActivityFactor, ViewData["0"] as IEnumerable<SelectListItem>, new {@class = "form-control", autocomplete = "off", ng_model = "ActivityFactor" })
+                                @Html.ValidationMessageFor(m => m.ActivityFactor, "", new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="2">
+                                <button type="button" ng-click="CalorieCalculate();" class="btn btn-danger pull-right">Calculate</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <ul style="margin-top:10px;margin-left:10px;" id="note">
+                        <li class="smalltext"><b>Exercise:</b> 15-30 minutes of elevated heart rate activity.</li>
+                        <li class="smalltext"><b>Intense exercise:</b> 45-120 minutes of elevated heart rate activity.</li>
+                        <li class="smalltext"><b>Very intense exercise:</b> 2+ hours of elevated heart rate activity.</li>
+                    </ul>
+                </div>                
+            </div><!-- col-md-6 -->
+            <div class="col-lg-7 col-md-12 col-sm-12">
+                <div class="form-group" id="divResult" style="display:none;">
+                    <h5 style="background:#ef0031;display:block;padding:5px 10px;color:#ffffff;">Your Result</h5>
+                    <p>
+                        The results show a number of daily calorie estimates that can be used as a
+                        guideline for how many calories to consume each day to maintain, lose,
+                        or gain weight at a chosen rate.
+                    </p><br/>
+                    <table cellspacing="2" class="table result-table">
+                        <tr>
+                            <td><b>Maintain Weight</b></td>
+                            <td>
+                                <b class="calorie">{{CalorieResult.MaintainWeight}}</b>
+                                <span class="calorie-per">{{CalorieResult.MaintainWeightPer}}</span>
+                                <br />
+                                <span class="calorie-text">Calories/day</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Mild weight loss</b><br />
+                                <span class="calorie-text">0.5 lb(0.23kg)/week</span>
+                            </td>
+                            <td>
+                                <b class="calorie">{{CalorieResult.MildWeightLoss}}</b>
+                                <span class="calorie-per">{{CalorieResult.MildWeightPer}}</span>
+                                <br />
+                                <span class="calorie-text">Calories/day</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Weight loss</b><br />
+                                <span class="calorie-text">1 lb(0.45kg)/week</span>
+                            </td>
+                            <td>
+                                <b class="calorie">{{CalorieResult.WeightLoss}}</b>
+                                <span class="calorie-per">{{CalorieResult.WeightLossPer}}</span>
+                                <br />
+                                <span class="calorie-text">Calories/day</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Extreme weight loss</b><br />
+                                <span class="calorie-text">2 lb(0.9kg)/week</span>
+                            </td>
+                            <td>
+                                <b class="calorie">{{CalorieResult.ExtremeWeightLoss}}</b>
+                                <span class="calorie-per">{{CalorieResult.ExtremeWeightper}}</span>
+                                <br />
+                                <span class="calorie-text">Calories/day</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group" id="divMessage" style="display:none;">
+                    <br/>
+                    <br/>
+                    <b class="calorie center-text text-danger">
+                        {{CalorieResult.MESSAGE}}
+                    </b>
+                </div>
+                <div class="form-group center-text" id="divLoader" style="display:none;">
+                    <br /><br/>
+                    <center>
+                        <img src="~/images/Loader/Calc_loader.gif" />
+                    </center>
+                    <br/>
+                    <span>Calculating your calorie. Please wait...</span>
+                </div>
+            </div>
+        </div><!-- row -->       
+    </div><!-- container -->
+</section>

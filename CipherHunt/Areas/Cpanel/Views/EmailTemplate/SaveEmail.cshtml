@@ -1,0 +1,119 @@
+﻿@model CipherHunt.Areas.Cpanel.Models.EmailtemplateModel
+
+@{
+    ViewBag.Title = "Save Email";
+}
+<link href="~/Content/Custom/image_mask.css" rel="stylesheet" />
+<script src="~/Theme/ckeditor/ckeditor.js"></script>
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { @role = "form", @id = "f1", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-user card-radius-none">
+                <div class="card-header card-header-primary">
+                    <div class="card company"></div>
+                    <h5 class="card-title">Email template</h5>
+                    @if (Model.FLAG == "u")
+                    {
+                        @Html.HiddenFor(m => m.TEMP_ID)
+                        @Html.HiddenFor(m => m.TEMP_NAME)
+                    }
+                    @Html.HiddenFor(m => m.FLAG)
+                </div>
+                <div class="card-body pd-lr-30">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @if (ViewBag.Message != null)
+                                {
+                                    <div class="alert alert-danger" role="alert">
+                                        <i class="fa fa-danger"></i><span>@ViewBag.Message;</span>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ID to be replace</th>
+                                            <th>Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.StaticDatas)
+                                        {
+                                            <tr>
+                                                <td>@item.STATIC_DATA</td>
+                                                <td>@item.DESCRIPTION</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.TEMP_NAME, "Template Name", new { @class = "" })
+                                        @if (Model.FLAG == "u")
+                                        {
+                                            @Html.TextBoxFor(m => m.TEMP_NAME, new { @class = "form-control", autocomplete = "off",disabled="disabled" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(m => m.TEMP_NAME, new { @class = "form-control", autocomplete = "off" })
+                                        }
+                                        @Html.ValidationMessageFor(m => m.TEMP_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.TEMP_EMAIL_SUBJECT, "Email subject", new { @class = "" })
+                                        @Html.TextBoxFor(m => m.TEMP_EMAIL_SUBJECT, new { @class = "form-control", autocomplete = "off" })
+                                        @Html.ValidationMessageFor(m => m.TEMP_EMAIL_SUBJECT, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.TEMP_EMAIL_BODY, "Email Body", new { @class = "" })
+                                        @Html.TextAreaFor(m => m.TEMP_EMAIL_BODY, new { @class = "form-control", autocomplete = "off", rows = "3" })
+                                        <script>
+                                            CKEDITOR.replace("TEMP_EMAIL_BODY");
+                                        </script>
+                                        @Html.ValidationMessageFor(m => m.TEMP_EMAIL_BODY, "", new { @class = "text-danger" })
+                                    </div>
+                                    @if (Model.FLAG == "u")
+                                    {
+                                        <div class="form-group">
+                                            @Html.CheckBoxFor(m => m.enable) Enabled? &nbsp; &nbsp;
+                                            @Html.CheckBoxFor(m => m.Response) Response to admin?
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="btn-group" role="group">
+                                            @Html.ActionLink("Back to List", "Index", "EmailTemplate", "", new { @class = "btn btn-warning btn-round" })
+                                            <input type="submit" class="btn btn-success btn-round" value="Save" />
+                                        </div>
+                                        <br /><br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts{
+    <script>
+
+    </script>
+}

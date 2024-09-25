@@ -1,0 +1,99 @@
+﻿@model CipherHunt.Areas.Cpanel.Models.AuthenticatorModel
+@{
+    ViewBag.Title = "Authenticaton";
+    Layout = "~/Areas/Cpanel/Views/Shared/_PlainLayout.cshtml";
+}
+<style>
+    .apple-badge:hover, .apple-badge:active {
+        color: #ffffff !important;
+    }
+
+    .apple-badge i, .android-badge i {
+        float: left;
+        font-size: 40px;
+        margin-right: 15px;
+        margin-top: 2px;
+    }
+
+    .apple-badge, .android-badge {
+        display: inline-block;
+        text-align: left;
+    }
+
+    .apple-badge {
+        background: linear-gradient(90deg, #0a0a0a 0%, #2b2929 100%) !important;
+    }
+
+        .apple-badge span, .android-badge span {
+            display: block;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+    .apple-badge, .android-badge {
+        overflow: hidden;
+        display: block;
+        padding: 5px 13px;
+        border-radius: 10px;
+        float: left;
+        margin-right: 15px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 12px;
+        width: 175px;
+        line-height: 19px;
+        position: relative;
+        border: 2px solid #545252;
+    }
+
+    .box-card {
+        padding: 50px 10px;
+    }
+</style>
+<div class="container">
+    <div class="box-card">
+        <div class="row">
+            <div class="col-md-6">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                @Html.HiddenFor(m => m.UserName)
+                                <img height="70" src="@Url.Content("~/images/Icons/GoogleAuthenticator.png")" /> 2 Factor Authenticator
+                                <br /><br />
+                            </div>
+                            <div class="form-group">
+                                <b>Hi @Model.UserName,</b><br /><br />
+                                Please enter your 6 digit OTP code to continue.<br />
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.OTPCode, "Verification Code*", new { @class = "control-label" })
+                                @Html.TextBoxFor(m => m.OTPCode, new { @class = "form-control", autocomplete = "off", minlength = 6, maxlength = 6, placeholder = "xxxxxx", onkeypress = "return isNumberKey(event)" })
+                                @Html.ValidationMessageFor(m => m.OTPCode, "", new { @class = "text-danger" })
+                            </div>
+                            <button type="submit" class="btn btn-success btn-round">Verify</button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-6">
+                <img src="@Url.Content("~/images/Content/GAuthenticator.png")" width="250" />
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    @if (ViewBag.Message != null)
+    {
+        <script>
+            Alert("error",'@ViewBag.Message');
+        </script>
+    }
+}
