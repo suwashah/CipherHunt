@@ -305,17 +305,13 @@
     <Content Include="images\icon-boxes.png" />
     <Content Include="images\icons.png" />
     <Content Include="images\Icons\add_product.png" />
-    <Content Include="images\Icons\cart_animation.gif" />
-    <Content Include="images\Icons\cart_animation1.gif" />
     <Content Include="images\Icons\category.png" />
-    <Content Include="images\Icons\chef.png" />
     <Content Include="images\Icons\cpanel.png" />
+    <Content Include="images\Icons\ctf_flag_logo.gif" />
     <Content Include="images\Icons\customer.png" />
     <Content Include="images\Icons\customers.png" />
-    <Content Include="images\Icons\delivery-bike.png" />
     <Content Include="images\Icons\GoogleAuthenticator.png" />
     <Content Include="images\Icons\icon-success.png" />
-    <Content Include="images\Icons\microwave.png" />
     <Content Include="images\Icons\money.png" />
     <Content Include="images\Icons\pending.png" />
     <Content Include="images\Icons\placeholder.png" />
@@ -413,6 +409,7 @@
     <Content Include="Areas\Cpanel\Views\Challenge\PendingChallenges.cshtml" />
     <Content Include="Areas\Cpanel\Views\Challenge\SaveCategory.cshtml" />
     <Content Include="Areas\Cpanel\Views\Challenge\SaveChallenge.cshtml" />
+    <Content Include="Areas\Cpanel\Views\Shared\_Partial\_Head.cshtml" />
     <None Include="Scripts\jquery-3.5.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.0.js" />
     <Content Include="Scripts\jquery-3.5.0.min.js" />

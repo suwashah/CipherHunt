@@ -3,6 +3,8 @@
 @import url('aos/aos.css');
 @import url('swiper/swiper-bundle.min.css');
 @import url('glightbox/css/glightbox.min.css');
-
+@import url('animate.css');
+@import url('Common.css');
+@import url('Animations/animate.css');
 
 @import url('main.css');

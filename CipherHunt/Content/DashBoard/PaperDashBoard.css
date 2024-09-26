@@ -86,9 +86,10 @@ table.dataTable {
 }
 .box-card {
     box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
-    background:#ffffff;
-    border-radius:3px;
-    padding:20px;
+    background: #252422;
+    border-radius: 3px;
+    color:#eef1f33d !important;
+    padding: 20px;
 }
 
 .li-header {
