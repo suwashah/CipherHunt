@@ -133,6 +133,11 @@ namespace CipherHunt.Areas.Cpanel.Controllers
                 model.FLAG = "u";
                 model.CTF_FLAG = ch.CTF_FLAG;
                 model.IMAGENAME = ch.IMAGENAME;
+                model.HINT_1=ch.HINT_1;
+                model.HINT_2 = ch.HINT_2;
+                model.HINT_3 = ch.HINT_3;
+                model.INTENDED_LEARNING = ch.INTENDED_LEARNING;
+                model.CHALLENGE_SOLUTION = ch.CHALLENGE_SOLUTION;
             }
             else
             {
@@ -194,7 +199,12 @@ namespace CipherHunt.Areas.Cpanel.Controllers
                     UPDATE_BY = CurrentUser.Name,
                     IMAGE = bytes,
                     IMAGENAME = ImageName,
-                    IS_ENABLE = model.IS_ENABLE
+                    IS_ENABLE = model.IS_ENABLE,
+                    HINT_1 = model.HINT_1,
+                    HINT_2 = model.HINT_2,
+                    HINT_3 = model.HINT_3,
+                    INTENDED_LEARNING = model.INTENDED_LEARNING,
+                    CHALLENGE_SOLUTION = model.CHALLENGE_SOLUTION
                 };
                 var ret = _ich.SaveChallenge(post);
                 if (ret.CODE == "0")

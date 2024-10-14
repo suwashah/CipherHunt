@@ -42,7 +42,12 @@ namespace Repository.Challenge
                 new SqlParameter("@CTF_FLAG",inp.CTF_FLAG),
                 new SqlParameter("@IS_ENABLE",inp.IS_ENABLE),
                 new SqlParameter("@CREATE_BY",inp.CREATE_BY),
-                new SqlParameter("@UPDATE_BY",inp.UPDATE_BY)
+                new SqlParameter("@UPDATE_BY",inp.UPDATE_BY),
+                new SqlParameter("@HINT_1",inp.HINT_1),
+                new SqlParameter("@HINT_2",inp.HINT_2),
+                new SqlParameter("@HINT_3",inp.HINT_3),
+                new SqlParameter("@INTENDED_LEARNING",inp.INTENDED_LEARNING),
+                new SqlParameter("@CHALLENGE_SOLUTION",inp.CHALLENGE_SOLUTION)
             };
             //sqlParam.DbType = DbType.Binary;
             DataTable dt = dao.ExecuteDataTableSP("[dbo].[spa_Challenge]", param, CommandType.StoredProcedure);
@@ -85,7 +90,12 @@ namespace Repository.Challenge
                         UPDATE_BY = dr["UPDATE_BY"].ToString(),
                         UPDATE_TS = dr["UPDATE_TS"].ToString(),
                         IS_VERIFIED = Convert.ToBoolean(dr["IS_VERIFIED"]),
-                        VERIFIED_BY = dr["VERIFIED_BY"].ToString()
+                        VERIFIED_BY = dr["VERIFIED_BY"].ToString(),
+                        HINT_1 = dr["HINT_1"].ToString(),
+                        HINT_2 = dr["HINT_2"].ToString(),
+                        HINT_3 = dr["HINT_3"].ToString(),
+                        INTENDED_LEARNING = dr["INTENDED_LEARNING"].ToString(),
+                        CHALLENGE_SOLUTION = dr["CHALLENGE_SOLUTION"].ToString()
                     });
                 }
             }
@@ -118,6 +128,11 @@ namespace Repository.Challenge
                 lst.IS_VERIFIED = Convert.ToBoolean(dt.Rows[0]["IS_VERIFIED"]);
                 lst.VERIFIED_BY = dt.Rows[0]["VERIFIED_BY"].ToString();
                 lst.CTF_FLAG = dt.Rows[0]["FLAG"].ToString();
+                lst.HINT_1 = dt.Rows[0]["HINT_1"].ToString();
+                lst.HINT_2 = dt.Rows[0]["HINT_2"].ToString();
+                lst.HINT_3 = dt.Rows[0]["HINT_3"].ToString();
+                lst.INTENDED_LEARNING = dt.Rows[0]["INTENDED_LEARNING"].ToString();
+                lst.CHALLENGE_SOLUTION = dt.Rows[0]["CHALLENGE_SOLUTION"].ToString();
             }
             return lst;
         }

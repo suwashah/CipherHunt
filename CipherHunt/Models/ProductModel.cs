@@ -113,6 +113,15 @@ namespace CipherHunt.Models
         public String VERIFIED_BY { get; set; }
         public HttpPostedFileBase ImageFile { get; set; }
 
+        public String HINT_1 { get; set; }
+        public String HINT_2 { get; set; }
+
+        public String HINT_3 { get; set; }
+
+        public String INTENDED_LEARNING { get; set; }
+
+        public String CHALLENGE_SOLUTION { get; set; }
+
     }
 
 }
