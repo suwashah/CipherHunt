@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Create Post - Thought Space{% endblock %}
+
+{% block content %}
+
+<article class="post">
+
+    <h2 class="mt-5">Create a New Blog Post</h2>
+    <form action="{{ url_for('create_post') }}" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea class="form-control" id="content" name="content" rows="50"></textarea>
+        </div>
+        <div class="form-check mb-3">
+            <label class="form-check-label" for="image">Image</label>
+            <input type="file" class="form-control" id="image" name="image">
+            
+        </div>
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="encrypted" name="encrypted">
+            <label class="form-check-label" for="encrypted">Encrypt Content</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Post</button>
+    </form>
+</article>
+    <!-- CKEditor CDN -->
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.js",
+                "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.1.0/"
+            }
+        }
+    </script>
+    <script type="module">
+        import {
+            ClassicEditor,
+            Essentials,
+            Paragraph,
+            Bold,
+            Italic,
+            Font
+        } from 'ckeditor5';
+
+        ClassicEditor
+            .create( document.querySelector( '#content' ), {
+                plugins: [ Essentials, Paragraph, Bold, Italic, Font ],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                ]
+            } )
+            .then( editor => {
+                window.editor = editor;
+            } )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+   
+{% endblock %}

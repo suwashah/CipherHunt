@@ -1,0 +1,17 @@
+---
+name: "thekeytoaccess"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - FLAG=flag{None_Algorithm_Takes_Down_Auth}
+    command: python app.py
+    ports:
+      - 8019:5000
+    networks:
+      - thekeytoaccess_net
+
+networks:
+  thekeytoaccess_net:

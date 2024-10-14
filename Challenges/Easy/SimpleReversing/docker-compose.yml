@@ -1,0 +1,20 @@
+---
+name: "simplereversing"
+
+services:
+  app:
+    build:  
+      context: .
+      args:
+        - FLAG=flag{simple_reverser}
+    # stdin_open: true
+    # tty: true
+    command: python simple_reversing.py
+    ports:
+      - 8013:5000
+    networks:
+      - simplereversing_net
+
+networks:
+  simplereversing_net:
+

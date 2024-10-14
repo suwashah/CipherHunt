@@ -1,0 +1,25 @@
+<!-- templates/transaction/flag.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Get Flag</h2>
+<button id="getFlagButton">Get Flag</button>
+<div id="flagResult"></div>
+
+<script>
+document.getElementById('getFlagButton').addEventListener('click', function() {
+    fetch('/flag', {
+        method: 'GET',
+        credentials: 'include'
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            document.getElementById('flagResult').textContent = data.error;
+        } else {
+            document.getElementById('flagResult').textContent = `Flag: ${data.flag}`;
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post[1] }} - Thought Space{% endblock %}
+
+{% block content %}
+
+<!-- Post -->
+<article class="post">
+    <header>
+        <div class="title">
+            <h2><a href="#">{{ post[1] }}</a></h2>
+            <p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p>
+        </div>
+        <div class="meta">{{post[6]}}</time>
+            <a href="#" class="author"><span class="name">{{post[7]}}</span><img src="{{ url_for('static', filename='images/avatar.jpg') }}" alt="" /></a>
+        </div>
+    </header>
+    {% if post[2] %}
+    <span class="image featured"><img src="{{ url_for('static', filename='blogs/'+post[2]) }}" alt="" /></span>
+    {% endif %}
+        {% if post[4] == 1 %}
+            <em>(This post is encrypted. Decrypt it to read the content.)</em>
+        {% else %}
+            {{ post[3] | safe }}
+        {% endif %}
+    <footer>
+        <ul class="stats">
+            <li><a href="#">Comments</a></li>
+            <li><a href="#" class="icon solid fa-comment">128</a></li>
+        </ul>
+    </footer>
+    <ul class="list-group">
+        {% for comment in comments %}
+        <li class="list-group-item"><b>{{comment[4]}}</b>: {{ comment[2] }}</li>
+        {% endfor %}
+    </ul>
+
+    <form method="POST" action="/post/{{ post[0] }}/comment" class="mt-4">
+        <div class="mb-3">
+            <label for="comment" class="form-label">Add a comment</label>
+            <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</article>
+
+{% endblock %}

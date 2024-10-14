@@ -1,0 +1,18 @@
+---
+name: "thoughtspace"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - FLAG1=flag{decoding_
+        - FLAG3=}seiretsym_:3galf
+    command: python app.py
+    ports:
+      - 8017:5000
+    networks:
+      - thoughtspace_net
+
+networks:
+  thoughtspace_net:

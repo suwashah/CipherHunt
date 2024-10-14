@@ -1,0 +1,16 @@
+---
+name: "webinspector"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - FLAG=flag{basic_html_structure}
+    ports:
+      - 8008:80
+    networks:
+      - webinspector_net
+
+networks:
+  webinspector_net:

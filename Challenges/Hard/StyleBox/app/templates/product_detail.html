@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} | StyleBox{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ url_for('static', filename='images/products/' + product.image) }}" alt="{{ product.name }}" style="width:300px;height:auto;">
+    </div>
+    <div class="col-md-6">
+        <h2>{{ product.name }}</h2>
+        <p><strong>Price:</strong> ${{ product.price }}</p>
+        <p><strong>Description:</strong> {{ product.description }}</p>
+        
+        <p><strong>Category:</strong> {{ product.category.name }}</p>
+        
+        <p><strong>Added By:</strong> {{ product.creator.username if product.creator else 'Unknown' }}</p>
+        <a href="{{ url_for('product.index') }}">Back to Products</a>
+
+        {% if not is_admin %}
+        <form action="{{ url_for('product.add_to_order', product_id=product.id) }}" method="POST">
+            <div class="form-group">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" id="quantity" min="1" value="1" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Add to Order</button>
+        </form>
+        {%else%}            
+            <input type="hidden" value="{{flag}}"/>
+        {% endif%}
+        
+    </div>
+</div>
+    
+{% endblock %}

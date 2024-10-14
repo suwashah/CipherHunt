@@ -1,0 +1,17 @@
+---
+name: "webhidden"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - FLAG=flag{hidden_in_web}
+    command: python app.py
+    ports:
+      - 8012:5000
+    networks:
+      - webhidden_net
+
+networks:
+  webhidden_net:

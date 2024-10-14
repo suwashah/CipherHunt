@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Your Transactions</h2>
+
+{% if transactions %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Transaction ID</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>${{ transaction.total_amount }}</td>
+                <td>{{ transaction.status }}</td>
+                <td>{{ transaction.created_ts.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <input type="hidden" value="{{flag}}"/>
+{% else %}
+    <p>No transactions found.</p>
+{% endif %}
+
+{% endblock %}

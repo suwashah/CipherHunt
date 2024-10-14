@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Transfer Money{% endblock %}
+
+{% block content %}
+
+
+<div class="container mt-5">
+    <h2>Session Cookie Decoder</h2>
+    
+    <form id="decoder-form" method="POST" action="{{ url_for('tool.decoder') }}">
+        <div class="form-group">
+            <label for="cookievalue">Enter Encoded Session Cookie</label>
+            <textarea class="form-control" id="cookievalue" name="cookievalue" rows="4" required></textarea>
+        </div>
+        <div class="form-group"></div>
+            <label for="password">Enter Password</label>
+            <input type="password" class="form-control" id="password" name="password" required />
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Decode</button>
+    </form>
+
+    {% if decoded_string %}
+    <div class="mt-5">
+        <h4>Decoded Session Data</h4>
+        <pre>{{ decoded_string }}</pre>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

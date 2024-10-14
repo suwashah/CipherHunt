@@ -1,0 +1,11 @@
+<!-- templates/user/user_details.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>User Details</h2>
+<div>
+    <p><strong>ID:</strong> {{ user.id }}</p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Balance:</strong> {{ user.balance }}</p>
+</div>
+{% endblock %}

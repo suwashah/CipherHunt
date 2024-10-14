@@ -1,0 +1,17 @@
+---
+name: "secretbarrier"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - FLAG=flag{secret_gateway_opened}
+    command: python app.py
+    ports:
+      - 8014:5000
+    networks:
+      - secretbarrier_net
+
+networks:
+  secretbarrier_net:

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Categories | StyleBox{% endblock %}
+
+{% block content %}
+<h1>Manage Categories</h1>
+<form method="POST" action="{{ url_for('category.add') }}">
+    <div class="mb-3">
+        <label for="categoryName" class="form-label">Category Name</label>
+        {{ form.name(class_='form-control') }}
+    </div>
+    <button type="submit" class="btn btn-primary">Add Category</button>
+</form>
+
+<hr>
+
+<h2>Existing Categories</h2>
+<ul class="list-group">
+    {% for category in categories %}
+    <li class="list-group-item">{{ category.name | sec }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

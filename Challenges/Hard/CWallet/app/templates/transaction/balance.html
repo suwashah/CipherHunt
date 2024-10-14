@@ -1,0 +1,29 @@
+<!-- templates/transaction/balance.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Check Balance</h2>
+<form id="balanceForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    <button type="submit">Check Balance</button>
+</form>
+<div id="balanceResult"></div>
+
+<script>
+document.getElementById('balanceForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var username = document.getElementById('username').value;
+
+    fetch('/balance/' + encodeURIComponent(username))
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('balanceResult').textContent = data.error;
+            } else {
+                document.getElementById('balanceResult').textContent = `Balance: ${data.balance}`;
+            }
+        });
+});
+</script>
+{% endblock %}
