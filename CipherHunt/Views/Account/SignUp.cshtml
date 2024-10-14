@@ -80,7 +80,7 @@
                 <div class="">
                     @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
                     <div class="wrap-input100 validate-input" data-validate="Mobile number is required">
-                        @Html.TextBoxFor(m => m.Mobile, new { @class = "input100", autocomplete = "off", minLength = "10", maxLength = "10", onkeypress = "return isNumberKey(event)" })
+                        @Html.TextBoxFor(m => m.Mobile, new { @class = "input100", autocomplete = "off", minLength = "8", maxLength = "10", onkeypress = "return isNumberKey(event)" })
                         <span class="focus-input100"></span>
                         <span class="label-input100">
                             <img src="@Url.Content("~/images/Flags/"+Model.ISO2+".png")" height="15" />
@@ -158,14 +158,14 @@
         </div>
     </div>
 </div>
-<div id="progress" class="modal_loader">
+@*<div id="progress" class="modal_loader">
     <div class="center">
         <center>
             @Html.Partial("_Partial/_Loader")
         </center>
         <br />Registration in proccess. Please wait...
     </div>
-</div>
+</div>*@
 @section scripts{
     <script>
         AgreeTerms()
