@@ -1,0 +1,17 @@
+---
+name: "eclipsedfeedback"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - FLAG=flag{XSS_Injection_Detected}
+    command: python app.py
+    ports:
+      - 8015:5000
+    networks:
+      - eclipsedfeedback_net
+
+networks:
+  eclipsedfeedback_net:

@@ -201,23 +201,26 @@ namespace Repository.Common
         {
             List<SystemActivity> ret = new List<SystemActivity>();
             DataTable dt = dao.ExecuteDataTable("spa_CP_System_Activity @flag=" + dao.singleQuote(flag));
-            foreach (DataRow dr in dt.Rows)
+            if (dt != null && dt.Rows.Count > 0)
             {
-                ret.Add(new SystemActivity
+                foreach (DataRow dr in dt.Rows)
                 {
-                    LOGID = dr["LOGID"].ToString(),
-                    MESSAGE = dr["MESSAGE"].ToString(),
-                    MSG = dr["MSG"].ToString(),
-                    CREATE_TS = dr["CREATE_TS"].ToString(),
-                    TABLE_NAME = dr["TABLE_NAME"].ToString(),
-                    ICON = dr["ICON"].ToString(),
-                    BTNCLASS = dr["BTNCLASS"].ToString(),
-                    POSTED_ON = dr["POSTED_ON"].ToString(),
-                    SEEN_STATUS = dr["SEEN_STATUS"].ToString(),
-                    SEEN_BY = dr["SEEN_BY"].ToString()
-                    //SEEN_USER_PIC = fup.GetImageSource(dr["SEEN_USER_PIC"])
-                });
-            }
+                    ret.Add(new SystemActivity
+                    {
+                        LOGID = dr["LOGID"].ToString(),
+                        MESSAGE = dr["MESSAGE"].ToString(),
+                        MSG = dr["MSG"].ToString(),
+                        CREATE_TS = dr["CREATE_TS"].ToString(),
+                        TABLE_NAME = dr["TABLE_NAME"].ToString(),
+                        ICON = dr["ICON"].ToString(),
+                        BTNCLASS = dr["BTNCLASS"].ToString(),
+                        POSTED_ON = dr["POSTED_ON"].ToString(),
+                        SEEN_STATUS = dr["SEEN_STATUS"].ToString(),
+                        SEEN_BY = dr["SEEN_BY"].ToString()
+                        //SEEN_USER_PIC = fup.GetImageSource(dr["SEEN_USER_PIC"])
+                    });
+                }
+            }                
             return ret;
         }
 
@@ -226,22 +229,25 @@ namespace Repository.Common
             List<SystemActivity> ret = new List<SystemActivity>();
             DataTable dt = dao.ExecuteDataTable("spa_CP_System_Activity @flag='sa'" +
                 ",@userid=" + dao.singleQuote(userid));
-            foreach (DataRow dr in dt.Rows)
+            if (dt != null && dt.Rows.Count > 0)
             {
-                ret.Add(new SystemActivity
+                foreach (DataRow dr in dt.Rows)
                 {
-                    LOGID = dr["LOGID"].ToString(),
-                    MESSAGE = dr["MESSAGE"].ToString(),
-                    MSG = dr["MSG"].ToString(),
-                    CREATE_TS = dr["CREATE_TS"].ToString(),
-                    TABLE_NAME = dr["TABLE_NAME"].ToString(),
-                    ICON = dr["ICON"].ToString(),
-                    BTNCLASS = dr["BTNCLASS"].ToString(),
-                    POSTED_ON = dr["POSTED_ON"].ToString(),
-                    SEEN_STATUS = dr["SEEN_STATUS"].ToString(),
-                    SEEN_BY = dr["SEEN_BY"].ToString()
-                    //SEEN_USER_PIC = fup.GetImageSource(dr["SEEN_USER_PIC"])
-                });
+                    ret.Add(new SystemActivity
+                    {
+                        LOGID = dr["LOGID"].ToString(),
+                        MESSAGE = dr["MESSAGE"].ToString(),
+                        MSG = dr["MSG"].ToString(),
+                        CREATE_TS = dr["CREATE_TS"].ToString(),
+                        TABLE_NAME = dr["TABLE_NAME"].ToString(),
+                        ICON = dr["ICON"].ToString(),
+                        BTNCLASS = dr["BTNCLASS"].ToString(),
+                        POSTED_ON = dr["POSTED_ON"].ToString(),
+                        SEEN_STATUS = dr["SEEN_STATUS"].ToString(),
+                        SEEN_BY = dr["SEEN_BY"].ToString()
+                        //SEEN_USER_PIC = fup.GetImageSource(dr["SEEN_USER_PIC"])
+                    });
+                }
             }
             return ret;
         }
@@ -249,22 +255,25 @@ namespace Repository.Common
         {
             List<SystemActivity> ret = new List<SystemActivity>();
             DataTable dt = dao.ExecuteDataTable("spa_CP_System_Activity @flag='h'");
-            foreach (DataRow dr in dt.Rows)
+            if (dt != null && dt.Rows.Count > 0)
             {
-                ret.Add(new SystemActivity
+                foreach (DataRow dr in dt.Rows)
                 {
-                    LOGID = dr["LOGID"].ToString(),
-                    MESSAGE = dr["MESSAGE"].ToString(),
-                    MSG = dr["MSG"].ToString(),
-                    CREATE_TS = dr["CREATE_TS"].ToString(),
-                    TABLE_NAME = dr["TABLE_NAME"].ToString(),
-                    ICON = dr["ICON"].ToString(),
-                    BTNCLASS = dr["BTNCLASS"].ToString(),
-                    POSTED_ON = dr["POSTED_ON"].ToString(),
-                    SEEN_STATUS = dr["SEEN_STATUS"].ToString(),
-                    SEEN_BY = dr["SEEN_BY"].ToString()
-                    //SEEN_USER_PIC = fup.GetImageSource(dr["SEEN_USER_PIC"])
-                });
+                    ret.Add(new SystemActivity
+                    {
+                        LOGID = dr["LOGID"].ToString(),
+                        MESSAGE = dr["MESSAGE"].ToString(),
+                        MSG = dr["MSG"].ToString(),
+                        CREATE_TS = dr["CREATE_TS"].ToString(),
+                        TABLE_NAME = dr["TABLE_NAME"].ToString(),
+                        ICON = dr["ICON"].ToString(),
+                        BTNCLASS = dr["BTNCLASS"].ToString(),
+                        POSTED_ON = dr["POSTED_ON"].ToString(),
+                        SEEN_STATUS = dr["SEEN_STATUS"].ToString(),
+                        SEEN_BY = dr["SEEN_BY"].ToString()
+                        //SEEN_USER_PIC = fup.GetImageSource(dr["SEEN_USER_PIC"])
+                    });
+                }
             }
             return ret;
         }

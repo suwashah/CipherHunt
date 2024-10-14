@@ -83,7 +83,7 @@
 .text-inner-shadow {
     background-color: #565656;
     color: transparent;
-    text-shadow: 2px 2px 3px rgba(255,255,255,0.5);
+    /*text-shadow: 2px 2px 3px rgba(255,255,255,0.5);*/
     -webkit-background-clip: text;
     -moz-background-clip: text;
     background-clip: text;
@@ -99,7 +99,6 @@
 .form-title {
     font-size: 24px;
     color: #e49f22;
-    text-shadow: 1px 2px 1px #ffffff !important;
     margin-left: 15px;
 }
 .pd-30{
@@ -225,7 +224,6 @@
 .footer {
     width: 100%;
     color: #8e8d8b;
-    background-color: #ebeff0 !important;
     font-size: 14px;
     padding-top: 20px;
     margin-top: 20px;
@@ -334,7 +332,7 @@ span.count {
     background: none;
     outline: none;
     cursor: pointer;
-    color: #f0bc5e;
+    color: #ff8b24;
     margin-right: 10px;
 }
 
@@ -353,4 +351,17 @@ span.count {
 table tbody .group-header {
     background: #c5ad80 !important;
     color: #ffffff;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #d4d8db !important;
+    vertical-align: top;
+    border-color: #212529;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+    --bs-table-accent-bg: var(--bs-table-striped-bg);
+    color: #d4d8db !important;
 }

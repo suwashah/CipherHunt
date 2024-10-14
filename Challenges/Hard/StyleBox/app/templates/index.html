@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | StyleBox{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to StyleBox!</h1>
+    <p class="lead">Your go-to online store for the latest fashion trends.</p>
+    <hr class="my-4">
+    <p>Browse our collection, choose your favorite styles, and order today!</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('product.index') }}" role="button">Shop Now</a>
+</div>
+{% endblock %}

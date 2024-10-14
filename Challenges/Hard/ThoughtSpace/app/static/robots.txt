@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /cgi-bin/
+L2Fzc2V0cy9qcy9icm93c2VyLm1pbi5qcw==
+Disallow: /hidden-flag/
+Disallow: /admin/
+Disallow: /api/user-details/
+L2Fzc2V0cy9qcy9tYWluLmpz
+Disallow: /internal-data/
+L2Fzc2V0cy9qcy9teXJvYm90LnR4dA==
+Disallow: /secret-page/
+L2Fzc2V0cy9qcy91dGlsLmpz

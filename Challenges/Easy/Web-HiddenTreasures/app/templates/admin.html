@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block title %}Flag{% endblock %}
+
+{% block content %}
+<h1>Admin messages</h1>
+{% if admin==False %}
+<p style="color: green;">Congratulations! you have accessed the admin messages. 
+    You should also be able to find flag.</p>
+    {% endif%}
+<table class="table">
+    <tr>
+        <th>Date</th>
+        <th>Message</th>
+    </tr>
+    {% for message in messages %}
+    <tr>
+        <td>{{ message.date }}</td>
+        <td>{{ message.message }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% if admin==False %}
+<p style="display:none;">{{flag}}</p>
+{% else %}
+<p><b>FLAG:</b> {{flag}}</p>
+{% endif%}
+{% endblock %}

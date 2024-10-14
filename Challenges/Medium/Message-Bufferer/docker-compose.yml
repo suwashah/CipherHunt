@@ -1,0 +1,11 @@
+services:
+  challenge:
+    build:
+      context: .
+      args:
+        - FLAG=flag{binary_exploitation}
+      dockerfile: Dockerfile
+    image: pwn-image
+    container_name: pwn-challenge
+    ports:
+      - "1223:1223"

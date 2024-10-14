@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+{%if ctf_browser%}
+
+
+<h2>Welcome to the Employee Management Dashboard, {{ session['username'] }}!</h2>
+<p>Select an option from the menu to manage employees or explore other functionalities.</p>
+
+{%if hash_key%}
+<p>This is your secret key to decrypt the flag: {{hash_key}}</p>
+{%endif%}
+
+
+{% else %}
+<p>To view this content, you should login from <b>ctfbrowser</b></p>
+{% endif %}
+
+{% endblock %}

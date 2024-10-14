@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>{% block title %}Thought Space{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.0/ckeditor5.css">
+     <!-- Scripts -->
+	<script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+    <style>
+        body {
+            padding-top: 56px; 
+        }
+        .img-container {
+            height: 200px; 
+            overflow: hidden; 
+        }
+
+        .img-container img {
+            width: 100%; 
+            height: 100%;
+            object-fit: cover; 
+        }
+       
+        .text-danger{
+            color:red;
+        }
+    </style>
+</head>
+<body class="is-preload">
+<div id="wrapper">
+<!-- Header -->
+<header id="header">
+    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/ts_logo.png') }}" style="height:60px;"/></a>
+    <nav class="links">
+        <ul>
+            {% if 'username' in session %}
+            <li>
+                <a href="{{ url_for('create_post') }}">Create Post</a>
+            </li>           
+            {% endif %}          
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="#">
+                    <input type="text" name="query" placeholder="Search" />
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Menu -->
+<section id="menu">
+
+    <!-- Search -->
+        <section>
+            <form class="search" method="get" action="#">
+                <input type="text" name="query" placeholder="Search" />
+            </form>
+        </section>
+
+    <!-- Links -->
+        <section>
+            <ul class="links">
+                {% if session.get('username') %}
+                <li>
+                    <a href="#">
+                        <h3>Welcome</h3>
+                        <p>{{session['username']}}</p>
+                    </a>
+                </li>        
+                {% endif %} 
+            </ul>
+        </section>
+
+    <!-- Actions -->
+        <section>
+            <ul class="actions stacked">
+
+                {% if 'username' in session %}
+                <li><a href="{{ url_for('logout') }}" class="button large fit">Log Out</a></li>              
+                {% else %}
+                <li><a href="{{ url_for('login') }}" class="button large fit">Log In</a></li>
+                {% endif %}
+                
+            </ul>
+        </section>
+
+</section>
+<!-- Main -->
+<div id="main">    
+    {% block content %}
+    <!-- Content goes here -->
+    {% endblock %}
+</div>
+{% block sidepanel %}
+
+    {% endblock %}
+    
+	<script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+	<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+</body>
+</html>

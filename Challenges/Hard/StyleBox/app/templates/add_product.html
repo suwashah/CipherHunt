@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Add New Product</h1>
+
+<!-- Flash messages for error or success -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flashes">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Product Add Form -->
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        <label for="name">Product Name</label>
+        {{ form.name(class="form-control", placeholder="Enter product name") }}
+        {% if form.name.errors %}
+            <small class="form-text text-danger">
+                {% for error in form.name.errors %}
+                    {{ error }}
+                {% endfor %}
+            </small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price</label>
+        {{ form.price(class="form-control", placeholder="Enter product price") }}
+        {% if form.price.errors %}
+            <small class="form-text text-danger">
+                {% for error in form.price.errors %}
+                    {{ error }}
+                {% endfor %}
+            </small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="image">Image URL</label>
+        {{ form.image(class="form-control", placeholder="Enter product image URL") }}
+        {% if form.image.errors %}
+            <small class="form-text text-danger">
+                {% for error in form.image.errors %}
+                    {{ error }}
+                {% endfor %}
+            </small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        {{ form.description(class="form-control", placeholder="Enter product description") }}
+        {% if form.description.errors %}
+            <small class="form-text text-danger">
+                {% for error in form.description.errors %}
+                    {{ error }}
+                {% endfor %}
+            </small>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="category">Category</label>
+        {{ form.category(class="form-control") }}
+        {% if form.category.errors %}
+            <small class="form-text text-danger">
+                {% for error in form.category.errors %}
+                    {{ error }}
+                {% endfor %}
+            </small>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Product</button>
+</form>
+
+<!-- Back to Product List -->
+<a href="{{ url_for('product.index') }}" class="btn btn-secondary">Back to Products</a>
+{% endblock %}
+
+

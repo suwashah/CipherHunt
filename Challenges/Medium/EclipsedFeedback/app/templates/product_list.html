@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Product List{% endblock %}
+
+{% block content %}
+    <h2>Choose your best item</h2>
+
+    <div class="row">
+    {% for product in products %}
+        <div class="col-md-3">
+            <div class="card">
+            <img src="{{ url_for('static', filename='images/products/'+product[2]) }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">{{ product[1] }}</h5>
+                <p class="card-text"><b>A$</b> {{ product[3] }}</p>
+                <a href="{{ url_for('product_detail', product_id=product[0]) }}" class="btn btn-primary">View product</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}   
+    </div>
+{% endblock %}

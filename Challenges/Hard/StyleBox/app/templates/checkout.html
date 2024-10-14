@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Checkout</h2>
+
+{% if orders %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.product.name }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>${{ order.product.price }}</td>
+                <td>${{ order.product.price * order.quantity }}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3"><strong>Total Amount</strong></td>
+                <td><strong>${{ total_amount }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <form method="POST">
+        <div class="form-group mb-3">
+            <input type="hidden" name="total_amount" id="total_amount" value="{{total_amount}}" />
+        </div>
+        <button type="submit" class="btn btn-primary">Complete Checkout</button>
+    </form>
+{% else %}
+    <p>No orders found. Please add items to your cart.</p>
+{% endif %}
+
+{% endblock %}

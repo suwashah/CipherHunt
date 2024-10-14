@@ -77,6 +77,11 @@ namespace Repository.Common
         public String UPDATE_BY { get; set; }
         public Boolean IS_VERIFIED { get; set; }
         public String VERIFIED_BY { get; set; }
+        public String HINT_1 { get; set; }
+        public String HINT_2 { get; set; }
+        public String HINT_3 { get; set; }
+        public String INTENDED_LEARNING { get; set; }
+        public String CHALLENGE_SOLUTION { get; set; }
 
     }
 }

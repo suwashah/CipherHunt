@@ -1,0 +1,32 @@
+<!-- templates/user/list_users.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>User List</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Balance</th>
+        </tr>
+    </thead>
+    <tbody id="userListBody">
+        <!-- User list will be inserted here by JavaScript -->
+    </tbody>
+</table>
+
+<script>
+fetch('/users')
+    .then(response => response.json())
+    .then(users => {
+        var tbody = document.getElementById('userListBody');
+        tbody.innerHTML = '';
+        users.forEach(user => {
+            var tr = document.createElement('tr');
+            tr.innerHTML = `<td>${user.id}</td><td>${user.username}</td><td>${user.balance}</td>`;
+            tbody.appendChild(tr);
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="row mt-4"></div>
+    <center>
+    <div class="col-md-4">
+        <div class="card">   
+            <div class="card-body">
+                <h5 class="card-title">Member Registration</h5>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label" for="username">Username:</label>
+                        <input class="form-control" type="text" name="username" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="password">Password:</label>
+                        <input class="form-control" type="password" name="password" required />
+                    </div>
+                    <button class="btn btn-success" type="submit">Register</button>
+                </form>
+                <p class="card-text">Already have an account? <a href="{{ url_for('user.login') }}">Login here</a>.</p>
+
+                <p class="text-center">&copy; 2024 CWallet</p>
+            </div>
+         </div>
+    </div>
+</center>
+{% endblock %}

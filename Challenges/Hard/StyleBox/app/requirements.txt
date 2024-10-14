@@ -1,0 +1,10 @@
+Flask==2.0.3
+Flask-Session==0.4.0
+Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.4.31
+Flask-Migrate==3.1.0
+Flask-Login==0.5.0
+Flask-WTF==1.0.0
+Flask-Cors==3.0.1
+Werkzeug==2.0.3
+pillow==8.4.0

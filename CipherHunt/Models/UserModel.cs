@@ -64,8 +64,8 @@ namespace CipherHunt.Models
         public string LastName { get; set; }
         [Display(Name = "Mobile number")]
         [Required(ErrorMessage = "Please enter mobile number")]
-        [MaxLength(10, ErrorMessage = "Must be 10 digit"), MinLength(10, ErrorMessage = "Must be 10 digit")]
-        [RegularExpression("([9-9][8-9][0-9]*)", ErrorMessage = "Number must start with 98xxxxxx")]
+        [MaxLength(10, ErrorMessage = "Cannot be more than 10 digit")]
+        [RegularExpression("([4-9][0-9]*)", ErrorMessage = "Number must start with 4xxxxxx")]
         public string Mobile { get; set; }
         [Required(ErrorMessage = "Please select gender")]
         public string Gender { get; set; }

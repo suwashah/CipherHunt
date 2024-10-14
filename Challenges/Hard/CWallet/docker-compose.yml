@@ -1,0 +1,17 @@
+---
+name: "cwallet"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - FLAG=flag{Cross_S1te_F0rgery_Fl4g}
+    command: python app.py
+    ports:
+      - 8018:5000
+    networks:
+      - cwallet_net
+
+networks:
+  cwallet_net:

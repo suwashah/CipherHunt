@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Thought Space{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="text-center mt-5">Signup</h2>
+          <!-- Flash Messages -->
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              <div class="flash-messages">
+                  {% for category, message in messages %}
+                      <div class="text-{{ category }}">
+                          {{ message }}
+                      </div>
+                  {% endfor %}
+              </div>
+          {% endif %}
+         {% endwith %}
+        <form method="POST" action="/signup">
+            <div class="mb-3">
+                <label for="username" class="form-label">User name</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+                <small id="usernameFeedback" class="form-text text-danger"></small>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="text" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button id="btnSignup" type="submit" class="btn btn-primary w-100">Sign Up</button>  
+        </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a>.</p>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#username').on('input', function() {
+            var username = $(this).val();
+            if (username.length > 0) {
+                $.ajax({
+                    url: '/api/user/' + username,
+                    type: 'GET',
+                    headers:{
+                        'debug':'false'
+                    },
+                    success: function(response) {
+                        if (response.username) {
+                            $('#usernameFeedback').text('Username is already taken');
+                            $('#btnSignup').prop('disabled', true);  // Disable the sign-up button
+                        }
+                    },
+                    error: function(response) {
+                        if (response.status === 404) {
+                            $('#usernameFeedback').text('');  // Clear the message if username not found
+                            $('#btnSignup').prop('disabled', false);  // Enable the sign-up button
+                        }
+                    }
+                });
+            } else {
+                $('#usernameFeedback').text('');
+                $('#btnSignup').prop('disabled', false);  // Enable the sign-up button
+            }
+        });
+    });
+</script>
+{% endblock %}

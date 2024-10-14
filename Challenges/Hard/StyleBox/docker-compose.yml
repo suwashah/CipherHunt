@@ -1,0 +1,17 @@
+---
+name: "stylebox"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - FLAG=flag{Int3gr4t3d_Explo1t_Ch4llenge_C0mpleted}
+    command: python app.py
+    ports:
+      - 8020:5000
+    networks:
+      - stylebox_net
+
+networks:
+  stylebox_net:

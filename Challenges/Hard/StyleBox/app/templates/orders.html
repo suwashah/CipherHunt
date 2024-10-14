@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Place Order{% endblock %}
+
+{% block content %}
+<h2>Place Order</h2>
+<form method="POST" action="{{ url_for('place_order') }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.products.label(class="form-label") }}
+        {{ form.products(class="form-control") }}
+        {% for error in form.products.errors %}
+            <div class="text-danger">{{ error }}</div>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+{% endblock %}
