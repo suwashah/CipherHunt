@@ -125,7 +125,7 @@ namespace CipherHunt.Areas.Cpanel.Controllers
                 model.IS_ENABLE = ch.IS_ENABLE;
                 model.POINTS = ch.POINTS;
                 model.DIFFICULTY_LEVEL= ch.DIFFICULTY_LEVEL;
-                model.ImageSrc = ch.CHALLENGE_URL;
+                model.ImageSrc = ch.IMAGE_URL;
                 model.STATUS = ch.STATUS;
                 model.IS_ENABLE = ch.IS_ENABLE;
                 model.IS_VERIFIED = ch.IS_VERIFIED;

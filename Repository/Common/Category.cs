@@ -62,6 +62,7 @@ namespace Repository.Common
         public String POINTS { get; set; }
         public byte[] IMAGE { get; set; }
         public String IMAGENAME { get; set; }
+        public String IMAGE_URL { get; set; }
         public String CHALLENGE_URL { get; set; }
         public String FILE_PATH { get; set; }
         public String CTF_FLAG { get; set; }

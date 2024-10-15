@@ -4,17 +4,20 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using CipherHunt.Library;
 using CipherHunt.Models;
+using Repository.Challenge;
 
 namespace CipherHunt.Controllers
 {
     [AllowAnonymous]
     public class HomeController : AppController
     {
+        private IChallengeRepository _ich;
         CalorieCalculator cal = new CalorieCalculator();
         private readonly IProductRepository _ipr;
-        public HomeController(IProductRepository ipr)
+        public HomeController(IProductRepository ipr, IChallengeRepository ich)
         {
             _ipr = ipr;
+            _ich = ich;
         }
         [HttpGet]
         public ActionResult Index()
@@ -77,17 +80,6 @@ namespace CipherHunt.Controllers
             ht_in.Add("11", "11");
             ht_in.Add("12", "12");
             ViewData["Height_Inch"] = StaticData.SetDDLValue(ht_in, model.Height_Inch, "Inch");
-        }
-        //public ActionResult About()
-        //{
-        //    ViewBag.Message = "Your application description page.";
-        //    return View();
-        //}
-
-        //public ActionResult Contact()
-        //{
-        //    ViewBag.Message = "Your contact page.";
-        //    return View();
-        //}
+        }        
     }
 }

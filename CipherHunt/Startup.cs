@@ -17,7 +17,7 @@ namespace CipherHunt
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 //LoginPath = new PathString("/Home/Index"),
-                LoginPath = new PathString("/Home/Index"),
+                LoginPath = new PathString("/Account/Login"),
                 ExpireTimeSpan = TimeSpan.FromDays(1),
                 SlidingExpiration = false
                 //CookieSecure = CookieSecureOption.Always

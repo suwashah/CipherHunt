@@ -81,7 +81,8 @@ namespace Repository.Challenge
                         DESCRIPTION = dr["DESCRIPTION"].ToString(),
                         POINTS =dr["POINTS"].ToString(),
                         CTF_FLAG= dr["FLAG"].ToString(),
-                        CHALLENGE_URL = GetChallengeImage(dr["IMAGENAME"].ToString()),
+                        IMAGE_URL = GetChallengeImage(dr["IMAGENAME"].ToString()),
+                        CHALLENGE_URL = dr["CHALLENGE_URL"].ToString(),
                         IMAGENAME = dr["IMAGENAME"].ToString(),
                         STATUS = dr["STATUS"].ToString(),
                         IS_ENABLE = Convert.ToBoolean(dr["IS_ENABLE"]),
@@ -95,7 +96,8 @@ namespace Repository.Challenge
                         HINT_2 = dr["HINT_2"].ToString(),
                         HINT_3 = dr["HINT_3"].ToString(),
                         INTENDED_LEARNING = dr["INTENDED_LEARNING"].ToString(),
-                        CHALLENGE_SOLUTION = dr["CHALLENGE_SOLUTION"].ToString()
+                        CHALLENGE_SOLUTION = dr["CHALLENGE_SOLUTION"].ToString(),
+                        DIFFICULTY_LEVEL = dr["DIFFICULTY_LEVEL"].ToString(),
                     });
                 }
             }
@@ -120,7 +122,8 @@ namespace Repository.Challenge
                 lst.UPDATE_BY = dt.Rows[0]["UPDATE_BY"].ToString();
                 lst.DIFFICULTY_LEVEL = dt.Rows[0]["DIFFICULTY_LEVEL"].ToString();
                 lst.POINTS = dao.DecimalRounder(dt.Rows[0]["POINTS"].ToString());              
-                lst.CHALLENGE_URL = GetChallengeImage(dt.Rows[0]["IMAGENAME"].ToString());
+                lst.IMAGE_URL = GetChallengeImage(dt.Rows[0]["IMAGENAME"].ToString());
+                lst.CHALLENGE_URL = dt.Rows[0]["CHALLENGE_URL"].ToString();
                 lst.FILE_PATH = dt.Rows[0]["FILE_PATH"].ToString();
                 lst.IMAGENAME = dt.Rows[0]["IMAGENAME"].ToString();
                 lst.STATUS = dt.Rows[0]["STATUS"].ToString();
