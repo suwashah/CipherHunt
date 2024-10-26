@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CipherHunt.Models
 {
@@ -65,6 +66,7 @@ namespace CipherHunt.Models
 
         public String NAME { get; set; }
         [Required(ErrorMessage = "Please fill out this field")]
+        [AllowHtml]
 
         public String DESCRIPTION { get; set; }
 
@@ -117,11 +119,19 @@ namespace CipherHunt.Models
         public String HINT_2 { get; set; }
 
         public String HINT_3 { get; set; }
-
+        [AllowHtml]
         public String INTENDED_LEARNING { get; set; }
-
+        [AllowHtml]
         public String CHALLENGE_SOLUTION { get; set; }
+        public String CATEGORY_NAME { get; set; }
 
+    }
+
+    public class SubmitFlagModel
+    {
+        public String CHALLENGE_ID { get; set; }
+        public String USER_FLAG { get; set; }
+        public String USER_ID{ get; set; }
     }
 
 }

@@ -1,0 +1,111 @@
+﻿@model CipherHunt.Models.ChallengeModel
+
+@{
+    ViewBag.Title = "ChallengeDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Service Details Section -->
+<section id="service-details" class="service-details section mt-4">
+    <div class="page-title dark-background" data-aos="fade">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "UserChallenge")">CTF Challenges</a></li>
+                    <li>@Html.DisplayFor(model => model.DIFFICULTY_LEVEL)</li>
+                    <li>@Html.DisplayFor(model => model.CATEGORY_NAME)</li>
+                    <li class="current">@Html.DisplayFor(model => model.NAME)</li>
+                </ol>
+            </nav>
+        </div>
+    </div><!-- End Page Title -->
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="services-list">
+                    <a href="#" class="active">@Html.DisplayFor(model => model.DIFFICULTY_LEVEL) Challenge</a>
+                    <a href="#" class="active">@Html.DisplayFor(model => model.CATEGORY_NAME)</a>
+                    <a href="#">@Html.DisplayFor(model => model.POINTS) Points</a>
+                    <a href="#"><span ch-detail-text-red">(Author)</span> @Html.DisplayFor(model => model.CREATE_BY)</a>
+                    <a href="#">(Created) @Html.DisplayFor(model => model.CREATE_TS)</a>
+                </div>
+                <p><i class="ch-detail-text-red bi bi-check-circle"></i> <span><b class="ch-detail-text-red">Hints:</b> @Html.DisplayFor(model => model.HINT_1)</span></p>
+
+                <section id="contact" class="contact section">
+
+                    <form action="" method="post" class="php-email-form" id="flag-submit-form" data-aos="fade-up" data-aos-delay="400">
+                        <div class="row gy-4">
+                            <div class="col-md-12">
+                                <h4><i class="bi bi-trophy"></i> Submit to get @Html.DisplayFor(model => model.POINTS) Points</h4>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="UserFlag" id="UserFlag" placeholder="flag{FLAG}" required>
+                            </div>
+                            <div class="col-md-12 text-center">
+                                <div class="loading" style="display:none;">Loading</div>
+                                <div class="error-message" style="display:none;"></div>
+                                <div class="sent-message" style="display:none;">Your message has been sent. Thank you!</div>
+                                <button type="submit"><i class="bi bi-flag-fill"></i> Submit Flag</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+            </div>
+
+            <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+                <img src="@Model.ImageSrc" alt="" style="height:500px !important;" class="challenge-image mb-4">
+                <h3>@Html.DisplayFor(model => model.NAME)</h3>
+                <p>
+                    @Html.Raw(Model.DESCRIPTION)
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section><!-- /Service Details Section -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#flag-submit-form').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Hide previous messages
+            $('.loading').show();
+            $('.error-message').hide();
+            $('.sent-message').hide();
+
+            // Collect data
+            const userFlag = $('#UserFlag').val();
+            const challengeId = '@Html.DisplayFor(model => model.CHALLENGE_ID)'; // Adjust if needed
+
+            $.ajax({
+                url: '@Url.Action("SubmitFlag", "UserChallenge")', // Adjust with your action and controller
+                type: 'POST',
+                data: {
+                    USER_FLAG: userFlag,
+                    CHALLENGE_ID: challengeId
+                },
+                success: function (response) {
+                    $('.loading').hide();
+                    console.log(response);
+                    if (response.CODE === "0") {
+                        $('.sent-message').text(response.MESSAGE).show(); // Show success message
+                        celebrate();
+                    } else {
+                        $('.error-message').text(response.MESSAGE).show(); // Show error message
+                    }
+                },
+                error: function () {
+                    $('.loading').hide();
+                    $('.error-message').text('An error occurred. Please try again later.').show();
+                }
+            });
+        });
+    });
+</script>

@@ -1076,6 +1076,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\TNIndex.cshtml" />
     <Content Include="Views\UserChallenge\Index.cshtml" />
+    <Content Include="Views\UserChallenge\ChallengeDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Product\" />

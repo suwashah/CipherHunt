@@ -85,4 +85,11 @@ namespace Repository.Common
         public String CHALLENGE_SOLUTION { get; set; }
 
     }
+
+    public class SubmitUserFlag
+    {
+        public String CHALLENGE_ID { get; set; }
+        public String USER_FLAG { get; set; }
+        public String USER_ID { get; set; }
+    }
 }

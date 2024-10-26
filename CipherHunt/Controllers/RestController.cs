@@ -1,10 +1,7 @@
 ﻿using Repository.Common;
 using Repository.CPanel;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
-using CipherHunt.Library;
 using CipherHunt.Models;
 
 namespace CipherHunt.Controllers

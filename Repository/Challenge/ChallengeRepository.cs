@@ -13,7 +13,8 @@ namespace Repository.Challenge
         CommonData SaveChallenge(TblChallenge inp);
         List<TblChallenge> GetAllChallenges(string flag);
         TblChallenge GetChallengeDetail(string Challenge_ID);
-        CommonData VerifyChallenge(string ID, string UserName);       
+        CommonData VerifyChallenge(string ID, string UserName);
+        CommonData SubmitFlag(SubmitUserFlag inp);
     }
     public class ChallengeRepository : IChallengeRepository
     {
@@ -167,6 +168,22 @@ namespace Repository.Challenge
                 img = dao.GetCompressedBytesImage(ImageName);
             }
             return img;
+        }
+
+        public CommonData SubmitFlag(SubmitUserFlag inp)
+        {
+            CommonData ret = new CommonData();
+            string sql = "spa_Challenge @flag='sf'"+
+                ",@CHALLENGE_ID = " + dao.singleQuote(inp.CHALLENGE_ID) +
+                ",@USER_ID = " + dao.singleQuote(inp.USER_ID) +
+                ",@CTF_FLAG=" + dao.singleQuote(inp.USER_FLAG);
+            DataTable dt = dao.ExecuteDataTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                ret.CODE = dt.Rows[0]["Code"].ToString();
+                ret.MESSAGE = dt.Rows[0]["Message"].ToString();
+            }
+            return ret;
         }
     }
 }

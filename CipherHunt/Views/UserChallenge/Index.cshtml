@@ -51,7 +51,7 @@
                         <li><strong>Created on</strong>: @Html.DisplayFor(modelItem => item.CREATE_TS)</li>
                         <li><strong>Author</strong> : @Html.DisplayFor(modelItem => item.CREATE_BY)</li>
                     </ul>
-                    @Html.ActionLink("Start Challenge", "SubmitFlag", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.CHALLENGE_ID)) })
+                    @Html.ActionLink("StartChallenge", "ChallengeDetail", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.CHALLENGE_ID)) }, new { @class = "btn btn-sm btn-primary btn-round" })
                 </div>
                 </div>
             }
