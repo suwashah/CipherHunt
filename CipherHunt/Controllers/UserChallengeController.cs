@@ -28,7 +28,13 @@ namespace CipherHunt.Controllers
             var lst = _ich.GetAllChallenges("a");
             return View(lst);
         }
-        
+        [HttpGet]
+        public ActionResult History()
+        {
+            var lst = _ich.GetAllChallenges("yc",User.Identity.GetUserId());
+            return View(lst);
+        }
+
         public JsonResult SubmitFlag(SubmitFlagModel model)
         {
             var post = new SubmitUserFlag()

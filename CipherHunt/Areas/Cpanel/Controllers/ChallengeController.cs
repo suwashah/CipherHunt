@@ -138,6 +138,7 @@ namespace CipherHunt.Areas.Cpanel.Controllers
                 model.HINT_3 = ch.HINT_3;
                 model.INTENDED_LEARNING = ch.INTENDED_LEARNING;
                 model.CHALLENGE_SOLUTION = ch.CHALLENGE_SOLUTION;
+                model.CHALLENGE_URL=ch.CHALLENGE_URL;
             }
             else
             {
@@ -204,7 +205,8 @@ namespace CipherHunt.Areas.Cpanel.Controllers
                     HINT_2 = model.HINT_2,
                     HINT_3 = model.HINT_3,
                     INTENDED_LEARNING = model.INTENDED_LEARNING,
-                    CHALLENGE_SOLUTION = model.CHALLENGE_SOLUTION
+                    CHALLENGE_SOLUTION = model.CHALLENGE_SOLUTION,
+                    CHALLENGE_URL = model.CHALLENGE_URL
                 };
                 var ret = _ich.SaveChallenge(post);
                 if (ret.CODE == "0")

@@ -55,7 +55,15 @@
             </div>
 
             <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-                <img src="@Model.ImageSrc" alt="" style="height:500px !important;" class="challenge-image mb-4">
+                @if (String.IsNullOrEmpty(Model.ImageSrc))
+                {
+                    <img src="@Url.Content("~/images/Content/challenge-placeholder.jpg")" alt="" style="height:500px !important;" class="challenge-image mb-4" data-aos="zoom-in-down" data-aos-delay="200">
+
+                }
+                else
+                {
+                    <img src="@Model.ImageSrc" alt="" style="height:500px !important;" class="challenge-image mb-4" data-aos="zoom-in-down" data-aos-delay="200">
+                }
                 <h3>@Html.DisplayFor(model => model.NAME)</h3>
                 <p>
                     @Html.Raw(Model.DESCRIPTION)

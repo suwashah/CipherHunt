@@ -11,7 +11,7 @@ namespace Repository.Challenge
     public interface IChallengeRepository
     {
         CommonData SaveChallenge(TblChallenge inp);
-        List<TblChallenge> GetAllChallenges(string flag);
+        List<TblChallenge> GetAllChallenges(string flag, string UserId = "");
         TblChallenge GetChallengeDetail(string Challenge_ID);
         CommonData VerifyChallenge(string ID, string UserName);
         CommonData SubmitFlag(SubmitUserFlag inp);
@@ -64,10 +64,11 @@ namespace Repository.Challenge
             }
             return ret;
         }
-        public List<TblChallenge> GetAllChallenges(string flag)
+        public List<TblChallenge> GetAllChallenges(string flag,string UserId="")
         {
             var lst = new List<TblChallenge>();
-            string sql = "spa_Challenge @flag=" + dao.singleQuote(flag);
+            string sql = "spa_Challenge @flag=" + dao.singleQuote(flag)+
+                ",@USER_ID="+dao.singleQuote(UserId);
             DataTable dt = dao.ExecuteDataTable(sql);
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -99,6 +100,10 @@ namespace Repository.Challenge
                         INTENDED_LEARNING = dr["INTENDED_LEARNING"].ToString(),
                         CHALLENGE_SOLUTION = dr["CHALLENGE_SOLUTION"].ToString(),
                         DIFFICULTY_LEVEL = dr["DIFFICULTY_LEVEL"].ToString(),
+                        USER_SCORE=flag=="yc"? dr["SCORE"].ToString():String.Empty,
+                        SOLVED_AT = flag == "yc" ? Convert.ToDateTime(dr["SOLVED_AT"]).ToString("dd MMM yyyy hh:mm tt") : String.Empty,
+                        TOTAL_SOLVES=dr["TOTAL_SOLVES"].ToString()
+
                     });
                 }
             }
@@ -160,8 +165,9 @@ namespace Repository.Challenge
             string img = "";
             if (dao.GetAppsettingValue("SaveImageBytes") == "n")
             {
-                img = dao.GetImageBase64FromPath(ImageName, dao.GetAppsettingValue("ChallengePath"));
-                img = dao.GetAppsettingValue("ChallengePath") + "/" + ImageName;
+                //img = dao.GetImageBase64FromPath(ImageName, dao.GetAppsettingValue("ChallengePath"));
+                if(!String.IsNullOrEmpty(ImageName))
+                    img = dao.GetAppsettingValue("ChallengePath") + "/" + ImageName;
             }
             else
             {

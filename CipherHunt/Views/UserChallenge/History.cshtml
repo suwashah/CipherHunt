@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Repository.Common.TblChallenge>
+
+@{
+    ViewBag.Title = "My History";
+}
+
+
+<!-- Portfolio Details Section -->
+<section id="portfolio-details" class="portfolio-details section mt-4">
+    <div class="page-title dark-background" data-aos="fade">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "UserChallenge")">CTF Challenges</a></li>
+                    <li class="current"> My History</li>
+                </ol>
+            </nav>
+            <h1>Challenges Solved </h1>
+            Number of challenged Solved: <b class="text-warning"> @Model.Count().ToString()</b>
+            <br />
+            @{
+                int totalScore = 0;
+                foreach (var item in Model)
+                {
+                    totalScore += Convert.ToInt32(item.USER_SCORE);
+                }
+            }
+            Total Score:<b class="ch-userscore text-warning"> @totalScore.ToString()</b>
+        </div>
+    </div><!-- End Page Title -->
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-3 mb-3">
+                    @if (String.IsNullOrEmpty(item.IMAGE_URL))
+                    {
+                        <img id="challenge_image" src="@Url.Content("~/images/Content/challenge-placeholder.jpg")" class="card-img-top" data-aos="fade-up" data-aos-delay="200" />
+                    }
+                    else
+                    {
+                        <img id="challenge_image" src="@item.IMAGE_URL" style="height:100px !important;" class="challenge-image" data-aos="zoom-in-down" data-aos-delay="200" />
+                    }
+                    <div class="portfolio-info" data-aos="zoom-in-up" data-aos-delay="500">
+                        <h5>@Html.DisplayFor(modelItem => item.NAME)</h5>
+                        <ul>
+                            @{
+                                var label = "bg-success";
+                                if (item.DIFFICULTY_LEVEL.ToLower() == "medium")
+                                {
+                                    label = "bg-warning text-dark";
+                                }
+                                else if (item.DIFFICULTY_LEVEL.ToLower() == "hard")
+                                {
+                                    label = "bg-danger";
+                                }
+
+                            }
+                            <li>@Html.DisplayFor(modelItem => item.CATEGORY_NAME)</li>
+                            <li><span class="badge rounded-pill @label"> @Html.DisplayFor(modelItem => item.DIFFICULTY_LEVEL)</span>&nbsp;&nbsp;<span class="badge rounded-pill bg-info text-dark">@Html.DisplayFor(modelItem => item.TOTAL_SOLVES) solves</span></li>
+                            <li><strong>Solved on</strong>: @Html.DisplayFor(modelItem => item.SOLVED_AT)</li>
+                        </ul>
+                        <span class="ch-userscore text-warning"><i class="bi bi-coin"></i> @Html.DisplayFor(modelItem => item.USER_SCORE)</span>
+                    </div>
+                </div>
+            }
+           
+        </div>
+
+
+    </div>
+
+</section><!-- /Portfolio Details Section -->
