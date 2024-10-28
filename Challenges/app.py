@@ -4,10 +4,10 @@ import subprocess
 import threading
 import time
 from flask_httpauth import HTTPBasicAuth
-
+from flask_cors import CORS
 app = Flask(__name__)
 auth = HTTPBasicAuth()
-
+CORS(app, origins=["http://localhost:1800","http://cipherhunt.com"])
 # Define a dictionary of users for basic authentication
 users = {
     "AppUser": "Nepal@123"  # Replace with your own username and password
@@ -58,13 +58,13 @@ def start_application():
 
     # Check if the target folder exists
     if not os.path.isdir(target_folder):
-        return jsonify({'error': 'Invalid folder path or folder does not exist.'}), 400
+        return jsonify({'code':'100','message': 'Invalid folder path or folder does not exist.'}), 400
 
     # Start the Docker Compose build script in a separate thread
     thread = threading.Thread(target=run_docker_compose, args=(parent_folder, foldername,))
     thread.start()
 
-    return jsonify({'message': f'Application in {difficulty}/{foldername} is running for 2 minutes.'}), 200
+    return jsonify({'code':'0','message': f'Application in {difficulty}/{foldername} is running for 2 minutes.'}), 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

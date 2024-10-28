@@ -134,4 +134,11 @@ namespace CipherHunt.Models
         public String USER_ID{ get; set; }
     }
 
+    public class StartDockerModel
+    {
+        public String difficulty { get; set; }
+        public String foldername { get; set; }
+    }
+
+
 }

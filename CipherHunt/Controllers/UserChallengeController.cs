@@ -1,4 +1,5 @@
 ﻿using Antlr.Runtime.Misc;
+using CipherHunt.API;
 using CipherHunt.Library;
 using CipherHunt.Models;
 using Microsoft.AspNet.Identity;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -18,9 +20,11 @@ namespace CipherHunt.Controllers
     public class UserChallengeController : Controller
     {
         private IChallengeRepository _ich;
-        public UserChallengeController(IChallengeRepository ich)
+        private readonly APIService _apiService;
+        public UserChallengeController(IChallengeRepository ich, APIService apiService)
         {
             _ich = ich;       
+            _apiService = apiService;
         }
         [HttpGet]
         public ActionResult Index()
@@ -44,6 +48,24 @@ namespace CipherHunt.Controllers
                 USER_ID = User.Identity.GetUserId()
             };
             return Json(_ich.SubmitFlag(post), JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public async Task<JsonResult> StartDockerInstance(StartDockerModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var apiResponse = await _apiService.PostDataAsync(model);
+                if (apiResponse != null && apiResponse.code=="0")
+                {
+                    return Json(new {code=apiResponse.code, success = true, message = apiResponse?.message ?? "Data sent successfully!", data = apiResponse });
+                }
+                else
+                {
+                    return Json(new { code = apiResponse.code, success = false, message = apiResponse?.message ?? "Error sending data." });
+                }
+            }
+            // Return validation errors if the model state is not valid
+            return Json(new { code = "500", success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
 
         [HttpGet]
@@ -80,54 +102,13 @@ namespace CipherHunt.Controllers
                 model.HINT_3 = ch.HINT_3;
                 model.INTENDED_LEARNING = ch.INTENDED_LEARNING;
                 model.CHALLENGE_SOLUTION = ch.CHALLENGE_SOLUTION;
+                model.CHALLENGE_URL = ch.CHALLENGE_URL;
             }
             else
             {
                 model.FLAG = "i";
             }
             return View(model);
-        }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult SaveChallenge(ChallengeModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-               
-        //        var post = new TblChallenge()
-        //        {
-        //            FLAG = model.FLAG,
-        //            CHALLENGE_ID = model.CHALLENGE_ID,
-        //            CAT_ID = model.CAT_ID,
-        //            NAME = model.NAME,
-        //            DESCRIPTION = model.DESCRIPTION,
-        //            DIFFICULTY_LEVEL = model.DIFFICULTY_LEVEL,
-        //            POINTS = model.POINTS,
-        //            CTF_FLAG = model.CTF_FLAG,
-        //            CREATE_BY = CurrentUser.Name,
-        //            UPDATE_BY = CurrentUser.Name,
-        //            IMAGE = bytes,
-        //            IMAGENAME = ImageName,
-        //            IS_ENABLE = model.IS_ENABLE,
-        //            HINT_1 = model.HINT_1,
-        //            HINT_2 = model.HINT_2,
-        //            HINT_3 = model.HINT_3,
-        //            INTENDED_LEARNING = model.INTENDED_LEARNING,
-        //            CHALLENGE_SOLUTION = model.CHALLENGE_SOLUTION
-        //        };
-        //        var ret = _ich.SaveChallenge(post);
-        //        if (ret.CODE == "0")
-        //        {
-        //            return RedirectToAction("Index");
-        //        }
-        //        else
-        //        {
-        //            ret.MESSAGE = _func.isNull(ret.MESSAGE, "Something went wrong");
-        //            ViewBag.Message = ret.MESSAGE;
-        //        }
-        //    }
-        //    BindDropDown(model);
-        //    return View(model);
-        //}
+        }        
     }
 }
