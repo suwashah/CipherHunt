@@ -7,9 +7,10 @@ The "Cipher Hunt" project is a Capture The Flag (CTF) challenge platform designe
 
 # Participant Features
 ## Signup
+
 ### User Registration: Users can sign up by providing:
     -  Email Address
-    -   Password
+    -  Password
     -  First Name
     -  Last Name
     -  Mobile Number
