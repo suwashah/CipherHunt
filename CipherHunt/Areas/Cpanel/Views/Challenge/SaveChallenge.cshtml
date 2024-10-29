@@ -5,6 +5,7 @@
 }
 
 <link href="~/Content/Custom/image_mask.css" rel="stylesheet" />
+<script src="~/Theme/ckeditor/ckeditor.js"></script>
 @using (Html.BeginForm("", "", FormMethod.Post, new { @role = "form", @id = "f1", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -144,6 +145,9 @@
                                     <div class="form-group">
                                         @Html.LabelFor(m => m.DESCRIPTION, "Challenge Description", new { @class = "" })
                                         @Html.TextAreaFor(m => m.DESCRIPTION, new { @class = "form-control", autocomplete = "off", rows = "3" })
+                                        <script>
+                                            CKEDITOR.replace("DESCRIPTION");
+                                        </script>
                                         @Html.ValidationMessageFor(m => m.DESCRIPTION, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group">
@@ -192,11 +196,17 @@
                                     <div class="form-group">
                                         @Html.LabelFor(m => m.INTENDED_LEARNING, "Intended Learning and Outcome", new { @class = "" })
                                         @Html.TextAreaFor(m => m.INTENDED_LEARNING, new { @class = "form-control", autocomplete = "off", rows = "3" })
+                                        <script>
+                                            CKEDITOR.replace("INTENDED_LEARNING");
+                                        </script>
                                         @Html.ValidationMessageFor(m => m.INTENDED_LEARNING, "", new { @class = "text-danger" })
                                     </div>
                                     <div class="form-group">
                                         @Html.LabelFor(m => m.CHALLENGE_SOLUTION, "Challenge Solution", new { @class = "" })
                                         @Html.TextAreaFor(m => m.CHALLENGE_SOLUTION, new { @class = "form-control", autocomplete = "off", rows = "3" })
+                                        <script>
+                                            CKEDITOR.replace("CHALLENGE_SOLUTION");
+                                        </script>
                                         @Html.ValidationMessageFor(m => m.CHALLENGE_SOLUTION, "", new { @class = "text-danger" })
                                     </div>
                                 </div>

@@ -62,6 +62,7 @@ namespace Repository.Common
         public String POINTS { get; set; }
         public byte[] IMAGE { get; set; }
         public String IMAGENAME { get; set; }
+        public String IMAGE_URL { get; set; }
         public String CHALLENGE_URL { get; set; }
         public String FILE_PATH { get; set; }
         public String CTF_FLAG { get; set; }
@@ -82,6 +83,15 @@ namespace Repository.Common
         public String HINT_3 { get; set; }
         public String INTENDED_LEARNING { get; set; }
         public String CHALLENGE_SOLUTION { get; set; }
+        public String USER_SCORE { get; set; }
+        public String SOLVED_AT { get; set; }
+        public String TOTAL_SOLVES { get; set; }
+    }
 
+    public class SubmitUserFlag
+    {
+        public String CHALLENGE_ID { get; set; }
+        public String USER_FLAG { get; set; }
+        public String USER_ID { get; set; }
     }
 }

@@ -67,7 +67,7 @@ namespace CipherHunt.Models
         [MaxLength(10, ErrorMessage = "Cannot be more than 10 digit")]
         [RegularExpression("([4-9][0-9]*)", ErrorMessage = "Number must start with 4xxxxxx")]
         public string Mobile { get; set; }
-        [Required(ErrorMessage = "Please select gender")]
+        //[Required(ErrorMessage = "Please select gender")]
         public string Gender { get; set; }
         [Required(ErrorMessage = "Please accept terms and condition")]
         public bool AcceptTerms { get; set; }

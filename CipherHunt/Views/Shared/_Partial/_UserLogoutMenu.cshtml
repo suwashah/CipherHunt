@@ -6,19 +6,10 @@
         <a href="#"><span>@CurrentUser.Name</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
         <ul>
             <li><a href="#">User ID: @CurrentUser.ID </a></li>
-            <li><a href="#">Go to Dashboard</a></li>
-            @*<li class="dropdown">
-            <a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
-            <ul>
-                <li><a href="#">Deep Dropdown 1</a></li>
-                <li><a href="#">Deep Dropdown 2</a></li>
-                <li><a href="#">Deep Dropdown 3</a></li>
-                <li><a href="#">Deep Dropdown 4</a></li>
-                <li><a href="#">Deep Dropdown 5</a></li>
-            </ul>
-        </li>*@
+            <li><a href="#">Go to Dashboard</a></li>            
+            <li><a href="@Url.Action("Index","UserChallenge")">Go to Challenges</a></li>
             <li><a href="#">Your Score Board</a></li>
-            <li><a href="#">Your challenges History</a></li>
+            <li><a href="@Url.Action("History","UserChallenge")">Your challenges History</a></li>
             <li><a href="@Url.Action("Logout","Account")">Sign out</a></li>
 
         </ul>

@@ -1,0 +1,230 @@
+﻿@model CipherHunt.Models.ChallengeModel
+
+@{
+    ViewBag.Title = "ChallengeDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Service Details Section -->
+<section id="service-details" class="service-details section mt-4">
+    <div class="page-title dark-background" data-aos="fade">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "UserChallenge")">CTF Challenges</a></li>
+                    <li>@Html.DisplayFor(model => model.DIFFICULTY_LEVEL)</li>
+                    <li>@Html.DisplayFor(model => model.CATEGORY_NAME)</li>
+                    <li class="current">@Html.DisplayFor(model => model.NAME)</li>
+                </ol>
+            </nav>
+        </div>
+    </div><!-- End Page Title -->
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="services-list">
+                    <a href="#" class="active">@Html.DisplayFor(model => model.DIFFICULTY_LEVEL) Challenge</a>
+                    <a href="#" class="active">@Html.DisplayFor(model => model.CATEGORY_NAME)</a>
+                    <a href="#">@Html.DisplayFor(model => model.POINTS) Points</a>
+                    <a href="#"><span ch-detail-text-red">(Author)</span> @Html.DisplayFor(model => model.CREATE_BY)</a>
+                    <a href="#">(Created) @Html.DisplayFor(model => model.CREATE_TS)</a>
+                </div>
+
+                <div>
+                    @if (!String.IsNullOrEmpty(Model.CHALLENGE_URL))
+                    {
+                        <p>
+                            This challenge launches an instance on demand.<br />
+                            Its current status is: <span id="instanceStatus" class="text-danger">NOT_RUNNING</span><br />
+
+                            <div id="ins-time-remaining" style="display:none;">Instance Time Remaining: <span class="text-danger" id="countdown_timer"></span></div>
+                            <div id="ins_loading" style="display:none;">Instance starting...</div><br/>
+                            <button type="button" class="btn btn-danger" id="btn_start_instance">Start Instance</button>
+
+                            <div class="ins_sent_message text-success" style="display:none;">Your message has been sent. Thank you!</div>
+                            <div id="ins_error_message" class="text-danger" style="display:none;"></div>
+
+                        </p>
+                        <hr />
+                    }
+                </div>
+
+                <p><i class="ch-detail-text-red bi bi-check-circle"></i> <span><b class="ch-detail-text-red">Hints:</b> @Html.DisplayFor(model => model.HINT_1)</span></p>
+                <section id="contact" class="contact section">
+                    <form action="" method="post" class="php-email-form" id="flag-submit-form" data-aos="fade-up" data-aos-delay="400">
+                        <div class="row gy-4">
+                            <div class="col-md-12">
+                                <h4><i class="bi bi-trophy"></i> Submit to get @Html.DisplayFor(model => model.POINTS) Points</h4>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="UserFlag" id="UserFlag" placeholder="flag{FLAG}" required>
+                            </div>
+                            <div class="col-md-12 text-center">
+                                <div class="loading" style="display:none;">Loading</div>
+                                <div class="error-message" style="display:none;"></div>
+                                <div class="sent-message" style="display:none;">Your message has been sent. Thank you!</div>
+                                <button type="submit"><i class="bi bi-flag-fill"></i> Submit Flag</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </section>
+            </div>
+
+            <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+                @if (String.IsNullOrEmpty(Model.ImageSrc))
+                {
+                    <img src="@Url.Content("~/images/Content/challenge-placeholder.jpg")" alt="" style="height:500px !important;" class="challenge-image mb-4" data-aos="zoom-in-down" data-aos-delay="200">
+
+                }
+                else
+                {
+                    <img src="@Model.ImageSrc" alt="" style="height:500px !important;" class="challenge-image mb-4" data-aos="zoom-in-down" data-aos-delay="200">
+                }
+                <h3>@Html.DisplayFor(model => model.NAME)</h3>
+                <p>
+                    @Html.Raw(Model.DESCRIPTION)
+                </p>
+                @if (!String.IsNullOrEmpty(Model.CHALLENGE_URL))
+                {
+                    <p id="instance_link">
+                        
+                    </p>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section><!-- /Service Details Section -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    let countdownActive = false; // Flag to track if the countdown is active
+    $(document).ready(function () {
+        $('#flag-submit-form').on('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Hide previous messages
+            $('.loading').show();
+            $('.error-message').hide();
+            $('.sent-message').hide();
+
+            // Collect data
+            const userFlag = $('#UserFlag').val();
+            const challengeId = '@Html.DisplayFor(model => model.CHALLENGE_ID)'; // Adjust if needed
+
+            $.ajax({
+                url: '@Url.Action("SubmitFlag", "UserChallenge")', // Adjust with your action and controller
+                type: 'POST',
+                data: {
+                    USER_FLAG: userFlag,
+                    CHALLENGE_ID: challengeId
+                },
+                success: function (response) {
+                    $('.loading').hide();
+                    console.log(response);
+                    if (response.CODE === "0") {
+                        $('.sent-message').text(response.MESSAGE).show(); // Show success message
+                        celebrate();
+                    } else {
+                        $('.error-message').text(response.MESSAGE).show(); // Show error message
+                    }
+                },
+                error: function () {
+                    $('.loading').hide();
+                    $('.error-message').text('An error occurred. Please try again later.').show();
+                }
+            });
+        });
+
+        $('#btn_start_instance').on('click', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            // Hide previous messages
+            $('#ins_loading').show();
+            $('#ins_error_message').hide();
+            $('#ins_sent_message').hide();
+            $('#btn_start_instance').text('Loading...').removeClass('btn-success').addClass('btn-danger');
+
+            // Collect data
+            var diff = '@Html.DisplayFor(model => model.DIFFICULTY_LEVEL)';
+            const folderName = '@Html.DisplayFor(model => model.NAME)'.replace(/\s+/g, ''); // Adjust if needed
+
+            if (diff == "Intermediate") {
+                diff = "Medium";
+            }
+
+            $.ajax({
+                url: '@Url.Action("StartDockerInstance", "UserChallenge")', // Adjust with your action and controller
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    difficulty: diff,
+                    foldername: folderName
+                }),
+                success: function (response) {                    
+                    console.log(response);
+                    setTimeout(function () {
+                        instanceSuccess(response);
+                    }, 10000); // 10 seconds delay
+                },
+                error: function (response) {
+                    $('#ins_loading').hide();
+                    $('#ins_error_message').text('An error occurred. Please try again later.').show();
+                    $('#btn_start_instance').text("Start Instance").removeClass('btn-success').addClass('btn-danger');
+                }
+            });
+        });
+    });
+
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function instanceSuccess(response) {       
+        if (countdownActive) return; // Prevent starting multiple countdowns
+         countdownActive = true; // Set the flag to true
+         $('#ins_loading').hide();
+        console.log(response);
+        if (response.success) {
+             document.getElementById('instance_link').innerHTML = 'Browse <a target="_blank" href="' + '@Model.CHALLENGE_URL' + '">here</a> and find the flag!';
+             //celebrate();
+             // Start a 30-minute countdown
+             let countdownTime = 30 * 60; // 30 minutes in seconds
+             let countdownInterval;
+           
+             // Display initial countdown timer
+             const countdownDisplay = $('#countdown_timer');
+             countdownDisplay.text(formatTime(countdownTime));
+             $('#ins-time-remaining').show();
+            $('#instanceStatus').text("RUNNING").removeClass('text-danger').addClass('text-success');
+            $('#btn_start_instance').text('Running...').removeClass('btn-danger').addClass('btn-success');
+            $('#btn_start_instance').prop('disabled', true); // Re-enable the button
+             //$('#btn_start_instance').text("Restart Instance").removeClass('btn-danger').addClass('btn-success');
+             // Update the timer every second
+             countdownInterval = setInterval(function () {
+                 countdownTime--;
+
+                 countdownDisplay.text(formatTime(countdownTime));
+                 if (countdownTime <= 0) {
+                     clearInterval(countdownInterval);
+                     countdownDisplay.text("Time's up!");
+                     countdownActive = false;
+                     $('#btn_start_instance').text('Start Instance').removeClass('btn-success').addClass('btn-danger');
+                     $('#btn_start_instance').prop('disabled', false); // Re-enable the button
+                 }
+             }, 1000);
+         } else {
+             $('#ins_error_message').text(response.message).show(); // Show error message
+             $('#ins-time-remaining').hide();
+             $('#instanceStatus').text("NOT_RUNNING").removeClass('text-success').addClass('text-danger');
+             $('#btn_start_instance').text("Start Instance").removeClass('btn-success').addClass('btn-danger');
+         }
+    }
+</script>

@@ -495,14 +495,17 @@ input.input100 {
 .login100-form-btn:hover {
   background: #333333;
 }
-
-
-
-/*------------------------------------------------------------------
+	.login100-form-btn:disabled {
+		background-color: #ccc; /* Grey background */
+		color: #666; /* Darker text color */
+		border: 1px solid #999; /* Lighter border */
+		cursor: not-allowed; /* Show a 'not-allowed' cursor */
+		opacity: 0.6; /* Slightly transparent */
+	}
+	/*------------------------------------------------------------------
 [ Responsive ]*/
-
-@media (max-width: 992px) {
-  .login100-form {
+	@media (max-width: 992px) {
+		.login100-form {
 	width: 50%;
 	padding-left: 30px;
 	padding-right: 30px;

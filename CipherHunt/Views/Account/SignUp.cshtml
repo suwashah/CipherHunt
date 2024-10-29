@@ -64,7 +64,7 @@
                         <span class="label-input100">Last Name</span>
                     </div>
                 </div>
-                <div class="">
+                @*<div class="">
                     @Html.LabelFor(m => m.Gender, "Select your gender*", new { @class = "" })
                     <div class="custom-control custom-radio custom-control-inline">
                         <input id="Male" class="custom-control-input" type="radio" name="Gender" checked value="M" />
@@ -74,9 +74,13 @@
                         <input id="Female" class="custom-control-input" type="radio" name="Gender" value="F" />
                         <label class="custom-control-label" for="Female">Female</label>
                     </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input id="Others" class="custom-control-input" type="radio" name="Gender" value="O" />
+                        <label class="custom-control-label" for="Others">Others</label>
+                    </div>
                     <br />
                     <br />
-                </div>
+                </div>*@
                 <div class="">
                     @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
                     <div class="wrap-input100 validate-input" data-validate="Mobile number is required">
@@ -149,7 +153,7 @@
                 </div>
             }
             <div class="login100-more" style="background-image: url('../../images/Background/Register_bg.jpg');background-attachment:fixed;">
-                <div style="position:fixed;top:50%;left:20%;">
+                <div style="position:fixed;top:40%;left:30%;">
                     <a class="logo" href="@Url.Action("Index","Home")">
                         <img height="100" ng-src="~/images/Logo/{{appdata.LOGO}}" alt="Logo">
                     </a>

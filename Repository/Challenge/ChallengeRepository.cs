@@ -11,9 +11,10 @@ namespace Repository.Challenge
     public interface IChallengeRepository
     {
         CommonData SaveChallenge(TblChallenge inp);
-        List<TblChallenge> GetAllChallenges(string flag);
+        List<TblChallenge> GetAllChallenges(string flag, string UserId = "");
         TblChallenge GetChallengeDetail(string Challenge_ID);
-        CommonData VerifyChallenge(string ID, string UserName);       
+        CommonData VerifyChallenge(string ID, string UserName);
+        CommonData SubmitFlag(SubmitUserFlag inp);
     }
     public class ChallengeRepository : IChallengeRepository
     {
@@ -63,10 +64,11 @@ namespace Repository.Challenge
             }
             return ret;
         }
-        public List<TblChallenge> GetAllChallenges(string flag)
+        public List<TblChallenge> GetAllChallenges(string flag,string UserId="")
         {
             var lst = new List<TblChallenge>();
-            string sql = "spa_Challenge @flag=" + dao.singleQuote(flag);
+            string sql = "spa_Challenge @flag=" + dao.singleQuote(flag)+
+                ",@USER_ID="+dao.singleQuote(UserId);
             DataTable dt = dao.ExecuteDataTable(sql);
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -81,7 +83,8 @@ namespace Repository.Challenge
                         DESCRIPTION = dr["DESCRIPTION"].ToString(),
                         POINTS =dr["POINTS"].ToString(),
                         CTF_FLAG= dr["FLAG"].ToString(),
-                        CHALLENGE_URL = GetChallengeImage(dr["IMAGENAME"].ToString()),
+                        IMAGE_URL = GetChallengeImage(dr["IMAGENAME"].ToString()),
+                        CHALLENGE_URL = dr["CHALLENGE_URL"].ToString(),
                         IMAGENAME = dr["IMAGENAME"].ToString(),
                         STATUS = dr["STATUS"].ToString(),
                         IS_ENABLE = Convert.ToBoolean(dr["IS_ENABLE"]),
@@ -95,7 +98,12 @@ namespace Repository.Challenge
                         HINT_2 = dr["HINT_2"].ToString(),
                         HINT_3 = dr["HINT_3"].ToString(),
                         INTENDED_LEARNING = dr["INTENDED_LEARNING"].ToString(),
-                        CHALLENGE_SOLUTION = dr["CHALLENGE_SOLUTION"].ToString()
+                        CHALLENGE_SOLUTION = dr["CHALLENGE_SOLUTION"].ToString(),
+                        DIFFICULTY_LEVEL = dr["DIFFICULTY_LEVEL"].ToString(),
+                        USER_SCORE=flag=="yc"? dr["SCORE"].ToString():String.Empty,
+                        SOLVED_AT = flag == "yc" ? Convert.ToDateTime(dr["SOLVED_AT"]).ToString("dd MMM yyyy hh:mm tt") : String.Empty,
+                        TOTAL_SOLVES=dr["TOTAL_SOLVES"].ToString()
+
                     });
                 }
             }
@@ -120,7 +128,8 @@ namespace Repository.Challenge
                 lst.UPDATE_BY = dt.Rows[0]["UPDATE_BY"].ToString();
                 lst.DIFFICULTY_LEVEL = dt.Rows[0]["DIFFICULTY_LEVEL"].ToString();
                 lst.POINTS = dao.DecimalRounder(dt.Rows[0]["POINTS"].ToString());              
-                lst.CHALLENGE_URL = GetChallengeImage(dt.Rows[0]["IMAGENAME"].ToString());
+                lst.IMAGE_URL = GetChallengeImage(dt.Rows[0]["IMAGENAME"].ToString());
+                lst.CHALLENGE_URL = dt.Rows[0]["CHALLENGE_URL"].ToString();
                 lst.FILE_PATH = dt.Rows[0]["FILE_PATH"].ToString();
                 lst.IMAGENAME = dt.Rows[0]["IMAGENAME"].ToString();
                 lst.STATUS = dt.Rows[0]["STATUS"].ToString();
@@ -156,14 +165,31 @@ namespace Repository.Challenge
             string img = "";
             if (dao.GetAppsettingValue("SaveImageBytes") == "n")
             {
-                img = dao.GetImageBase64FromPath(ImageName, dao.GetAppsettingValue("ChallengePath"));
-                img = dao.GetAppsettingValue("ChallengePath") + "/" + ImageName;
+                //img = dao.GetImageBase64FromPath(ImageName, dao.GetAppsettingValue("ChallengePath"));
+                if(!String.IsNullOrEmpty(ImageName))
+                    img = dao.GetAppsettingValue("ChallengePath") + "/" + ImageName;
             }
             else
             {
                 img = dao.GetCompressedBytesImage(ImageName);
             }
             return img;
+        }
+
+        public CommonData SubmitFlag(SubmitUserFlag inp)
+        {
+            CommonData ret = new CommonData();
+            string sql = "spa_Challenge @flag='sf'"+
+                ",@CHALLENGE_ID = " + dao.singleQuote(inp.CHALLENGE_ID) +
+                ",@USER_ID = " + dao.singleQuote(inp.USER_ID) +
+                ",@CTF_FLAG=" + dao.singleQuote(inp.USER_FLAG);
+            DataTable dt = dao.ExecuteDataTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                ret.CODE = dt.Rows[0]["Code"].ToString();
+                ret.MESSAGE = dt.Rows[0]["Message"].ToString();
+            }
+            return ret;
         }
     }
 }

@@ -15,8 +15,8 @@ namespace Repository.HelperFunction
     }
     public class SMTPService : ISMTPService
     {
-        readonly string Sender = "CipherHunt@gmail.com";
-        readonly string Password = "CipherHunt@1";
+        readonly string Sender = "cipherhunt.ctf@gmail.com";
+        readonly string Password = "iylzptzkjehxwywq";
         readonly string Host = "smtp.gmail.com";
         readonly bool EnableSSL = true;
         readonly int SMTPPort = 587;
