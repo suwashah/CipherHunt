@@ -50,7 +50,7 @@ namespace CipherHunt.Controllers
             return Json(_ich.SubmitFlag(post), JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public async Task<JsonResult> StartDockerInstance(StartDockerModel model)
+        public async Task<JsonResult> StartDockerInstance(RunDockerModel model)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +64,24 @@ namespace CipherHunt.Controllers
                     return Json(new { code = apiResponse.code, success = false, message = apiResponse?.message ?? "Error sending data." });
                 }
             }
-            // Return validation errors if the model state is not valid
+            return Json(new { code = "500", success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> StopDockerInstance(RunDockerModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var apiResponse = await _apiService.PostDataAsync(model,false);
+                if (apiResponse != null && apiResponse.code == "0")
+                {
+                    return Json(new { code = apiResponse.code, success = true, message = apiResponse?.message ?? "Data sent successfully!", data = apiResponse });
+                }
+                else
+                {
+                    return Json(new { code = apiResponse.code, success = false, message = apiResponse?.message ?? "Error sending data." });
+                }
+            }
             return Json(new { code = "500", success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
 
@@ -103,6 +120,7 @@ namespace CipherHunt.Controllers
                 model.INTENDED_LEARNING = ch.INTENDED_LEARNING;
                 model.CHALLENGE_SOLUTION = ch.CHALLENGE_SOLUTION;
                 model.CHALLENGE_URL = ch.CHALLENGE_URL;
+                model.CHALLENGE_FOLDER = ch.CHALLENGE_FOLDER;
             }
             else
             {

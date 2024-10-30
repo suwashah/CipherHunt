@@ -48,7 +48,9 @@ namespace Repository.Challenge
                 new SqlParameter("@HINT_2",inp.HINT_2),
                 new SqlParameter("@HINT_3",inp.HINT_3),
                 new SqlParameter("@INTENDED_LEARNING",inp.INTENDED_LEARNING),
-                new SqlParameter("@CHALLENGE_SOLUTION",inp.CHALLENGE_SOLUTION)
+                new SqlParameter("@CHALLENGE_SOLUTION",inp.CHALLENGE_SOLUTION),
+                new SqlParameter("@CHALLENGE_FOLDER",inp.CHALLENGE_FOLDER)
+                
             };
             //sqlParam.DbType = DbType.Binary;
             DataTable dt = dao.ExecuteDataTableSP("[dbo].[spa_Challenge]", param, CommandType.StoredProcedure);
@@ -142,6 +144,7 @@ namespace Repository.Challenge
                 lst.HINT_3 = dt.Rows[0]["HINT_3"].ToString();
                 lst.INTENDED_LEARNING = dt.Rows[0]["INTENDED_LEARNING"].ToString();
                 lst.CHALLENGE_SOLUTION = dt.Rows[0]["CHALLENGE_SOLUTION"].ToString();
+                lst.CHALLENGE_FOLDER = dt.Rows[0]["CHALLENGE_FOLDER"].ToString();
             }
             return lst;
         }

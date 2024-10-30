@@ -86,6 +86,7 @@ namespace Repository.Common
         public String USER_SCORE { get; set; }
         public String SOLVED_AT { get; set; }
         public String TOTAL_SOLVES { get; set; }
+        public String CHALLENGE_FOLDER { get; set; }
     }
 
     public class SubmitUserFlag

@@ -5,29 +5,35 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Repository.HelperFunction;
 
 namespace CipherHunt.API
 {
     public class APIService
     {
         private readonly HttpClient _httpClient;
-
-        public APIService()
+        private IUtilityHelper _func;
+        public APIService(IUtilityHelper func)
         {
             _httpClient = new HttpClient();
+            _func = func;
         }
 
-        public async Task<dynamic> PostDataAsync(StartDockerModel model)
+        public async Task<dynamic> PostDataAsync(RunDockerModel model, bool start=true)
         {
-            var url = "http://127.0.0.1:5000/start"; // Replace with your API URL
+            string runType = "start";
+            if (!start)
+                runType = "stop";
+
+            var url = _func.GetAppsettingValue("DockerInstance_URL")+ runType;
 
             // Serialize your model to JSON using Newtonsoft.Json
             var json = JsonConvert.SerializeObject(model);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Set Basic Authentication header
-            var username = "AppUser";
-            var password = "Nepal@123";
+            var username = _func.GetAppsettingValue("DockerInstance_Username");
+            var password = _func.GetAppsettingValue("DockerInstance_Password"); 
             var byteArray = Encoding.ASCII.GetBytes($"{username}:{password}");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 

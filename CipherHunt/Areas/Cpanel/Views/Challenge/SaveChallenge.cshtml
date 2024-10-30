@@ -114,7 +114,7 @@
                                                                 new SelectList(new List<SelectListItem>
                                                                 {
                                                                     new SelectListItem { Text = "Easy", Value = "Easy" },
-                                                                    new SelectListItem { Text = "Intermediate", Value = "Intermediate" },
+                                                                    new SelectListItem { Text = "Medium", Value = "Medium" },
                                                                     new SelectListItem { Text = "Hard", Value = "Hard" }
                                                                 }, "Value", "Text", Model.DIFFICULTY_LEVEL),
                                                                 new { @class = "form-control" })
@@ -167,7 +167,7 @@
                                         @Html.LabelFor(m => m.HINT_1, "Hint 1", new { @class = "" })
                                         @Html.TextBoxFor(m => m.HINT_1, new { @class = "form-control", autocomplete = "off" })
                                         @Html.ValidationMessageFor(m => m.HINT_1, "", new { @class = "text-danger" })
-                                    </div>                                    
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -175,13 +175,20 @@
                                         @Html.TextBoxFor(m => m.HINT_2, new { @class = "form-control", autocomplete = "off" })
                                         @Html.ValidationMessageFor(m => m.HINT_2, "", new { @class = "text-danger" })
                                     </div>
-                                   
+
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         @Html.LabelFor(m => m.HINT_3, "Hint 3", new { @class = "" })
                                         @Html.TextBoxFor(m => m.HINT_3, new { @class = "form-control", autocomplete = "off" })
                                         @Html.ValidationMessageFor(m => m.HINT_3, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.CHALLENGE_FOLDER, "Challenege Folder Name", new { @class = "" })
+                                        @Html.TextBoxFor(m => m.CHALLENGE_FOLDER, new { @class = "form-control", autocomplete = "off" })
+                                        @Html.ValidationMessageFor(m => m.CHALLENGE_FOLDER, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="col-md-12">

@@ -4,7 +4,21 @@
     ViewBag.Title = "ChallengeDetail";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    #countdownTimer {
+        font-size: 24px;
+        margin: 20px;
+    }
 
+    .running-state {
+        color: green;
+    }
+
+    .stopped-state {
+        color: red;
+        font-size:18px;
+    }
+</style>
 <!-- Service Details Section -->
 <section id="service-details" class="service-details section mt-4">
     <div class="page-title dark-background" data-aos="fade">
@@ -35,16 +49,13 @@
                     @if (!String.IsNullOrEmpty(Model.CHALLENGE_URL))
                     {
                         <p>
-                            This challenge launches an instance on demand.<br />
-                            Its current status is: <span id="instanceStatus" class="text-danger">NOT_RUNNING</span><br />
-
-                            <div id="ins-time-remaining" style="display:none;">Instance Time Remaining: <span class="text-danger" id="countdown_timer"></span></div>
-                            <div id="ins_loading" style="display:none;">Instance starting...</div><br/>
-                            <button type="button" class="btn btn-danger" id="btn_start_instance">Start Instance</button>
-
-                            <div class="ins_sent_message text-success" style="display:none;">Your message has been sent. Thank you!</div>
+                            This challenge launches an instance on demand.<br /><br />
+                            Its current status is: <span id="instanceStatus" class="stopped-state">STOPPED</span><br />
+                            Instance Time Remaining: <span id="countdownTimer">00:00</span>
+                            <br /><br/>
+                            <button id="startButton" class="btn btn-success">Start Instance</button>
+                            <button id="stopButton" class="btn btn-danger" style="display: none;">Stop Instance</button>
                             <div id="ins_error_message" class="text-danger" style="display:none;"></div>
-
                         </p>
                         <hr />
                     }
@@ -89,7 +100,7 @@
                 @if (!String.IsNullOrEmpty(Model.CHALLENGE_URL))
                 {
                     <p id="instance_link">
-                        
+
                     </p>
                 }
 
@@ -103,22 +114,20 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    let countdownActive = false; // Flag to track if the countdown is active
+    let countdownActive = false; 
     $(document).ready(function () {
+        const challengeId = '@Html.DisplayFor(model => model.CHALLENGE_ID)';
         $('#flag-submit-form').on('submit', function (e) {
-            e.preventDefault(); // Prevent the default form submission
+            e.preventDefault(); 
 
             // Hide previous messages
             $('.loading').show();
             $('.error-message').hide();
             $('.sent-message').hide();
-
             // Collect data
             const userFlag = $('#UserFlag').val();
-            const challengeId = '@Html.DisplayFor(model => model.CHALLENGE_ID)'; // Adjust if needed
-
             $.ajax({
-                url: '@Url.Action("SubmitFlag", "UserChallenge")', // Adjust with your action and controller
+                url: '@Url.Action("SubmitFlag", "UserChallenge")',
                 type: 'POST',
                 data: {
                     USER_FLAG: userFlag,
@@ -128,10 +137,10 @@
                     $('.loading').hide();
                     console.log(response);
                     if (response.CODE === "0") {
-                        $('.sent-message').text(response.MESSAGE).show(); // Show success message
+                        $('.sent-message').text(response.MESSAGE).show(); 
                         celebrate();
                     } else {
-                        $('.error-message').text(response.MESSAGE).show(); // Show error message
+                        $('.error-message').text(response.MESSAGE).show(); 
                     }
                 },
                 error: function () {
@@ -141,90 +150,145 @@
             });
         });
 
-        $('#btn_start_instance').on('click', function (e) {
-            e.preventDefault(); // Prevent the default form submission
+        const totalTime = 30 * 60; // Total time in seconds (30 minutes)
+        let countdownInterval;
 
-            // Hide previous messages
-            $('#ins_loading').show();
-            $('#ins_error_message').hide();
-            $('#ins_sent_message').hide();
-            $('#btn_start_instance').text('Loading...').removeClass('btn-success').addClass('btn-danger');
+        // Store selectors in variables
+        const $startButton = $('#startButton');
+        const $stopButton = $('#stopButton');
+        const $instanceStatus = $('#instanceStatus');
+        const $countdownTimer = $('#countdownTimer');
+        const $instanceErrorMessage = $('#ins_error_message');
+        const $instanceLink = $('#instance_link');
 
-            // Collect data
-            var diff = '@Html.DisplayFor(model => model.DIFFICULTY_LEVEL)';
-            const folderName = '@Html.DisplayFor(model => model.NAME)'.replace(/\s+/g, ''); // Adjust if needed
-
-            if (diff == "Intermediate") {
-                diff = "Medium";
-            }
-
+        var diff = '@Html.DisplayFor(model => model.DIFFICULTY_LEVEL)';
+        const folderName = '@Html.DisplayFor(model => model.CHALLENGE_FOLDER)'.replace(/\s+/g, '');
+        $startButton.on('click', function (e) {
+            e.preventDefault(); 
+            $instanceErrorMessage.hide();
+            $startButton.text('Instance starting...');
+            $startButton.prop('disabled', true);
             $.ajax({
-                url: '@Url.Action("StartDockerInstance", "UserChallenge")', // Adjust with your action and controller
+                url: '@Url.Action("StartDockerInstance", "UserChallenge")', 
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
                     difficulty: diff,
                     foldername: folderName
                 }),
-                success: function (response) {                    
+                success: function (response) {
                     console.log(response);
                     setTimeout(function () {
-                        instanceSuccess(response);
+                        startInstance();
                     }, 10000); // 10 seconds delay
                 },
                 error: function (response) {
-                    $('#ins_loading').hide();
-                    $('#ins_error_message').text('An error occurred. Please try again later.').show();
-                    $('#btn_start_instance').text("Start Instance").removeClass('btn-success').addClass('btn-danger');
+                    stopInstance();
+                    $instanceErrorMessage.text('An error occurred. Please try again later.').show();
                 }
             });
         });
-    });
 
-    function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    }
+        $stopButton.on('click', function (e) {
+            e.preventDefault(); 
+            $instanceErrorMessage.hide();
+            $startButton.text('Instance stopping...');
+            $startButton.prop('disabled', true);
+            $.ajax({
+                url: '@Url.Action("StopDockerInstance", "UserChallenge")', 
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    difficulty: diff,
+                    foldername: folderName
+                }),
+                success: function (response) {
+                    console.log(response);
+                    setTimeout(function () {
+                        stopInstance();
+                    }, 10000); // 10 seconds delay
+                },
+                error: function (response) {
+                    $instanceErrorMessage.text('An error occurred. Please try again later.').show();
+                }
+            });
+        });
 
-    function instanceSuccess(response) {       
-        if (countdownActive) return; // Prevent starting multiple countdowns
-         countdownActive = true; // Set the flag to true
-         $('#ins_loading').hide();
-        console.log(response);
-        if (response.success) {
-             document.getElementById('instance_link').innerHTML = 'Browse <a target="_blank" href="' + '@Model.CHALLENGE_URL' + '">here</a> and find the flag!';
-             //celebrate();
-             // Start a 30-minute countdown
-             let countdownTime = 30 * 60; // 30 minutes in seconds
-             let countdownInterval;
-           
-             // Display initial countdown timer
-             const countdownDisplay = $('#countdown_timer');
-             countdownDisplay.text(formatTime(countdownTime));
-             $('#ins-time-remaining').show();
-            $('#instanceStatus').text("RUNNING").removeClass('text-danger').addClass('text-success');
-            $('#btn_start_instance').text('Running...').removeClass('btn-danger').addClass('btn-success');
-            $('#btn_start_instance').prop('disabled', true); // Re-enable the button
-             //$('#btn_start_instance').text("Restart Instance").removeClass('btn-danger').addClass('btn-success');
-             // Update the timer every second
-             countdownInterval = setInterval(function () {
-                 countdownTime--;
+        function startInstance() {
+            // Set the running state and total time in local storage
+            localStorage.setItem(challengeId+"_instanceState", "running");
+            localStorage.setItem(challengeId+"_remainingTime", totalTime);
+            $instanceStatus.text("RUNNING").removeClass("stopped-state").addClass("running-state");
+            showChallengeLink();
+            // Show/Hide buttons
+            $startButton.text('Start Instance');
+            $startButton.prop('disabled', false);
+            $startButton.hide();
+            $stopButton.show();
 
-                 countdownDisplay.text(formatTime(countdownTime));
-                 if (countdownTime <= 0) {
-                     clearInterval(countdownInterval);
-                     countdownDisplay.text("Time's up!");
-                     countdownActive = false;
-                     $('#btn_start_instance').text('Start Instance').removeClass('btn-success').addClass('btn-danger');
-                     $('#btn_start_instance').prop('disabled', false); // Re-enable the button
-                 }
-             }, 1000);
-         } else {
-             $('#ins_error_message').text(response.message).show(); // Show error message
-             $('#ins-time-remaining').hide();
-             $('#instanceStatus').text("NOT_RUNNING").removeClass('text-success').addClass('text-danger');
-             $('#btn_start_instance').text("Start Instance").removeClass('btn-success').addClass('btn-danger');
-         }
-    }
+            startCountdown(totalTime);
+        }
+
+        function stopInstance() {
+            // Clear local storage and stop the countdown
+            localStorage.removeItem(challengeId +"_instanceState");
+            localStorage.removeItem(challengeId +"_remainingTime");
+            $instanceStatus.text("STOPPED").removeClass("running-state").addClass("stopped-state");
+            $instanceLink.text("");
+            clearInterval(countdownInterval);
+            $countdownTimer.text("00:00"); // Reset timer display
+
+            // Show/Hide buttons
+            $startButton.text('Start Instance');
+            $startButton.prop('disabled', false);
+
+            $startButton.show();
+            $stopButton.hide();
+            //$instanceErrorMessage.text('An error occurred. Please try again later.').show();
+        }
+
+        function startCountdown(duration) {
+            let timer = duration;
+
+            // Clear any existing interval to prevent multiple timers
+            clearInterval(countdownInterval);
+
+            countdownInterval = setInterval(function () {
+                const minutes = parseInt(timer / 60, 10);
+                const seconds = parseInt(timer % 60, 10);
+
+                $countdownTimer.text((minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+
+                if (--timer < 0) {
+                    clearInterval(countdownInterval);
+                    stopInstance(); // Stop the instance when timer reaches zero
+                } else {
+                    localStorage.setItem(challengeId +"_remainingTime", timer); // Update remaining time in local storage
+                }
+            }, 1000);
+        }
+
+        // On page load, check local storage and restore state if necessary
+        const instanceState = localStorage.getItem(challengeId +"_instanceState");
+        const remainingTime = parseInt(localStorage.getItem(challengeId +"_remainingTime"), 10);
+
+        if (instanceState === "running" && !isNaN(remainingTime)) {
+            $instanceStatus.text("RUNNING").removeClass("stopped-state").addClass("running-state");
+            startCountdown(remainingTime);
+            showChallengeLink();
+            // Show/Hide buttons
+            $startButton.hide();
+            $stopButton.show();
+        } else {
+            $instanceStatus.text("STOPPED").removeClass("running-state").addClass("stopped-state");
+            $instanceLink.text("");
+            // Show/Hide buttons
+            $startButton.show();
+            $stopButton.hide();
+        }
+        function showChallengeLink() {
+            document.getElementById('instance_link').innerHTML = 'Browse <a target="_blank" href="' + '@Model.CHALLENGE_URL' + '">here</a> and find the flag!';
+        }
+});
+
 </script>

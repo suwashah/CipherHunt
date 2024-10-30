@@ -24,14 +24,14 @@
             {
                 if (item.IS_ENABLE && item.IS_VERIFIED)
                 {
-                    <div class="col-md-4 mb-3">
+                    <div class="col-md-3 mb-3">
                         @if (String.IsNullOrEmpty(item.IMAGE_URL))
                         {
-                            <img id="challenge_image" src="@Url.Content("~/images/Content/challenge-placeholder.jpg")" class="challenge-image" data-aos="fade-up" data-aos-delay="200" />
+                            <img id="challenge_image" src="@Url.Content("~/images/Content/challenge-placeholder.jpg")" style="height:200px !important;" class="challenge-image" data-aos="flip-right" data-aos-delay="200" />
                         }
                         else
                         {
-                            <img id="challenge_image" src="@item.IMAGE_URL" class="challenge-image" data-aos="flip-left" data-aos-delay="200" />
+                            <img id="challenge_image" src="@item.IMAGE_URL" style="height:200px !important;" class="challenge-image" data-aos="flip-left" data-aos-delay="200" />
                         }
                         <div class="portfolio-info" data-aos="fade-up" data-aos-delay="500">
                             <h3>@Html.DisplayFor(modelItem => item.NAME)</h3>
@@ -50,7 +50,7 @@
                                 }
                                 <li><strong>Category</strong>: @Html.DisplayFor(modelItem => item.CATEGORY_NAME)</li>
                                 <li><strong>Difficulty</strong>: <span class="badge rounded-pill @label"> @Html.DisplayFor(modelItem => item.DIFFICULTY_LEVEL)</span>&nbsp;&nbsp;<span class="badge rounded-pill bg-info text-dark">@Html.DisplayFor(modelItem => item.TOTAL_SOLVES) solves</span></li>
-                                <li><strong>Created on</strong>: @Html.DisplayFor(modelItem => item.CREATE_TS)</li>
+                                <li><strong>Created on</strong>: @Convert.ToDateTime(item.CREATE_TS).ToString("dd MMM yyyy")</li>
                                 <li><strong>Author</strong> : @Html.DisplayFor(modelItem => item.CREATE_BY)</li>
                             </ul>
                             <div class="d-grid gap-2">
