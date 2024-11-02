@@ -26,6 +26,9 @@
                                 Challenge Name
                             </th>
                             <th>
+                                Difficulty
+                            </th>
+                            <th>
                                 Points
                             </th>
                             <th>
@@ -79,7 +82,21 @@
 
                                         @Html.DisplayFor(modelItem => item.NAME)
                                     </td>
+                                    <td>
+                                        @{
+                                            var label = "bg-success";
+                                            if (item.DIFFICULTY_LEVEL.ToLower() == "medium")
+                                            {
+                                                label = "bg-warning";
+                                            }
+                                            else if (item.DIFFICULTY_LEVEL.ToLower() == "hard")
+                                            {
+                                                label = "bg-danger";
+                                            }
+                                            <span class="badge rounded-pill @label text-dark"> @Html.DisplayFor(modelItem => item.DIFFICULTY_LEVEL)</span>
 
+                                        }
+                                    </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.POINTS)
                                     </td>

@@ -125,6 +125,8 @@ namespace CipherHunt.Models
         public String CHALLENGE_SOLUTION { get; set; }
         public String CATEGORY_NAME { get; set; }
         public String CHALLENGE_FOLDER { get; set; }
+        public List<String> DIFFICULTY_FILTER { get; set; }
+
 
 
     }
@@ -141,6 +143,10 @@ namespace CipherHunt.Models
         public String difficulty { get; set; }
         public String foldername { get; set; }
     }
-
+    public class ChallengeViewModel
+    {
+        public List<TblChallenge> Challenges { get; set; }
+        public List<string> Difficulties { get; set; }
+    }
 
 }

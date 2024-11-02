@@ -4,65 +4,154 @@
     ViewBag.Title = "Challenges";
 }
 
-
+<style>
+    .ch-conttainer{
+        padding-left: 20px;
+    }
+</style>
 <!-- Portfolio Details Section -->
-<section id="portfolio-details" class="portfolio-details section mt-4">
+<section id="portfolio-details" class="portfolio-details service-details section mt-4">
     <div class="page-title dark-background" data-aos="fade">
         <div class="container">
             <nav class="breadcrumbs">
                 <ol>
                     <li><a href="@Url.Action("Index","Home")">Home</a></li>
-                    <li class="current"> CTF Challenges</li>
+                    <li class="current"><a href="@Url.Action("Index","UserChallenge")">CTF Challenges</a></li>
                 </ol>
             </nav>
-            <h1>Challenges</h1>
-        </div>
-    </div><!-- End Page Title -->
-    <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                if (item.IS_ENABLE && item.IS_VERIFIED)
+            @{
+                var challenge_diff = ViewBag.Selected_difficulty;
+
+                if (!String.IsNullOrEmpty(challenge_diff))
                 {
-                    <div class="col-md-3 mb-3">
-                        @if (String.IsNullOrEmpty(item.IMAGE_URL))
-                        {
-                            <img id="challenge_image" src="@Url.Content("~/images/Content/challenge-placeholder.jpg")" style="height:200px !important;" class="challenge-image" data-aos="flip-right" data-aos-delay="200" />
-                        }
-                        else
-                        {
-                            <img id="challenge_image" src="@item.IMAGE_URL" style="height:200px !important;" class="challenge-image" data-aos="flip-left" data-aos-delay="200" />
-                        }
-                        <div class="portfolio-info" data-aos="fade-up" data-aos-delay="500">
-                            <h3>@Html.DisplayFor(modelItem => item.NAME)</h3>
-                            <ul>
-                                @{
-                                    var label = "bg-success";
-                                    if (item.DIFFICULTY_LEVEL.ToLower() == "medium")
-                                    {
-                                        label = "bg-warning text-dark";
-                                    }
-                                    else if (item.DIFFICULTY_LEVEL.ToLower() == "hard")
-                                    {
-                                        label = "bg-danger";
-                                    }
-
-                                }
-                                <li><strong>Category</strong>: @Html.DisplayFor(modelItem => item.CATEGORY_NAME)</li>
-                                <li><strong>Difficulty</strong>: <span class="badge rounded-pill @label"> @Html.DisplayFor(modelItem => item.DIFFICULTY_LEVEL)</span>&nbsp;&nbsp;<span class="badge rounded-pill bg-info text-dark">@Html.DisplayFor(modelItem => item.TOTAL_SOLVES) solves</span></li>
-                                <li><strong>Created on</strong>: @Convert.ToDateTime(item.CREATE_TS).ToString("dd MMM yyyy")</li>
-                                <li><strong>Author</strong> : @Html.DisplayFor(modelItem => item.CREATE_BY)</li>
-                            </ul>
-                            <div class="d-grid gap-2">
-                                @Html.ActionLink("StartChallenge", "ChallengeDetail", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.CHALLENGE_ID)) }, new { @class = "btn btn-sm btn-outline-danger btn-round" })
-
-                            </div>
-                        </div>
-                    </div>
+                    <h1>@challenge_diff Level Challenges</h1>
+                }
+                else
+                {
+                    <h1>All Challenges</h1>
                 }
 
             }
         </div>
+    </div><!-- End Page Title -->
+    <div class="ch-conttainer" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="sticky-md-top">
+
+                    <div class="services-list">
+                        @{
+                            var cat_items = ViewBag.Category_filter as List<string>;
+                            var Selected_category = ViewBag.Selected_category;
+                            var items = ViewBag.Difficulty_filter as List<string>;
+                            var Selected_difficulty = ViewBag.Selected_difficulty;
+                            if (items != null)
+                            {
+                                foreach (var item in items)
+                                {
+                                    if (item == Selected_difficulty)
+                                    {
+                                        @Html.ActionLink(item, "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=" + item + "&category=" + Selected_category)) }, new { @class = "active" })
+
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(item, "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=" + item + "&category=" + Selected_category)) }, new { @class = "" })
+
+                                    }
+
+                                }
+                            }
+                        }
+
+
+                        @*@Html.ActionLink("Medium", "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=Medium")) }, new { @class = "active" })
+            @Html.ActionLink("Hard", "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=Hard")) }, new { @class = "active" })*@
+                    </div>
+
+                    <div class="services-list">
+                        @{
+
+                            if (cat_items != null)
+                            {
+                                foreach (var item in cat_items)
+                                {
+                                    if (item == Selected_category)
+                                    {
+                                        @Html.ActionLink(item, "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("category=" + item + "&difficulty=" + Selected_difficulty)) }, new { @class = "active" })
+
+                                    }
+                                    else
+                                    {
+                                        @Html.ActionLink(item, "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("category=" + item + "&difficulty=" + Selected_difficulty)) }, new { @class = "" })
+
+                                    }
+
+                                }
+                            }
+                        }
+
+
+                        @*@Html.ActionLink("Medium", "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=Medium")) }, new { @class = "active" })
+            @Html.ActionLink("Hard", "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=Hard")) }, new { @class = "active" })*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    @foreach (var group in Model.GroupBy(x => x.CATEGORY_NAME))
+                    {
+                        <div class="col-md-12" data-aos="fade-up" data-aos-delay="500">
+                            <h3 style="color:#f5f5f5;">@group.Key<span>s</span></h3>
+                        </div>
+                        foreach (var item in group)
+                        {
+                            if (item.IS_ENABLE && item.IS_VERIFIED)
+                            {
+                                <div class="col-md-3 mb-3">
+                                    @if (String.IsNullOrEmpty(item.IMAGE_URL))
+                                    {
+                                        <img id="challenge_image" src="@Url.Content("~/images/Content/challenge-placeholder.jpg")" style="height:200px !important;" class="challenge-image" data-aos="flip-right" data-aos-delay="200" />
+                                    }
+                                    else
+                                    {
+                                        <img id="challenge_image" src="@item.IMAGE_URL" style="height:200px !important;" class="challenge-image" data-aos="flip-left" data-aos-delay="200" />
+                                    }
+                                    <div class="portfolio-info" data-aos="fade-up" data-aos-delay="500">
+                                        <h3>@Html.DisplayFor(modelItem => item.NAME)</h3>
+                                        <ul>
+                                            @{
+                                                var label = "bg-success";
+                                                if (item.DIFFICULTY_LEVEL.ToLower() == "medium")
+                                                {
+                                                    label = "bg-warning text-dark";
+                                                }
+                                                else if (item.DIFFICULTY_LEVEL.ToLower() == "hard")
+                                                {
+                                                    label = "bg-danger";
+                                                }
+
+                                            }
+                                            <li><strong>Category</strong>: @Html.DisplayFor(modelItem => item.CATEGORY_NAME)</li>
+                                            <li><strong>Difficulty</strong>: <span class="badge rounded-pill @label"> @Html.DisplayFor(modelItem => item.DIFFICULTY_LEVEL)</span>&nbsp;&nbsp;<span class="badge rounded-pill bg-info text-dark">@Html.DisplayFor(modelItem => item.TOTAL_SOLVES) solves</span></li>
+                                            <li><strong>Created on</strong>: @Convert.ToDateTime(item.CREATE_TS).ToString("dd MMM yyyy")</li>
+                                            <li><strong>Author</strong> : @Html.DisplayFor(modelItem => item.CREATE_BY)</li>
+                                        </ul>
+                                        <div class="d-grid gap-2">
+                                            @Html.ActionLink("StartChallenge", "ChallengeDetail", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("id=" + item.CHALLENGE_ID)) }, new { @class = "btn btn-sm btn-outline-danger btn-round" })
+
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+       
 
 
     </div>

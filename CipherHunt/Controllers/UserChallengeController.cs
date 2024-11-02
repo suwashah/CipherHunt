@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Repository.Challenge;
 using Repository.Common;
+using Repository.Product;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,16 +21,51 @@ namespace CipherHunt.Controllers
     public class UserChallengeController : Controller
     {
         private IChallengeRepository _ich;
+        private IProductRepository _ipr;
+
         private readonly APIService _apiService;
-        public UserChallengeController(IChallengeRepository ich, APIService apiService)
+        public UserChallengeController(IChallengeRepository ich, IProductRepository ipr, APIService apiService)
         {
-            _ich = ich;       
+            _ich = ich;    
+            _ipr = ipr;
             _apiService = apiService;
         }
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string route)
         {
-            var lst = _ich.GetAllChallenges("a");
+            List<string> categories_filter = _ipr.GetAllCategories().Select(e => e.CATEGORY_NAME).ToList();            
+            var Difficulty_filter = new List<string>()
+            {
+                "All Difficulties",
+                "Easy",
+                "Medium",
+                "Hard"
+            };
+            var lst = _ich.GetAllChallenges("a").Where(i=>i.IS_VERIFIED&&i.IS_ENABLE);
+            if (!String.IsNullOrEmpty(route))
+            {
+                var qry = StaticData.GetQueryParameters(route);
+                string difficulty = qry["difficulty"];
+                string category=qry["category"];
+                if(!String.IsNullOrEmpty(difficulty))
+                {
+                    if(difficulty != "All Difficulties")
+                        lst = lst.Where(i => i.DIFFICULTY_LEVEL.Equals(difficulty));
+                    ViewBag.Selected_difficulty = difficulty;
+                }               
+                if (!String.IsNullOrEmpty(category))
+                {
+                    lst = lst.Where(i => i.CATEGORY_NAME.Equals(category));
+                    ViewBag.Selected_category = category;
+                }
+
+            }
+            else
+            {
+                ViewBag.Selected_difficulty = "All Difficulties";
+            }
+            ViewBag.Difficulty_filter=Difficulty_filter;
+            ViewBag.Category_filter = categories_filter;
             return View(lst);
         }
         [HttpGet]
