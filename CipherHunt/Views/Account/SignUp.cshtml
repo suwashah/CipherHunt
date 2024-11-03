@@ -37,7 +37,7 @@
                 <span>Already a member?</span> @Html.ActionLink("Log in", "Login")
                 <br /><br />
                 <div style="font-size:12px;" class="title">
-                    <b><i class="fa fa-info-circle text-warning"></i> Type-in your full name as shown on your valid ID.</b>
+                    <b><i class="fa fa-info-circle text-warning"></i> Type-in your name.</b>
                 </div>
                 <br />
                 <div class="">
@@ -81,7 +81,7 @@
                     <br />
                     <br />
                 </div>*@
-                <div class="">
+                @*<div class="">
                     @Html.ValidationMessageFor(m => m.Mobile, "", new { @class = "text-danger" })
                     <div class="wrap-input100 validate-input" data-validate="Mobile number is required">
                         @Html.TextBoxFor(m => m.Mobile, new { @class = "input100", autocomplete = "off", minLength = "8", maxLength = "10", onkeypress = "return isNumberKey(event)" })
@@ -91,7 +91,7 @@
                             @Model.TeleCode Mobile number
                         </span>
                     </div>
-                </div>
+                </div>*@
                 <div>
                     <br />
                     <h6 class="title"><i class="fa fa-user-circle text-danger"></i> Your Login Details</h6>
@@ -162,14 +162,14 @@
         </div>
     </div>
 </div>
-@*<div id="progress" class="modal_loader">
+<div id="progress" class="modal_loader">
     <div class="center">
         <center>
             @Html.Partial("_Partial/_Loader")
         </center>
         <br />Registration in proccess. Please wait...
     </div>
-</div>*@
+</div>
 @section scripts{
     <script>
         AgreeTerms()

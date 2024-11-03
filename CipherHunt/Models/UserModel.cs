@@ -63,7 +63,7 @@ namespace CipherHunt.Models
         [Required(ErrorMessage = "Please enter last name")]
         public string LastName { get; set; }
         [Display(Name = "Mobile number")]
-        [Required(ErrorMessage = "Please enter mobile number")]
+        //[Required(ErrorMessage = "Please enter mobile number")]
         [MaxLength(10, ErrorMessage = "Cannot be more than 10 digit")]
         [RegularExpression("([4-9][0-9]*)", ErrorMessage = "Number must start with 4xxxxxx")]
         public string Mobile { get; set; }

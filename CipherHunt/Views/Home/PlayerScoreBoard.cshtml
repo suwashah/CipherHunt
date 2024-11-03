@@ -1,0 +1,187 @@
+﻿@model CipherHunt.Models.ScoreBoardViewModel
+
+@{
+    ViewBag.Title = "Player ScoreBoard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    th {
+        background-color: #4CAF50;
+        color: white;
+        padding: 5px 10px !important;
+        text-align: left;
+        border: 1px solid #4b4848;
+    }
+
+    td {
+        padding: 2px 10px !important;
+    }
+
+    tr:nth-child(even) {
+        background-color: #9fadd5;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #121427;
+        color: #808080 !important;
+    }
+
+    tr:hover {
+        background-color: #4b4848;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.0"></script>
+
+<!-- Portfolio Details Section -->
+<section id="portfolio-details" class="portfolio-details section mt-4">
+    <div class="page-title dark-background" data-aos="fade">
+        <div class="container">
+            <nav class="breadcrumbs">
+                <ol>
+                    <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                    <li><a href="@Url.Action("Index", "UserChallenge")">CTF Challenges</a></li>
+                    <li class="current"> Score Board</li>
+                </ol>
+            </nav>
+        </div>
+    </div><!-- End Page Title -->
+    <div class="container mb-4">
+        <h4 class="text-center">Top 10 Players</h4>
+        <canvas id="scoreChart" width="800" height="300"></canvas>
+    </div>
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row">
+            <div class="col-md-12">
+                @{
+                    int sno = 1;
+                }
+                <table class="table table-responsive table-striped">
+                    <tr>
+                        <th style="width:50px;">
+                            Rank
+                        </th>
+                        <th>
+                            Player Name
+                        </th>
+                        <th>
+                            Total Score
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model.Scores)
+                    {
+                        <tr>
+                            <td>
+                                <b>@sno</b>
+                            </td>
+                            @if (sno <= 3)
+                            {
+                                <td style="background:#4CAF50; color:#000000; font-weight:bold;">
+                                    @Html.DisplayFor(modelItem => item.PLAYER)
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PLAYER)
+                                </td>
+                            }
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TOTAL_SCORE)
+                            </td>
+                        </tr>
+                        sno++;
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+
+</section><!-- /Portfolio Details Section -->
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            UpdateGraph();
+            setInterval(() => {
+                UpdateGraph();
+            }, 10000); // 10000 milliseconds = 10 second
+            var chart;
+            function UpdateGraph() {
+                $.ajax({
+                url: '@Url.Action("GetChartData", "Home")',
+                method: 'GET',
+                success: function (response) {
+                    console.log(response);
+                    response.forEach(function (item) {
+                        item.Time = moment(item.TIME_STAMPS, 'HH:mm').format('YYYY-MM-DDTHH:mm:ss');
+                    });
+
+                    var groupedData = {};
+                    response.forEach(function (item) {
+                        if (!groupedData[item.PLAYER]) {
+                            groupedData[item.PLAYER] = [];
+                        }
+                        groupedData[item.PLAYER].push({ x: item.TIME_STAMPS, y: item.SCORE });
+                    });
+
+                    var datasets = [];
+                    var colors = [
+                        'rgba(75, 192, 192, 1)',   // Teal
+                        'rgba(153, 102, 255, 1)',  // Purple
+                        'rgba(255, 99, 132, 1)',   // Pink
+                        'rgba(54, 162, 235, 1)',   // Blue
+                        'rgba(255, 159, 64, 1)',   // Orange
+                        'rgba(255, 206, 86, 1)',   // Yellow
+                        'rgba(201, 203, 207, 1)',  // Light Gray
+                        'rgba(123, 239, 178, 1)',  // Light Green
+                        'rgba(240, 128, 128, 1)',  // Light Coral
+                        'rgba(147, 112, 219, 1)'   // Medium Purple
+                    ];
+                    var i = 0;
+                    for (var participant in groupedData) {
+                        datasets.push({
+                            label: participant,
+                            data: groupedData[participant],
+                            borderColor: colors[i % colors.length],
+                            borderWidth: 2,
+                            fill: false
+                        });
+                        i++;
+                    }
+
+                    var ctx = document.getElementById('scoreChart').getContext('2d');
+                    if (chart) {
+                        chart.destroy();
+                    }
+
+                    chart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: response.map(d => d.TIME_STAMPS).filter((value, index, self) => self.indexOf(value) === index), // Unique labels
+                            datasets: datasets
+                        },
+                        options: {
+                            scales: {
+                                x: {
+                                    type: 'time',
+                                    time: {
+                                        unit: 'hour'
+                                    }
+                                },
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+            }
+        });
+    </script>
+}

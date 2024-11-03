@@ -87,6 +87,8 @@ namespace Repository.CPanel
                 sb.AppendFormat(@"cutoutPercentage:{0},", cutoutPercentage);
             }
             sb.AppendFormat(@"responsive:{0},", responsive.ToString().ToLower());
+            sb.AppendFormat(@"maintainAspectRatio:{0},", "false");
+
             #region Legends
             sb.AppendFormat(@"legend:{{");//legend start
             sb.AppendFormat(@"position:{0},", dao.singleQuote(legendPosition));
@@ -132,6 +134,8 @@ namespace Repository.CPanel
             sb.AppendFormat(@"axis:{0},", dao.singleQuote("y"));
             sb.AppendFormat(@"}}");//end Tooltips
             #endregion
+            
+            
             sb.AppendFormat(@"}}");//end Options
             #endregion
             sb.AppendFormat(@"}});");//CHART ENDED
@@ -203,7 +207,7 @@ namespace Repository.CPanel
             DataTable dt = dao.ExecuteDataTable("spa_matrix_report @flag='1'");
             if (dt != null && dt.Rows.Count > 0)
             {
-                return CreateGraphString(chartObj, chartType, "dw", dt, "Weekly customer graph", "Week Name", "No. of registered customer", false, 2);
+                return CreateGraphString(chartObj, chartType, "dw", dt, "Weekly new player", "Week Name", "No. of new registered players", false, 2);
             }
             else
             {

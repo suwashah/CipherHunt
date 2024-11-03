@@ -197,7 +197,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="form-group scrollbar table-responsive-md table-responsive-sm">
-                    <table class="table table-striped" id="tblList">                       
+                    <table class="table table-striped">                       
                         <tbody>
                             @{
                                 var i = 1;
@@ -243,74 +243,5 @@
                     }
                 });
         });
-    </script>
-    @*<script>
-            var color = Chart.helpers.color;
-            var bg1 = "rgba(196, 37, 15, 0.66)";
-            var bg2 = "rgba(0, 53, 169, 0.36)";
-            var ctx = document.getElementById('myChart1');
-            var myChart = null;
-            if (myChart !== null) {
-                removeData(myChart);
-            }
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"],
-                    datasets: [{
-                        "label": "Weekly customer report:Previous",
-                        "data": [0, 0, 0, 0, 0, 0, 1],
-                        "fill": "false",
-                        "borderColor": null,
-                        "backgroundColor": null,
-                        "borderWidth": 1
-                    }, {
-                        "label": "Weekly customer report:This",
-                        "data": [0, 2, 0, 0, 0, 0, 0],
-                        "fill": "false",
-                        "borderColor": null,
-                        "backgroundColor": null,
-                        "borderWidth": 1
-                    }],
-                    onAnimationComplete: function () {
-                        ctx.fillText("Hello", 100 - 20, 100, 200);
-                    }
-                },
-                options: {
-                    responsive: true,
-                    legend: {
-                        position: 'top',
-                        fontColor: 'white',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Weekly customer report',
-                    },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Count'
-                            }
-                        }],
-                        XAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            },
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Email'
-                            }
-                        }],
-                    },
-                    tooltips: {
-                        mode: 'point',
-                        axis: 'y',
-                    }
-                }
-            });
-        </script>*@
+    </script>    
 }

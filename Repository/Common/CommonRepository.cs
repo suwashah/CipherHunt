@@ -29,6 +29,7 @@ namespace Repository.Common
         List<SystemActivity> GetTopThreeNotification();
         string NotificationCount();
         CommonData SaveError(string ErrorDescription, string Path);
+        Error_Log GetErrorDetail(string ErrorId);
 
     }
     public class CommonRepository : ICommonRepository
@@ -301,6 +302,22 @@ namespace Repository.Common
                 ret.CODE = dt.Rows[0]["Code"].ToString();
                 ret.MESSAGE = dt.Rows[0]["Message"].ToString();
                 ret.UNIQUEID = dt.Rows[0]["ERROR_ID"].ToString();
+            }
+            return ret;
+        }
+        public Error_Log GetErrorDetail(string ErrorId)
+        {
+            Error_Log ret = new Error_Log();
+            string sql = "spa_Error_Log @flag = 'a'" +
+            ",@errorid = " + dao.singleQuote(ErrorId);
+            DataTable dt = dao.ExecuteDataTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                ret.ERROR_ID = dt.Rows[0]["ERROR_ID"].ToString();
+                ret.ERROR_DESCRIPTION = dt.Rows[0]["ERROR_DESCRIPTION"].ToString();
+                ret.SCRIPT = dt.Rows[0]["SCRIPT"].ToString();
+                ret.CREATE_TS = dt.Rows[0]["CREATE_TS"].ToString();
+                ret.IP = dt.Rows[0]["IP"].ToString();
             }
             return ret;
         }

@@ -73,7 +73,7 @@ namespace CipherHunt.Controllers
                     //    return RedirectToAction("ResetPassword", "Authentication");
                     //}
                     RememberMe(model.RememberMe, model.UserName);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("PlayerScoreBoard", "Home");
                 }
                 else
                 {

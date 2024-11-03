@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Repository.Common
 {
@@ -86,6 +87,7 @@ namespace Repository.Common
         public String USER_SCORE { get; set; }
         public String SOLVED_AT { get; set; }
         public String TOTAL_SOLVES { get; set; }
+        public String CHALLENGE_FOLDER { get; set; }
     }
 
     public class SubmitUserFlag
@@ -93,5 +95,28 @@ namespace Repository.Common
         public String CHALLENGE_ID { get; set; }
         public String USER_FLAG { get; set; }
         public String USER_ID { get; set; }
+    }
+
+    public class ScoreBoard
+    {
+        public String TOTAL_SCORE { get; set; }
+        public String PLAYER { get; set; }
+        public String PLAYER_ID { get; set; }  
+        public String TIME_STAMPS { get; set; }
+        public int SCORE { get; set; }
+
+
+    }
+    public class TeamScore
+    {
+        public string TeamName { get; set; }
+        public List<int> Scores { get; set; }
+        public List<string> Timestamps { get; set; }
+    }
+    public class ScoreAndTime
+    {
+        public int Score { get; set; }
+        public string Time { get; set; }
+
     }
 }

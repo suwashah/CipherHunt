@@ -36,6 +36,16 @@ def run_docker_compose(parent_folder, foldername):
 
     except subprocess.CalledProcessError as e:
         print(f"Error occurred: {e}")
+        
+# Function to stop Docker Compose in the specified folder
+def stop_docker_compose(parent_folder, foldername):
+    target_folder = os.path.abspath(os.path.join(parent_folder, foldername))
+    try:
+        # Stop and remove Docker containers
+        subprocess.run(['docker-compose', 'down'], cwd=target_folder, check=True)
+        print(f"Docker containers in {target_folder} have been stopped.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred while stopping Docker: {e}")
 
 # API route to start the application
 @app.route('/start', methods=['POST'])
@@ -65,6 +75,36 @@ def start_application():
     thread.start()
 
     return jsonify({'code':'0','message': f'Application in {difficulty}/{foldername} is running for 2 minutes.'}), 200
+
+# API route to stop the application
+@app.route('/stop', methods=['POST'])
+@auth.login_required
+def stop_application():
+    data = request.json
+
+    # Extract the difficulty and folder name from the POST request
+    difficulty = data.get('difficulty')
+    foldername = data.get('foldername')
+
+    # Validate inputs
+    if not difficulty or not foldername:
+        return jsonify({'error': 'Difficulty and folder name are required.'}), 400
+
+    # Construct the absolute path of the target folder
+    parent_folder = os.path.abspath(difficulty)
+    target_folder = os.path.abspath(os.path.join(parent_folder, foldername))
+    print("Target folder for stopping:", target_folder)
+
+    # Check if the target folder exists
+    if not os.path.isdir(target_folder):
+        return jsonify({'code': '100', 'message': 'Invalid folder path or folder does not exist.'}), 400
+
+    # Start the stop process in a separate thread
+    thread = threading.Thread(target=stop_docker_compose, args=(parent_folder, foldername,))
+    thread.start()
+
+    return jsonify({'code': '0', 'message': f'Application in {difficulty}/{foldername} is stopping.'}), 200
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

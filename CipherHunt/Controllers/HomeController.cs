@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using CipherHunt.Library;
 using CipherHunt.Models;
 using Repository.Challenge;
+using Microsoft.AspNet.Identity;
 
 namespace CipherHunt.Controllers
 {
@@ -38,6 +39,22 @@ namespace CipherHunt.Controllers
         {
             return View();
         }
+        [HttpGet]
+        public ActionResult PlayerScoreBoard()
+        {
+            ScoreBoardViewModel model = new ScoreBoardViewModel();
+            model.Scores= _ich.GetScoreBoard();
+            //model.TeamScores = _ich.GetAllTeamScore(); ;
+            return View(model);
+        }
+        public ActionResult GetChartData()
+        {
+            // Sample data representing scores of different participants
+            var data = _ich.GetAllTeamScore();  
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+
+
         [HttpGet]
         public ActionResult CalorieCalculate()
         {
@@ -80,6 +97,6 @@ namespace CipherHunt.Controllers
             ht_in.Add("11", "11");
             ht_in.Add("12", "12");
             ViewData["Height_Inch"] = StaticData.SetDDLValue(ht_in, model.Height_Inch, "Inch");
-        }        
+        }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Repository.Challenge;
 using Repository.Common;
+using Repository.Product;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,16 +21,51 @@ namespace CipherHunt.Controllers
     public class UserChallengeController : Controller
     {
         private IChallengeRepository _ich;
+        private IProductRepository _ipr;
+
         private readonly APIService _apiService;
-        public UserChallengeController(IChallengeRepository ich, APIService apiService)
+        public UserChallengeController(IChallengeRepository ich, IProductRepository ipr, APIService apiService)
         {
-            _ich = ich;       
+            _ich = ich;    
+            _ipr = ipr;
             _apiService = apiService;
         }
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string route)
         {
-            var lst = _ich.GetAllChallenges("a");
+            List<string> categories_filter = _ipr.GetAllCategories().Select(e => e.CATEGORY_NAME).ToList();            
+            var Difficulty_filter = new List<string>()
+            {
+                "All Difficulties",
+                "Easy",
+                "Medium",
+                "Hard"
+            };
+            var lst = _ich.GetAllChallenges("a").Where(i=>i.IS_VERIFIED&&i.IS_ENABLE);
+            if (!String.IsNullOrEmpty(route))
+            {
+                var qry = StaticData.GetQueryParameters(route);
+                string difficulty = qry["difficulty"];
+                string category=qry["category"];
+                if(!String.IsNullOrEmpty(difficulty))
+                {
+                    if(difficulty != "All Difficulties")
+                        lst = lst.Where(i => i.DIFFICULTY_LEVEL.Equals(difficulty));
+                    ViewBag.Selected_difficulty = difficulty;
+                }               
+                if (!String.IsNullOrEmpty(category))
+                {
+                    lst = lst.Where(i => i.CATEGORY_NAME.Equals(category));
+                    ViewBag.Selected_category = category;
+                }
+
+            }
+            else
+            {
+                ViewBag.Selected_difficulty = "All Difficulties";
+            }
+            ViewBag.Difficulty_filter=Difficulty_filter;
+            ViewBag.Category_filter = categories_filter;
             return View(lst);
         }
         [HttpGet]
@@ -50,7 +86,7 @@ namespace CipherHunt.Controllers
             return Json(_ich.SubmitFlag(post), JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public async Task<JsonResult> StartDockerInstance(StartDockerModel model)
+        public async Task<JsonResult> StartDockerInstance(RunDockerModel model)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +100,24 @@ namespace CipherHunt.Controllers
                     return Json(new { code = apiResponse.code, success = false, message = apiResponse?.message ?? "Error sending data." });
                 }
             }
-            // Return validation errors if the model state is not valid
+            return Json(new { code = "500", success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> StopDockerInstance(RunDockerModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var apiResponse = await _apiService.PostDataAsync(model,false);
+                if (apiResponse != null && apiResponse.code == "0")
+                {
+                    return Json(new { code = apiResponse.code, success = true, message = apiResponse?.message ?? "Data sent successfully!", data = apiResponse });
+                }
+                else
+                {
+                    return Json(new { code = apiResponse.code, success = false, message = apiResponse?.message ?? "Error sending data." });
+                }
+            }
             return Json(new { code = "500", success = false, message = "Invalid data.", errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage) });
         }
 
@@ -94,7 +147,6 @@ namespace CipherHunt.Controllers
                 model.IS_ENABLE = ch.IS_ENABLE;
                 model.IS_VERIFIED = ch.IS_VERIFIED;
                 model.VERIFIED_BY = ch.VERIFIED_BY;
-                model.FLAG = "u";
                 model.CTF_FLAG = ch.CTF_FLAG;
                 model.IMAGENAME = ch.IMAGENAME;
                 model.HINT_1 = ch.HINT_1;
@@ -103,11 +155,9 @@ namespace CipherHunt.Controllers
                 model.INTENDED_LEARNING = ch.INTENDED_LEARNING;
                 model.CHALLENGE_SOLUTION = ch.CHALLENGE_SOLUTION;
                 model.CHALLENGE_URL = ch.CHALLENGE_URL;
-            }
-            else
-            {
-                model.FLAG = "i";
-            }
+                model.CHALLENGE_FOLDER = ch.CHALLENGE_FOLDER;
+                model.FILE_PATH = ch.FILE_PATH;
+            }           
             return View(model);
         }        
     }

@@ -15,6 +15,8 @@ namespace Repository.Challenge
         TblChallenge GetChallengeDetail(string Challenge_ID);
         CommonData VerifyChallenge(string ID, string UserName);
         CommonData SubmitFlag(SubmitUserFlag inp);
+        List<ScoreBoard> GetScoreBoard();
+        List<ScoreBoard> GetAllTeamScore();
     }
     public class ChallengeRepository : IChallengeRepository
     {
@@ -48,7 +50,9 @@ namespace Repository.Challenge
                 new SqlParameter("@HINT_2",inp.HINT_2),
                 new SqlParameter("@HINT_3",inp.HINT_3),
                 new SqlParameter("@INTENDED_LEARNING",inp.INTENDED_LEARNING),
-                new SqlParameter("@CHALLENGE_SOLUTION",inp.CHALLENGE_SOLUTION)
+                new SqlParameter("@CHALLENGE_SOLUTION",inp.CHALLENGE_SOLUTION),
+                new SqlParameter("@CHALLENGE_FOLDER",inp.CHALLENGE_FOLDER)
+                
             };
             //sqlParam.DbType = DbType.Binary;
             DataTable dt = dao.ExecuteDataTableSP("[dbo].[spa_Challenge]", param, CommandType.StoredProcedure);
@@ -142,6 +146,7 @@ namespace Repository.Challenge
                 lst.HINT_3 = dt.Rows[0]["HINT_3"].ToString();
                 lst.INTENDED_LEARNING = dt.Rows[0]["INTENDED_LEARNING"].ToString();
                 lst.CHALLENGE_SOLUTION = dt.Rows[0]["CHALLENGE_SOLUTION"].ToString();
+                lst.CHALLENGE_FOLDER = dt.Rows[0]["CHALLENGE_FOLDER"].ToString();
             }
             return lst;
         }
@@ -191,5 +196,45 @@ namespace Repository.Challenge
             }
             return ret;
         }
+        public List<ScoreBoard> GetScoreBoard()
+        {
+            var lst = new List<ScoreBoard>();              
+            string sql = "spa_Challenge @flag=" + dao.singleQuote("sb");
+            DataTable dt = dao.ExecuteDataTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    lst.Add(new ScoreBoard
+                    {
+                        TOTAL_SCORE = dr["TOTAL_SCORE"].ToString(),
+                        PLAYER = dr["PLAYER"].ToString(),
+                        PLAYER_ID = dr["PLAYER_ID"].ToString()
+                    });
+                }
+            }
+            return lst;
+        }
+        
+        public List<ScoreBoard> GetAllTeamScore()
+        {
+            var lst = new List<ScoreBoard>();
+            string sql = "spa_Challenge @flag=" + dao.singleQuote("ts");
+            DataTable dt = dao.ExecuteDataTable(sql);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    lst.Add(new ScoreBoard
+                    {
+                        PLAYER = dr["PLAYER"].ToString(),
+                        SCORE = Convert.ToInt32(dr["SCORE"]),
+                        TIME_STAMPS = Convert.ToDateTime(dr["SOLVED_AT"]).ToString("yyyy-MM-ddTHH:mm:ss")
+                    });
+                }
+            }
+            return lst;
+        }
+
     }
 }
