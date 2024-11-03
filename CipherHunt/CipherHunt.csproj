@@ -1026,6 +1026,7 @@
     <Content Include="Views\UserChallenge\History.cshtml" />
     <Content Include="Views\UserChallenge\IndexC.cshtml" />
     <Content Include="Views\UserChallenge\CDetail.cshtml" />
+    <Content Include="Views\Home\PlayerScoreBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Uploads\Product\" />
