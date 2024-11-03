@@ -19,20 +19,7 @@
                     <li class="current"><a href="@Url.Action("Index","UserChallenge")">CTF Challenges</a></li>
                 </ol>
             </nav>
-            <h1>Start you CTF Challenges</h1>
-            @*@{
-                var challenge_diff = ViewBag.Selected_difficulty;
-
-                if (!String.IsNullOrEmpty(challenge_diff))
-                {
-                    <h1>@challenge_diff Level Challenges</h1>
-                }
-                else
-                {
-                    <h1>Start you CTF Challenges</h1>
-                }
-
-            }*@
+            <h1>Start Capturing the flags</h1>          
         </div>
     </div><!-- End Page Title -->
     <div class="ch-conttainer" data-aos="fade-up" data-aos-delay="100">
@@ -65,15 +52,10 @@
                                 }
                             }
                         }
-
-
-                        @*@Html.ActionLink("Medium", "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=Medium")) }, new { @class = "active" })
-            @Html.ActionLink("Hard", "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=Hard")) }, new { @class = "active" })*@
                     </div>
 
                     <div class="services-list">
                         @{
-
                             if (cat_items != null)
                             {
                                 foreach (var item in cat_items)
@@ -92,10 +74,6 @@
                                 }
                             }
                         }
-
-
-                        @*@Html.ActionLink("Medium", "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=Medium")) }, new { @class = "active" })
-            @Html.ActionLink("Hard", "Index", "UserChallenge", new { route = @Html.Raw(CipherHunt.Library.StaticData.Encrypt("difficulty=Hard")) }, new { @class = "active" })*@
                     </div>
                 </div>
             </div>
@@ -135,8 +113,7 @@
 
                                             }
                                             <li><strong>Category</strong>: @Html.DisplayFor(modelItem => item.CATEGORY_NAME)</li>
-                                            <li><strong>Difficulty</strong>: <span class="badge rounded-pill @label"> @Html.DisplayFor(modelItem => item.DIFFICULTY_LEVEL)</span>&nbsp;&nbsp;<span class="badge rounded-pill bg-info text-dark">@Html.DisplayFor(modelItem => item.TOTAL_SOLVES) solves</span></li>
-                                            @*<li><strong>Created on</strong>: @Convert.ToDateTime(item.CREATE_TS).ToString("dd MMM yyyy")</li>*@
+                                            <li><strong>Difficulty</strong>: <span class="badge rounded-pill @label"> @Html.DisplayFor(modelItem => item.DIFFICULTY_LEVEL)</span>&nbsp;&nbsp;<span class="badge rounded-pill bg-info text-dark">@Html.DisplayFor(modelItem => item.TOTAL_SOLVES) solves</span></li>                                           
                                             <li><strong>Points</strong> : @Html.DisplayFor(modelItem => item.POINTS)</li>
                                             <li><strong>Author</strong> : @Html.DisplayFor(modelItem => item.CREATE_BY)</li>
                                         </ul>

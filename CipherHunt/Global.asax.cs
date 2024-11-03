@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using CipherHunt.Filters;
 using CipherHunt.Library;
 
 namespace CipherHunt
@@ -19,6 +20,7 @@ namespace CipherHunt
             AreaRegistration.RegisterAllAreas();
             UnityConfig.RegisterComponents();// Added for Dependency Injection
             //GlobalConfiguration.Configure(WebApiConfig.Register);
+            GlobalFilters.Filters.Add(new CustomHandleErrorAttribute());
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
