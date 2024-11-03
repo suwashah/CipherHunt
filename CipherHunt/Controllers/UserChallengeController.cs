@@ -147,7 +147,6 @@ namespace CipherHunt.Controllers
                 model.IS_ENABLE = ch.IS_ENABLE;
                 model.IS_VERIFIED = ch.IS_VERIFIED;
                 model.VERIFIED_BY = ch.VERIFIED_BY;
-                model.FLAG = "u";
                 model.CTF_FLAG = ch.CTF_FLAG;
                 model.IMAGENAME = ch.IMAGENAME;
                 model.HINT_1 = ch.HINT_1;
@@ -157,11 +156,8 @@ namespace CipherHunt.Controllers
                 model.CHALLENGE_SOLUTION = ch.CHALLENGE_SOLUTION;
                 model.CHALLENGE_URL = ch.CHALLENGE_URL;
                 model.CHALLENGE_FOLDER = ch.CHALLENGE_FOLDER;
-            }
-            else
-            {
-                model.FLAG = "i";
-            }
+                model.FILE_PATH = ch.FILE_PATH;
+            }           
             return View(model);
         }        
     }

@@ -21,15 +21,12 @@
             };
             $scope.DrawWeeklyGraph = function (scriptDivId) {
                     var gType = $scope.GraphType;
-                    console.log(gType);
                     var post = $http({
                         method: "GET",
                         url: appSettings.serverPath + '/DrawWeeklyGraph',
                         params: { type: gType }
                     }).then(function (d) {
                         var ct = d.data;
-                        //$log.info(ct);
-                        //$scope.WeekGraph = ct;
                         $("#" + scriptDivId).html(d.data);
                     }, function (error) {
                         $log.info(error);

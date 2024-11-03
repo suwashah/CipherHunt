@@ -9,7 +9,7 @@
     border: none !important;
     border-bottom: 1px solid #ced4da !important;
     border-radius: 0px !important;
-    padding-left:0 !important;
+    padding-left:10px !important;
 }
 .form-control:focus {
     outline:none !important;

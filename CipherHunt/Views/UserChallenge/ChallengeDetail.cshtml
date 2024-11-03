@@ -97,13 +97,18 @@
                 <p>
                     @Html.Raw(Model.DESCRIPTION)
                 </p>
+                <br/>
                 @if (!String.IsNullOrEmpty(Model.CHALLENGE_URL))
                 {
                     <p id="instance_link">
-
                     </p>
                 }
-
+                @if (!String.IsNullOrEmpty(Model.FILE_PATH))
+                {
+                    <p>
+                         <a target="_blank" href="@Url.Content("~/Uploads/Files/"+Model.FILE_PATH)" download><i class="bi bi-download"></i> Download this file</a> and find the flag!
+                    </p>
+                }
             </div>
 
         </div>
